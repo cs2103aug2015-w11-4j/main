@@ -1,0 +1,1 @@
+when i commit to master, the file is not reflected into the main github repo unless i press sync. O_o? so committing to master is just saving it in local repo then syncing would upload the local files to github repo?
