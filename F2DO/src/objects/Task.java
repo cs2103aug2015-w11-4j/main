@@ -53,6 +53,12 @@ public class Task {
 	}
 	// ============ GETTERS/SETTERS END ================ //
 	
+	// ============ CONSTRUCTOR START ================ //
+	
+	public Task() {
+		super();
+	}
+	
 	public Task(int taskID, Date startDate, Date endDate, String taskName, Boolean floating, Boolean completed) {
 		super();
 		this.taskID = taskID;
@@ -63,6 +69,7 @@ public class Task {
 		this.completed = completed;
 	}
 	
+	// ============ CONSTRUCTOR END ================ //
 	
 	
 }
