@@ -1,4 +1,4 @@
-package f2do;
+package parser;
 
 public class Parser {
 	
