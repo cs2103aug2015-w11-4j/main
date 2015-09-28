@@ -9,11 +9,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 import objects.Task;
 
-public class Storage {
+public class Storage implements Comparator<Task> {
 	
     private static final String DEFAULT_DIRECTORY = "F2DO";
 	private static final String FILENAME = "F2DO.txt";
@@ -59,11 +62,13 @@ public class Storage {
 	// Takes in task object created by parser and adds it to ArrayList
 	public void addTask(Task newTask) {
 		taskList.add(newTask);
+		saveToFile();
 	}
 	
 	// Deletes the task object located at the index supplied by the user
 	public void deleteTask(int taskNumber) {
 		taskList.remove(taskNumber);
+		saveToFile();
 	}
 	
 	// Updates the desired task with the new information
@@ -73,9 +78,10 @@ public class Storage {
 		taskList.get(taskNumber).setStartDate(newStartDate);
 		taskList.get(taskNumber).setEndDate(newEndDate);
 		taskList.get(taskNumber).setCategory(newCategory);
+		saveToFile();
 	}
 	
-	public void saveToFile() {
+	private void saveToFile() {
 		try {
 			FileOutputStream fout = new FileOutputStream(FILENAME);
 			ObjectOutputStream oos = new ObjectOutputStream(fout);
@@ -92,7 +98,7 @@ public class Storage {
 			FileInputStream fin = new FileInputStream(FILENAME);
 			ObjectInputStream ois = new ObjectInputStream(fin);
 			try {
-				taskList = (ArrayList<Task>) ois.readObject();
+				taskList = (ArrayList<Task>)ois.readObject();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -100,5 +106,25 @@ public class Storage {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void displayTaskList() {
+		for (Task t: taskList) {
+			System.out.print(t);
+		}
+	}
+
+	@Override
+	public int compare(Task t1, Task t2) {
+		if (t1.getEndDate() == null || t2.getEndDate() == null) {
+			return 0;
+		}
+		
+		return t1.getEndDate().compareTo(t2.getEndDate());
+	}
+	
+	public void sortTaskList() {
+		Collections.sort(taskList);
+		saveToFile();
 	}
 }
