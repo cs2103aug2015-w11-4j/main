@@ -1,9 +1,17 @@
 package storage;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Date;
+
+import objects.Task;
 
 public class Storage {
 	
@@ -11,9 +19,8 @@ public class Storage {
 	private static final String FILENAME = "F2DO.txt";
 	private static final String SAVED_DIRECTORY = "%s\\F2DO";
 	private static final String CHANGE_DIRECTORY = "user.dir";
-	private static final String MESSAGE_FILE_NOT_FOUND = "F2DO file not found.";\
 	
-	private ArrayList<Task> taskList = new ArrayList();
+	private ArrayList<Task> taskList = new ArrayList<Task>();
 	private String saveFolder;
 	
 	public Storage(String directory) {
@@ -41,7 +48,11 @@ public class Storage {
 		File file = new File(FILENAME);
 		
 		if (!file.exists()) {
-			file.createNewFile();
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -55,15 +66,39 @@ public class Storage {
 		taskList.remove(taskNumber);
 	}
 	
-	/**
-	 * 
-	 */
-	public void updateTask(int taskNumber, string newTitle, 
-			               Date newStartDate, Date newEndDate, string newCategory) {
-		setTaskID(taskNumber);
-		setTaskName(newTitle);
-		setStartDate(newStartDate);
-		setEndDate(newEndDate);
-		setCategory(newCategory);
+	// Updates the desired task with the new information
+	public void updateTask(int taskNumber, String newTitle, 
+			               Date newStartDate, Date newEndDate, String newCategory) {
+		taskList.get(taskNumber).setTaskName(newTitle);
+		taskList.get(taskNumber).setStartDate(newStartDate);
+		taskList.get(taskNumber).setEndDate(newEndDate);
+		taskList.get(taskNumber).setCategory(newCategory);
+	}
+	
+	public void saveToFile() {
+		try {
+			FileOutputStream fout = new FileOutputStream(FILENAME);
+			ObjectOutputStream oos = new ObjectOutputStream(fout);
+			oos.writeObject(taskList);
+			fout.flush();
+			fout.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void readFromFile() {
+		try {
+			FileInputStream fin = new FileInputStream(FILENAME);
+			ObjectInputStream ois = new ObjectInputStream(fin);
+			try {
+				taskList = (ArrayList<Task>) ois.readObject();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			fin.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
