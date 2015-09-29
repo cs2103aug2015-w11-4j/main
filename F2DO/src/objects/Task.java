@@ -1,17 +1,22 @@
 package objects;
 
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Comparator;
 
+@SuppressWarnings({ "serial"})
 public class Task implements Serializable {
+
 
 	// ============ VARIABLES START ================ //
 	private int taskID;
 	private Date startDate;
 	private Date endDate;
 	private String taskName;
-	private Boolean floating;
-	private Boolean completed;
+	private Boolean isFloating;
+	private Boolean isCompleted;
+	private int priority;
 	// ============ VARIABLES END ================ //
 	
 	
@@ -41,20 +46,28 @@ public class Task implements Serializable {
 		this.taskName = taskName;
 	}
 	public Boolean getFloating() {
-		return floating;
+		return isFloating;
 	}
 	public void setFloating(Boolean floating) {
-		this.floating = floating;
+		this.isFloating = floating;
 	}
 	public Boolean getCompleted() {
-		return completed;
+		return isCompleted;
 	}
 	public void setCompleted(Boolean completed) {
-		this.completed = completed;
+		this.isCompleted = completed;
 	}
+	public int getPriority() {
+		return priority;
+	}
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
+	
 	// ============ GETTERS/SETTERS END ================ //
 	
 	// ============ CONSTRUCTOR START ================ //
+	
 	
 	public Task() {
 		super();
@@ -66,11 +79,66 @@ public class Task implements Serializable {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.taskName = taskName;
-		this.floating = floating;
-		this.completed = completed;
+		this.isFloating = floating;
+		this.isCompleted = completed;
 	}
 	
+	// Floating task
+	public Task(String taskName, int priority){
+		this.taskName = taskName;
+		this.priority = priority;
+	}
+	
+	// DeadLine Task
+	public Task(String taskName, Date deadLine, int priority) {
+		this.taskName = taskName;
+		this.endDate = deadLine;
+		this.priority = priority;
+	}
+	
+	// Event Task
+		public Task(String taskName, Date startDate, Date endDate, int priority) {
+			this.taskName = taskName;
+			this.startDate = startDate;
+			this.endDate = endDate;
+			this.priority = priority;
+		}
+	
 	// ============ CONSTRUCTOR END ================ //
+
+	/**
+	 * Comparator
+	 * @return the compared value
+	 */
+	public static Comparator<Task> taskComparator = new Comparator<Task>() {
+
+		@Override
+		public int compare(Task task1, Task task2) {
+			int returnVal = 1;
+
+			// sort task date in ascending order
+			Date task1Date = task1.getStartDate();
+			Date task2Date = task2.getStartDate();
+
+			if (task1.isCompleted == task2.isCompleted) {
+				if (task1Date.equals(task2Date)) {
+					// sort priority in descending order
+					// (high > medium > low)
+				} else {
+					returnVal = task1Date.compareTo(task2Date);
+				}
+
+			} else {
+				if (task1.isCompleted) {
+					returnVal = 1;
+				} else {
+					returnVal = -1;
+				}
+
+			}
+			return returnVal;
+		}
+	};
 	
 	
 }

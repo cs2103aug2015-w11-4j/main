@@ -2,6 +2,7 @@ package type;
 
 public enum CommandType {
 	ADD,
+	EDIT,
 	DELETE,
 	SEARCH,
 	COMPLETE,
