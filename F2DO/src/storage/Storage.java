@@ -1,5 +1,6 @@
 package storage;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -47,7 +48,7 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 		createSaveFile();
 	}
 	
-	private void createSaveFile() {
+	private static void createSaveFile() {
 		File file = new File(FILENAME);
 		
 		if (!file.exists()) {
@@ -105,7 +106,7 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 			ObjectInputStream ois = new ObjectInputStream(fin);
 			try {
 				taskList = (ArrayList<Task>)ois.readObject();
-			} catch (ClassNotFoundException e) {
+			} catch (EOFException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 			fin.close();
@@ -152,6 +153,7 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 	}
 	
 	public static void main(String[] args) {		
+		createSaveFile();
 		taskList.clear();
 		readFromFile();
 		
