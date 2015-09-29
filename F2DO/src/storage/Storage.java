@@ -19,7 +19,7 @@ import objects.Task;
 
 public abstract class Storage implements Serializable, Comparator<Task> {
 	
-    private static final String DEFAULT_DIRECTORY = "F2DO";
+	private static final String DEFAULT_DIRECTORY = "F2DO";
 	private static final String FILENAME = "F2DO.txt";
 	private static final String SAVED_DIRECTORY = "%s\\F2DO";
 	private static final String CHANGE_DIRECTORY = "user.dir";
@@ -136,17 +136,17 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 		}
 	}
 
-    public static Comparator<Task> taskComparator = new Comparator<Task>() {
+	public static Comparator<Task> taskComparator = new Comparator<Task>() {
     
-    	@Override
-    	public int compare(Task t1, Task t2) {
+        @Override
+		public int compare(Task t1, Task t2) {
 			if (t1.getEndDate() == null || t2.getEndDate() == null) {
 				return 0;
 			}
 			
 			return t1.getEndDate().compareTo(t2.getEndDate());
 		}
-    };
+	};
    
 	public static void sortTaskList() {
 		Collections.sort(taskList, taskComparator);
