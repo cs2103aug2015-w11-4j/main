@@ -110,6 +110,7 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 				e.printStackTrace();
 			}
 			fin.close();
+			ois.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
