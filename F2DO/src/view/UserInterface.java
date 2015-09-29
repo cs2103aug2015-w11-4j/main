@@ -1,4 +1,4 @@
-package application;
+package view;
 	
 import javafx.application.Application;
 
@@ -14,6 +14,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import parser.Parser;
+import parser.Result;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -69,36 +71,45 @@ public class UserInterface extends Application {
         tasks.setPadding(new Insets(10));
         tasks.setSpacing(100);
         tasks.getChildren().addAll(ID, Task, DueDate);
-        
+
         root.setCenter(tasks);
-        */
-        
+         */
+
         TableView table = new TableView();
         table.setPrefSize(250, 250);
-        
+
         TableColumn ID = new TableColumn("ID");
         TableColumn Task = new TableColumn("Task");
         TableColumn DueDate = new TableColumn("Due Date");
-      
+
         table.getColumns().addAll(ID, Task, DueDate);
-        
+
         root.setCenter(table);
-        
+
         field.setOnKeyPressed((KeyEvent event) -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                String userInput = field.getText();
-                field.clear();
-                
-                System.out.println(userInput);
-                
-                
-            }
+        	if (event.getCode() == KeyCode.ENTER) {
+        		String userInput = field.getText();
+        		field.clear();
+
+        		//System.out.println(userInput);
+        		
+        		Result result = Parser.Parse(userInput);
+        		
+        		System.out.println("input: " + userInput);
+        		System.out.println("cmd: " + result.getCmd());
+        		System.out.println("title: " + result.getTitle());
+        		System.out.println("type: " + result.getType());
+        		System.out.println("startDate: " + result.getStartDate());
+        		System.out.println("endDate:" + result.getEndDate());
+
+
+        	}
         });
-        
+
         primaryStage.setTitle("F2DO");
-		primaryStage.setScene(scene);
-		primaryStage.show();
-}
+        primaryStage.setScene(scene);
+        primaryStage.show();
+	}
 }
 
 

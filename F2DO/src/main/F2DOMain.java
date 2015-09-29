@@ -5,7 +5,7 @@ package main;
 
 import java.util.ArrayList;
 import objects.Task;
-import view.ViewFrame;
+import view.UserInterface;
 
 /**
  * @author W11 - 4J
@@ -17,14 +17,15 @@ public class F2DOMain {
 	 * @param args
 	 */
 	private ArrayList<Task> taskList;
-	private ViewFrame vf;
+	private UserInterface ui;
 	
 	
 	
 	private boolean initialize() {
 		// load GUI
-		ViewFrame.initView();
-		vf = new ViewFrame();
+		//ViewFrame.initView();
+		//vf = new ViewFrame();
+		ui = new UserInterface();
 		System.out.println("View Loaded");
 		// check / create any required storage files
 		// Load any existing tasks from storage if available

@@ -76,7 +76,7 @@ public class Parser {
 	}
 	
 	public static void main(String[] args) {
-		String input = "add cs2103 meeting";
+		String input = "add cs2103 meeting on 4 Sep 2015 6pm";
 		Result result = Parser.Parse(input);
 		
 		print("input", input);
