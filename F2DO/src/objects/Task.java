@@ -1,8 +1,9 @@
 package objects;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Task {
+public class Task implements Serializable {
 
 	// ============ VARIABLES START ================ //
 	private int taskID;
