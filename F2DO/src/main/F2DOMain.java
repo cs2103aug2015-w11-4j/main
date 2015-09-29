@@ -4,6 +4,10 @@
 package main;
 
 import java.util.ArrayList;
+
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.stage.Stage;
 import objects.Task;
 import view.UserInterface;
 
@@ -16,17 +20,21 @@ public class F2DOMain {
 	/**
 	 * @param args
 	 */
+	@SuppressWarnings("unused")
 	private ArrayList<Task> taskList;
-	private UserInterface ui;
-	
-	
 	
 	private boolean initialize() {
 		// load GUI
-		//ViewFrame.initView();
-		//vf = new ViewFrame();
-		ui = new UserInterface();
-		System.out.println("View Loaded");
+		new JFXPanel();
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+
+				new UserInterface().start(new Stage());
+			}
+		});
+		System.out.println("UI Loaded");
+		
 		// check / create any required storage files
 		// Load any existing tasks from storage if available
 		taskList = new ArrayList<Task>();
