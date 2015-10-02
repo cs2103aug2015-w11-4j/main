@@ -17,6 +17,7 @@ public class Task implements Serializable {
 	private Boolean isFloating;
 	private Boolean isCompleted;
 	private int priority;
+	
 	// ============ VARIABLES END ================ //
 	
 	
