@@ -22,9 +22,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-
-
 public class UserInterface extends Application {
+	
+	TextField field; 
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -34,66 +34,76 @@ public class UserInterface extends Application {
 	public void start(Stage primaryStage) {
 		
 		BorderPane root = new BorderPane();
-		Scene scene = new Scene(root,400,400);
+		Scene defaultScene = new Scene(root, 420, 420);
+		
 		//root.setAlignment(Pos.TOP_CENTER);
 		//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		//scene.getStylesheets().add("application.css");
 		
 		Text text = new Text();
         text.setText("F2DO, your personalised task manager");
-        text.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 16));
+        text.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 15));
         text.setFill(Color.DARKTURQUOISE);
         
-        TextField field = new TextField();
+        field = new TextField();
+        Text feedback = new Text();
+        feedback.setText("Feedback: ");
+        feedback.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 10));
+        feedback.setFill(Color.GREY);
         
         VBox vbox = new VBox();
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(10));
-        vbox.setSpacing(8);
-        vbox.getChildren().addAll(text, field);
+        vbox.setSpacing(6);
+        vbox.getChildren().addAll(text, field, feedback);
         
         root.setTop(vbox);
             
         HBox hbox = new HBox();
-        Button category1 = new Button("All");
+        Button category1 = new Button("All"); 
         Button category2 = new Button("Work");
         Button category3 = new Button("Personal");
         hbox.getChildren().addAll(category1, category2, category3);
-       
-        root.setBottom(hbox);
         
-        /*
-        Label ID = new Label("ID");
-        Label Task = new Label("Task");
-        Label DueDate = new Label("Due Date");
-        HBox tasks = new HBox();
-        tasks.setAlignment(Pos.TOP_CENTER);
-        tasks.setPadding(new Insets(10));
-        tasks.setSpacing(100);
-        tasks.getChildren().addAll(ID, Task, DueDate);
-
-        root.setCenter(tasks);
-         */
-
+        root.setBottom(hbox);
+              
         TableView table = new TableView();
-        table.setPrefSize(250, 250);
-
+        table.setPrefWidth(10);
+        table.setPrefHeight(10);
         TableColumn ID = new TableColumn("ID");
         TableColumn Task = new TableColumn("Task");
         TableColumn DueDate = new TableColumn("Due Date");
 
         table.getColumns().addAll(ID, Task, DueDate);
-
+        BorderPane.setMargin(table, new Insets(0,12,12,12));
+       
         root.setCenter(table);
-
+        
+        /* ----- Setting up the scene for different category ->  Work, Personal etc----- */
+        BorderPane work = new BorderPane();
+        Scene workScene = new Scene(work, 400, 400);
+        BorderPane personal = new BorderPane();
+        Scene personalTaskScene = new Scene(personal, 400, 400);
+        
+        /* ----- Event handler to switch between scenes -> check out the tasks under respective categories ----- */
+        HBox categories = new HBox();
+        Button tab1 = new Button("All"); 
+        Button tab2 = new Button("Work");
+        Button tab3 = new Button("Personal");
+        categories.getChildren().addAll(tab1, tab2, tab3);
+        
+        work.setBottom(categories);
+        
+        /* ----- Event handler for input processing ----- */ 
         field.setOnKeyPressed((KeyEvent event) -> {
+        	
         	if (event.getCode() == KeyCode.ENTER) {
+  
         		String userInput = field.getText();
         		field.clear();
-
-        		//System.out.println(userInput);
         		
         		Result result = Parser.Parse(userInput);
+        		String taskName = result.getTitle();
         		
         		System.out.println("input: " + userInput);
         		System.out.println("cmd: " + result.getCmd());
@@ -101,19 +111,30 @@ public class UserInterface extends Application {
         		System.out.println("type: " + result.getType());
         		System.out.println("startDate: " + result.getStartDate());
         		System.out.println("endDate:" + result.getEndDate());
-
-
+        		
+        		switch(result.getCmd()) {
+        		    case ADD: 
+        		    	feedback.setText("Feedback: " + taskName + "has been successfully added!");
+        		    	break;
+        		    case EDIT:
+        		    	feedback.setText("Feedback: Task Description has been modified!");
+        		    case DELETE: 
+        		    	feedback.setText("Feedback: " + taskName + "has been deleted!");
+        		}
         	}
         });
-
+        
+        /* ------ Event handler for scene switching ----- */
+        category2.setOnAction(e -> primaryStage.setScene(workScene)); 
+        tab1.setOnAction(e -> primaryStage.setScene(defaultScene));
+        
         primaryStage.setTitle("F2DO");
-        primaryStage.setScene(scene);
+        primaryStage.setScene(defaultScene);
         primaryStage.show();
 	}
 }
 
-
- /*    
+/*    
  class WindowButtons extends HBox {
 
     public WindowButtons() {       
@@ -131,12 +152,5 @@ public class UserInterface extends Application {
     }
 }
 */
-
-    
-
-
-
-
-    
 
 
