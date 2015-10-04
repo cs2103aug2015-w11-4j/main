@@ -133,24 +133,3 @@ public class UserInterface extends Application {
         primaryStage.show();
 	}
 }
-
-/*    
- class WindowButtons extends HBox {
-
-    public WindowButtons() {       
-        Button closeBtn = new Button("X");       
-
-        closeBtn.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                Platform.exit();            
-            }
-        });
-
-        this.getChildren().add(closeBtn);        
-    }
-}
-*/
-
-
