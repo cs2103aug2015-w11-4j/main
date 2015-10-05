@@ -63,7 +63,7 @@ public class Parser {
 	 * Determine the ID in storage corresponding to UI ID.
 	 * @param input - input after removing command
 	 * @param taskList - task list displayed in UI
-	 * @return ID in storage
+	 * @return ID in storage if exists, otherwise -1
 	 */
 	private static int analyzeID(String input, ArrayList<Task> taskList) {
 		String[] splitWords = input.split(" ");
