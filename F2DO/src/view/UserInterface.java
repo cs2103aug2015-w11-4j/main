@@ -14,17 +14,22 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import parser.Parser;
-import parser.Result;
+import logic.LogicController;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+import objects.Task;
+import storage.Storage;
+
+import java.util.ArrayList;
+
 public class UserInterface extends Application {
 	
-	TextField field; 
+	private TextField field; 
+	private ArrayList<Task> _taskList;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -67,7 +72,7 @@ public class UserInterface extends Application {
         
         root.setBottom(hbox);
               
-        TableView table = new TableView();
+        TableView<String> table = new TableView<String>();
         table.setPrefWidth(10);
         table.setPrefHeight(10);
         TableColumn ID = new TableColumn("ID");
@@ -78,6 +83,7 @@ public class UserInterface extends Application {
         BorderPane.setMargin(table, new Insets(0,12,12,12));
        
         root.setCenter(table);
+        updateTable(table);
         
         /* ----- Setting up the scene for different category ->  Work, Personal etc----- */
         BorderPane work = new BorderPane();
@@ -102,25 +108,11 @@ public class UserInterface extends Application {
         		String userInput = field.getText();
         		field.clear();
         		
-        		Result result = Parser.Parse(userInput);
-        		String taskName = result.getTitle();
+        		String feedbackMsg = LogicController.process(userInput);
+        		feedback.setText(feedbackMsg);
+        		   		
+        		updateTable(table);
         		
-        		System.out.println("input: " + userInput);
-        		System.out.println("cmd: " + result.getCmd());
-        		System.out.println("title: " + result.getTitle());
-        		System.out.println("type: " + result.getType());
-        		System.out.println("startDate: " + result.getStartDate());
-        		System.out.println("endDate:" + result.getEndDate());
-        		
-        		switch(result.getCmd()) {
-        		    case ADD: 
-        		    	feedback.setText("Feedback: " + taskName + "has been successfully added!");
-        		    	break;
-        		    case EDIT:
-        		    	feedback.setText("Feedback: Task Description has been modified!");
-        		    case DELETE: 
-        		    	feedback.setText("Feedback: " + taskName + "has been deleted!");
-        		}
         	}
         });
         
@@ -131,5 +123,25 @@ public class UserInterface extends Application {
         primaryStage.setTitle("F2DO");
         primaryStage.setScene(defaultScene);
         primaryStage.show();
+	}
+	
+	private void updateTable(TableView<String> table) {
+		_taskList = LogicController.getTaskList();
+		
+		// For testing purpose. You can refer to this on how task details 
+		// can be called. However, Please delete this part after updateTable 
+		// function is implemented.
+		for (int i = 0; i < _taskList.size(); i++) {
+			Task task = _taskList.get(i);
+			
+			System.out.println("ID: " + task.getTaskID());
+			System.out.println("Title: " + task.getTaskName());
+			System.out.println("Is completed: " + task.getCompleted());
+			System.out.println("Start Time: " + task.getStartDate());
+			System.out.println("End Time: " + task.getEndDate());
+			System.out.println("Is flating task: " + task.getFloating());
+		}
+		
+		// Display the task list in the table
 	}
 }

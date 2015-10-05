@@ -18,22 +18,19 @@ public class LogicAdd {
 			case EVENT: {
 				TaskEvent ft = new TaskEvent(result.getTitle(),result.getStartDate(),result.getEndDate(),0);
 				taskList.add(ft);
-				return taskList;
+				//return taskList;
 			}
 			case DEADLINE: {
 				TaskDeadLine ft = new TaskDeadLine(result.getTitle(),result.getEndDate(),0);
 				taskList.add(ft);
-				return taskList;
+				//return taskList;
 			} 
 			case FLOATING: {
 				TaskFloating ft = new TaskFloating(result.getTitle(),0);
 				taskList.add(ft);
-				return taskList;
+				//return taskList;
 			}
-			case INVALID: {
-	
-			}break;
-			default: {
+			case INVALID: default: {
 				//same as invalid
 			}
 		}

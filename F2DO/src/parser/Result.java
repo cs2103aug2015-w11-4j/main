@@ -6,6 +6,7 @@ import type.CommandType;
 import type.TaskType;
 
 public class Result {
+	private int taskID = -1;
 	private CommandType _cmd = null;
 	private TaskType _type = null;
 	private String _title = null;

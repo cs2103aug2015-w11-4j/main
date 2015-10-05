@@ -27,6 +27,11 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 	private static ArrayList<Task> taskList = new ArrayList<Task>();
 	private String saveFolder;
 	
+	// Initialize storage class
+	static {
+		readFromFile();
+	}
+	
 	public Storage(String directory) {
 		saveFolder = String.format(SAVED_DIRECTORY, directory);
 		createSaveDir(saveFolder);
@@ -111,9 +116,14 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 			}
 			fin.close();
 			ois.close();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static ArrayList<Task> getTaskList() {
+		return taskList;
 	}
 	
 	public static void displayTaskList() {
