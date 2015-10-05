@@ -13,7 +13,7 @@ public class LogicController {
 	// determine command
 	// execute command
 	// pass to storage
-	private static ArrayList<Task> taskList =  new ArrayList<Task>();
+	private static ArrayList<Task> _taskList =  new ArrayList<Task>();
 	
 	private static String MSG_ADD = "Feedback: %1$s has been successfully added!";
 	private static String MSG_EDIT = "Feedback: Task description has been modified!";
@@ -28,8 +28,8 @@ public class LogicController {
 	}
 	
 	
-	public static String process(String input) {	
-		Result result = Parser.Parse(input);
+	public static String process(String input, ArrayList<Task> taskList) {	
+		Result result = Parser.parse(input, taskList);
 		
 		switch (result.getCmd()) {
 			case ADD: {

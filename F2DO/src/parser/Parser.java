@@ -1,9 +1,14 @@
 package parser;
 
 import java.util.Date;
+import java.util.ArrayList;
+import java.lang.NumberFormatException;
 
 import type.CommandType;
 import type.TaskType;
+
+import objects.Task;
+import storage.Storage;
 
 public class Parser {
 	private static String _removeCmdInput = "";
@@ -12,9 +17,14 @@ public class Parser {
 	 * @param input - command input
 	 * @return the parsed result
 	 */
-	public static Result Parse(String input) {
-		
+	public static Result parse(String input, ArrayList<Task> taskList) {
+		int id = -1;
 		CommandType cmd = analyzeCmd(input);
+		
+		if (cmd == CommandType.EDIT || cmd == CommandType.EDIT) {
+			id = analyzeID(_removeCmdInput, taskList);
+		}
+		
 		Result tempResult = analyzeDateTitle(_removeCmdInput);
 		
 		String title = tempResult.getTitle();
@@ -22,7 +32,7 @@ public class Parser {
 		Date endDate = tempResult.getEndDate();
 		TaskType type = analyzeTask(title, startDate, endDate);
 		
-		Result result = new Result(cmd, title, type, startDate, endDate);
+		Result result = new Result(id, cmd, title, type, startDate, endDate);
 		return result;
 	}
 	
@@ -47,6 +57,36 @@ public class Parser {
 		}
 
 		return cmd;
+	}
+	
+	/**
+	 * Determine the ID in storage corresponding to UI ID.
+	 * @param input - input after removing command
+	 * @param taskList - task list displayed in UI
+	 * @return ID in storage
+	 */
+	private static int analyzeID(String input, ArrayList<Task> taskList) {
+		String[] splitWords = input.split(" ");
+		
+		if (splitWords.length > 0) {
+			try {
+				int uiID = Integer.parseInt(splitWords[0]);
+				int storageID = taskList.get(uiID - 1).getTaskID();
+				
+				if (splitWords.length > 1) {
+					_removeCmdInput = "";
+					for (int i = 1; i < splitWords.length; i++) {
+						_removeCmdInput += splitWords[i] + " ";
+					}
+				}
+				
+				return storageID;
+			} catch (NumberFormatException e) {
+				return -1;
+			}
+		}
+		
+		return -1;
 	}
 	
 	/**
@@ -76,10 +116,11 @@ public class Parser {
 	}
 	
 	public static void main(String[] args) {
-		String input = "add cs2103 meeting on 4 Sep 2015 6pm";
-		Result result = Parser.Parse(input);
+		String input = "edit 1 cs2103 meeting on 4 Sep 2015 6pm";
+		Result result = Parser.parse(input, Storage.getTaskList());
 		
 		print("input", input);
+		print("id", result.getID());
 		print("cmd", result.getCmd());
 		print("title", result.getTitle());
 		print("type", result.getType());

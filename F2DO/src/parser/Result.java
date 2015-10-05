@@ -6,7 +6,7 @@ import type.CommandType;
 import type.TaskType;
 
 public class Result {
-	private int taskID = -1;
+	private int _id = -1;
 	private CommandType _cmd = null;
 	private TaskType _type = null;
 	private String _title = null;
@@ -21,7 +21,8 @@ public class Result {
 	 * @param startDate
 	 * @param endDate
 	 */
-	public Result(CommandType cmd, String title, TaskType type, Date startDate, Date endDate) {
+	public Result(int id, CommandType cmd, String title, TaskType type, Date startDate, Date endDate) {
+		this._id = id;
 		this._cmd = cmd;
 		this._title = title;
 		this._type = type;
@@ -33,6 +34,14 @@ public class Result {
 		this._title = title;
 		this._startDate = startDate;
 		this._endDate = endDate;
+	}
+	
+	/**
+	 * Get task ID.
+	 * @return task ID
+	 */
+	public int getID() {
+		return _id;
 	}
 	
 	/**

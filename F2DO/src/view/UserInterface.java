@@ -22,7 +22,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import objects.Task;
-import storage.Storage;
 
 import java.util.ArrayList;
 
@@ -108,7 +107,7 @@ public class UserInterface extends Application {
         		String userInput = field.getText();
         		field.clear();
         		
-        		String feedbackMsg = LogicController.process(userInput);
+        		String feedbackMsg = LogicController.process(userInput, _taskList);
         		feedback.setText(feedbackMsg);
         		   		
         		updateTable(table);
