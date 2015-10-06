@@ -1,12 +1,14 @@
 package storage;
 
-import java.io.EOFException;
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,10 +19,11 @@ import java.util.Date;
 
 import objects.Task;
 
-public abstract class Storage implements Serializable, Comparator<Task> {
+@SuppressWarnings("serial")
+public class Storage implements Serializable {
 	
 	private static final String DEFAULT_DIRECTORY = "F2DO";
-	private static final String FILENAME = "F2DO.txt";
+	private static final String FILENAME = "F2DO.xml";
 	private static final String SAVED_DIRECTORY = "%s\\F2DO";
 	private static final String CHANGE_DIRECTORY = "user.dir";
 	
@@ -87,40 +90,36 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 		taskList.get(taskNumber).setTaskName(newTitle);
 		taskList.get(taskNumber).setStartDate(newStartDate);
 		taskList.get(taskNumber).setEndDate(newEndDate);
-//		taskList.get(taskNumber).setCategory(newCategory);
 		saveToFile();
 	}
 	
 	private static void saveToFile() {
 		nullRemovalCheck();
-		
+		XMLEncoder encoder = null;
 		try {
-			FileOutputStream fout = new FileOutputStream(FILENAME);
-			ObjectOutputStream oos = new ObjectOutputStream(fout);
-			oos.writeObject(taskList);
-			fout.flush();
-			fout.close();
-		} catch (IOException e) {
+			FileOutputStream fos = new FileOutputStream(FILENAME);
+			BufferedOutputStream bos = new BufferedOutputStream(fos);
+			encoder = new XMLEncoder(bos);
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		encoder.writeObject(taskList);
+		encoder.close();
 	}
 	
-	public static void readFromFile() {
+	@SuppressWarnings("unchecked")
+	private static void readFromFile() {
+		XMLDecoder decoder=null;
 		try {
-			FileInputStream fin = new FileInputStream(FILENAME);
-			ObjectInputStream ois = new ObjectInputStream(fin);
-			try {
-				taskList = (ArrayList<Task>)ois.readObject();
-			} catch (EOFException | ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-			fin.close();
-			ois.close();
-			
-		} catch (IOException e) {
+			FileInputStream fis = new FileInputStream(FILENAME);
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			decoder = new XMLDecoder(bis);
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		taskList = (ArrayList<Task>)decoder.readObject();
 	}
+	
 	
 	public static ArrayList<Task> getTaskList() {
 		return taskList;
@@ -139,6 +138,7 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 
 	// This method ensures that no empty tasks (after removal/updating) remain
 	private static void nullRemovalCheck() {
+		
 		for (int i = 0; i < taskList.size(); i++) {
 			if (taskList.get(i).getTaskName() == null) {
 				taskList.remove(i); 
@@ -168,46 +168,78 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 		taskList.clear();
 		readFromFile();
 		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		String dateInput1 = "24/12/2015";
-		Date date1 = null;
-		try {
-			date1 = new SimpleDateFormat("dd/MM/yyyy").parse(dateInput1);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
 		
 		Task testTask1 = new Task();
 		taskList.add(testTask1);
 		taskList.get(0).setTaskID(1);
-		taskList.get(0).setStartDate(date1);
-		taskList.get(0).setEndDate(date1);
+		try {
+			taskList.get(0).setStartDate(sdf.parse(dateInput1));
+			taskList.get(0).setEndDate(sdf.parse(dateInput1));
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
 		taskList.get(0).setTaskName("z testing Task 1");
 		
 		String dateInput2 = "23/12/2015";
-		Date date2 = null;
-		try {
-			date2 = new SimpleDateFormat("dd/MM/yyyy").parse(dateInput2);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
+		
 		Task testTask2 = new Task();
 		taskList.add(testTask2);
 		taskList.get(1).setTaskID(2);
-		taskList.get(1).setStartDate(date2);
-		taskList.get(1).setEndDate(date2);
+		try {
+		taskList.get(1).setStartDate(sdf.parse(dateInput2));
+		taskList.get(1).setEndDate(sdf.parse(dateInput2));
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
 		taskList.get(1).setTaskName("y testing Task 2");
 		
 		displayTaskList();
-		updateTask(0, "zzz testing Task 1", date1, date1);
+//		updateTask(1, "yyy testing Task 2", date1, date1);
 		System.out.println("\n\n");
 		displayTaskList();
 		sortTaskList();
 		System.out.println("\n\n");
 		displayTaskList();
-		deleteTask(1);
+//		deleteTask(1);
 		System.out.println("\n\n");
 		displayTaskList();
 
 	}
 }
+
+/*
+ * Write and read task objects directly
+ * 
+private static void saveToFile() {
+	nullRemovalCheck();
+	
+	try {
+		FileOutputStream fout = new FileOutputStream(FILENAME);
+		ObjectOutputStream oos = new ObjectOutputStream(fout);
+		oos.writeObject(taskList);
+		fout.flush();
+		fout.close();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+}
+
+public static void readFromFile() {
+	try {
+		FileInputStream fin = new FileInputStream(FILENAME);
+		ObjectInputStream ois = new ObjectInputStream(fin);
+		try {
+			taskList = (ArrayList<Task>)ois.readObject();
+		} catch (StreamCorruptedException | EOFException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		fin.close();
+		ois.close();
+		
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+}
+*/
