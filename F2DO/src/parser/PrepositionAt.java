@@ -1,20 +1,40 @@
 package parser;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class PrepositionAt implements IPreposition {
-	private String[] _splitWords = null;
-	private String atPhrase = "";
+	private static String _input = null;
 	
 	public PrepositionAt(String input) {
-		_splitWords = input.split(" at ");
+		_input = input;
 	}
 	
 	public Result analyze() {
-		String title = null;
+		String regexAtOn = "(.*?) at (.*?) on (.*)";
+		String regexAt = "(.*?) at (.*?)";
 		
-		if (_splitWords.length > 0) {
-			title = _splitWords[0];
+		Pattern pattern = Pattern.compile(regexAtOn);
+		Matcher matcher = pattern.matcher(_input);
+		
+		if (matcher.matches()) {
+			Result result = PrepositionHelper.analyzeThreeInfo(true, 
+												matcher.group(1),
+												matcher.group(2),
+												matcher.group(3));
+			return result;
 		}
-		return new Result(title, null, null);
+		
+		pattern = Pattern.compile(regexAt);
+		matcher = pattern.matcher(_input);
+		
+		if (matcher.matches()) {
+			Result result = PrepositionHelper.analyzeTwoInfo(true, 
+															matcher.group(1), 
+															matcher.group(2));
+			return result;
+		}
+		
+		return new Result(null, null, null);
 	}
-
 }

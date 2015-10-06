@@ -1,44 +1,40 @@
 package parser;
 
-import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PrepositionFromTo implements IPreposition{
-	private String[] _splitWords = null;
+	private static String _input = null;
 	
 	public PrepositionFromTo(String input) {
-		_splitWords = input.split(" from ");
-		//for(int i = 0 ; i < _splitWords.length; i++) {
-		//	System.out.println(_splitWords[i]);
-		//}
+		_input = input;
 	}
 	
 	public Result analyze() {
-		Date startDate = null;
-		Date endDate = null;
-		String from = null;
-		String to = null;
-		String title = null;
+		String regexFromToOn = "(.*?) from (.*?) to (.*) on (.*?)";
+		String regexFromTo = "(.*?) from (.*?) to (.*)";
 		
-		if (_splitWords.length > 0) {
-			title = _splitWords[0];
+		Pattern pattern = Pattern.compile(regexFromToOn);
+		Matcher matcher = pattern.matcher(_input);
+		
+		if (matcher.matches()) {
+			Result result = PrepositionHelper.analyzeFourInfo(matcher.group(1),
+																matcher.group(2),
+																matcher.group(3),
+																matcher.group(4));
+			return result;
 		}
 		
-		if (_splitWords.length > 1) {
-			if (_splitWords[1].contains("to")) {
-				_splitWords = _splitWords[1].split(" to ");
-				from = _splitWords[0];
-				to = _splitWords[1];
-			} else {
-				from = _splitWords[1];
-			}
+		pattern = Pattern.compile(regexFromTo);
+		matcher = pattern.matcher(_input);
+		
+		if (matcher.matches()) {
+			Result result = PrepositionHelper.analyzeThreeInfo(matcher.group(1), 
+																matcher.group(2), 
+																matcher.group(3));
+			return result;
 		}
 		
-		startDate = DateTime.parse(from);
-		endDate = DateTime.parse(to);
-		
-		//System.out.println("from: " + startDate);
-		//System.out.println("to: " + endDate);
-		
-		return new Result(title, startDate, endDate);
+		return new Result(null, null, null);
 	}
 }

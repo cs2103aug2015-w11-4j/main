@@ -18,13 +18,8 @@ public interface IPreposition {
 		HashMap<PrepositionType, IPreposition> functions = PrepositionHelper.getFunctions(input);
 		Set<Entry<Integer, PrepositionType>> entrySet = keywordIndex.entrySet();
 		Iterator<Entry<Integer, PrepositionType>> setIterator = entrySet.iterator();
-		boolean isFromOn = keywordIndex.containsValue(PrepositionType.FROM) && keywordIndex.containsValue(PrepositionType.ON);
 		
-		if (isFromOn) {
-			preposition = functions.get(PrepositionType.ON);
-		}
-		
-		if (setIterator.hasNext() && !isFromOn) {
+		if (setIterator.hasNext()) {
 			Map.Entry<Integer, PrepositionType> entry = setIterator.next();
 			PrepositionType prepType = entry.getValue();
 			

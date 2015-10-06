@@ -12,6 +12,7 @@ import storage.Storage;
 
 public class Parser {
 	private static String _removeCmdInput = "";
+	
 	/**
 	 * Parse the command.
 	 * @param input - command input
@@ -125,7 +126,7 @@ public class Parser {
 	}
 	
 	public static void main(String[] args) {
-		String input = "add 1 one from 4pm to 6pm on Nov 4";
+		String input = "add one from 4pm to 6pm on Nov 4";
 		Result result = Parser.parse(input, Storage.getTaskList());
 		
 		print("input", input);
@@ -151,7 +152,7 @@ public class Parser {
 		print("endDate", result2.getEndDate());
 		System.out.println();
 		
-		String input3 = "add three on Nov 4 8pm";
+		String input3 = "add meeting at Dec 12 6pm";
 		Result result3 = Parser.parse(input3, Storage.getTaskList());
 		
 		print("input", input3);

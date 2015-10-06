@@ -6,7 +6,6 @@ public class PrepositionBy implements IPreposition {
 		
 	}
 	
-	@Override
 	public Result analyze() {
 		// TODO Auto-generated method stub
 		return null;
