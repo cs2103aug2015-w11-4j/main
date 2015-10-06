@@ -25,6 +25,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import objects.Task;
+import objects.TaskDeadLine;
+import objects.TaskEvent;
+import objects.TaskFloating;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -143,6 +146,13 @@ public class UserInterface extends Application {
 		// function is implemented.
 		for (int i = 0; i < _taskList.size(); i++) {
 			Task task = _taskList.get(i);
+			if (task instanceof TaskFloating){
+				System.out.println("TASK FLOATING DETECTED");
+			}else if (task instanceof TaskDeadLine){
+				System.out.println("TASK DEADLINE DETECTED");
+			}else if (task instanceof TaskEvent){
+				System.out.println("TASK EVENT DETECTED");
+			}
 			
 			System.out.println("ID: " + task.getTaskID());
 			System.out.println("Title: " + task.getTaskName());
