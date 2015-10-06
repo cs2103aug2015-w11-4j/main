@@ -80,7 +80,7 @@ public class Parser {
 			try {
 				int displayID = Integer.parseInt(splitWords[0]);
 
-				if (displayID < taskList.size()) {
+				if (displayID <= taskList.size()) {
 					storageID = taskList.get(displayID - 1).getTaskID();
 				}
 
