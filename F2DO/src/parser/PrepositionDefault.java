@@ -5,7 +5,7 @@ public class PrepositionDefault implements IPreposition {
 	
 	public PrepositionDefault(String input) {
 		// remove the redundant spacing
-		this._input = input;
+		this._input = input.replaceAll("\\s+$", "");
 	}
 	
 	public Result analyze() {

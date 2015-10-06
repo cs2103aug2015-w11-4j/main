@@ -1,8 +1,6 @@
 package parser;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,7 +19,6 @@ public class PrepositionOn implements IPreposition {
 		String regexFromToOn = "(.*?)from(.*?)to(.*)on(.*?)";
 		String regexOnFromTo = "(.*?)on(.*?)from(.*)to(.*?)";
 		String regexOn = "(.*?)on(.*?)";
-		boolean isFound = false;
 		
 		Pattern pattern = Pattern.compile(regexFromToOn);
 		Matcher matcher = pattern.matcher(_input);

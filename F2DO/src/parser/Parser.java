@@ -1,8 +1,6 @@
 package parser;
 
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.ArrayList;
 import java.lang.NumberFormatException;
 
@@ -78,10 +76,10 @@ public class Parser {
 		
 		if (splitWords.length > 0) {
 			try {
-				int displayID = Integer.parseInt(splitWords[0]);
+				int displayID = Integer.parseInt(splitWords[0]) - 1;
 
-				if (displayID <= taskList.size()) {
-					storageID = taskList.get(displayID - 1).getTaskID();
+				if (displayID < taskList.size() && displayID >= 0) {
+					storageID = taskList.get(displayID).getTaskID();
 				}
 
 				if (splitWords.length > 1) {
