@@ -1,6 +1,8 @@
 package parser;
 
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.ArrayList;
 import java.lang.NumberFormatException;
 
@@ -122,7 +124,7 @@ public class Parser {
 	}
 	
 	public static void main(String[] args) {
-		String input = "add one on Nov 4";
+		String input = "add two from 4pm to 6pm on Nov 4";
 		Result result = Parser.parse(input, Storage.getTaskList());
 		
 		print("input", input);
@@ -134,7 +136,7 @@ public class Parser {
 		print("endDate", result.getEndDate());
 		print("", "");
 		
-		String input2 = "add two on Nov 3";
+		/*String input2 = "add two";
 		Result result2 = Parser.parse(input2, Storage.getTaskList());
 		
 		print("input", input2);
@@ -143,7 +145,8 @@ public class Parser {
 		print("title", result2.getTitle());
 		print("type", result2.getType());
 		print("startDate", result2.getStartDate());
-		print("endDate", result2.getEndDate());
+		print("endDate", result2.getEndDate());*/
+
 	}
 	
 	private static void print(String indicator, Object obj) {

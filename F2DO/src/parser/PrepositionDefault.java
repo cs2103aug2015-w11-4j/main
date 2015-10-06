@@ -4,6 +4,7 @@ public class PrepositionDefault implements IPreposition {
 	String _input = null;
 	
 	public PrepositionDefault(String input) {
+		// remove the redundant spacing
 		this._input = input;
 	}
 	
