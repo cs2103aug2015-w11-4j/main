@@ -53,19 +53,19 @@ public class UserInterface extends Application {
 		
 		Text text = new Text();
         text.setText("F2DO, your personalised task manager");
-        text.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 15));
+        text.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 16));
         text.setFill(Color.DARKTURQUOISE);
         
         field = new TextField();
+        
         Text feedback = new Text();
-        feedback.setText("Feedback: ");
-        feedback.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 10));
+        feedback.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 9));
         feedback.setFill(Color.GREY);
         
         VBox vbox = new VBox();
         vbox.setAlignment(Pos.CENTER);
-        vbox.setPadding(new Insets(10));
-        vbox.setSpacing(6);
+        vbox.setPadding(new Insets(12,10,5,10));
+        vbox.setSpacing(7);
         vbox.getChildren().addAll(text, field, feedback);
         
         root.setTop(vbox);
@@ -91,6 +91,10 @@ public class UserInterface extends Application {
         column_ID.setCellValueFactory(new PropertyValueFactory<>("taskID"));
         column_Task.setCellValueFactory(new PropertyValueFactory<>("taskName"));
         column_endDate.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        
+        column_ID.prefWidthProperty().bind(table.widthProperty().divide(9)); 
+        column_Task.prefWidthProperty().bind(table.widthProperty().divide(2)); 
+        column_endDate.prefWidthProperty().bind(table.widthProperty().divide(2.5));
         
         table.getColumns().addAll(column_ID, column_Task, column_endDate);
         table.setItems(data);
@@ -126,7 +130,7 @@ public class UserInterface extends Application {
         		String feedbackMsg = LogicController.process(userInput, _taskList);
         		feedback.setText(feedbackMsg);
         		
-        		updateTable(table);
+        		updateTable(table, data);
         		
         	}
         });
@@ -140,11 +144,16 @@ public class UserInterface extends Application {
         primaryStage.show();
 	}
 	
-	private void updateTable(TableView<Task> table) {
+	private void updateTable(TableView<Task> table, ObservableList<Task> data) {
+		
+		data = FXCollections.observableArrayList(_taskList);
+		table.setItems(data);
+		
 		// For testing purpose. You can refer to this on how task details 
 		// can be called. However, Please delete this part after updateTable 
 		// function is implemented.
 		for (int i = 0; i < _taskList.size(); i++) {
+			
 			Task task = _taskList.get(i);
 			if (task instanceof TaskFloating){
 				System.out.println("TASK FLOATING DETECTED");
