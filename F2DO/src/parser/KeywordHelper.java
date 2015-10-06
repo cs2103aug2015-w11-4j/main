@@ -6,16 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
-import type.PrepositionType;
+import type.KeywordType;
 
 
-public class PrepositionHelper {
+public class KeywordHelper {
 	
-	public static TreeMap<Integer, PrepositionType> getKeywordIndex(String input) {
-		TreeMap<Integer, PrepositionType> keywordIndex = new TreeMap<Integer, PrepositionType>();
+	public static TreeMap<Integer, KeywordType> getKeywordIndex(String input) {
+		TreeMap<Integer, KeywordType> keywordIndex = new TreeMap<Integer, KeywordType>();
 		List<String> splitWords = Arrays.asList(input.split(" "));
 		
-		for (PrepositionType type: PrepositionType.values()) {
+		for (KeywordType type: KeywordType.values()) {
 			String keyword = type.toString().toLowerCase();
 			int index = splitWords.indexOf(keyword);
 
@@ -31,14 +31,14 @@ public class PrepositionHelper {
 		return keywordIndex;
 	}
 	
-	public static HashMap<PrepositionType, IPreposition> getFunctions(String input) {
-		HashMap<PrepositionType, IPreposition> functions = new HashMap<PrepositionType, IPreposition>();
+	public static HashMap<KeywordType, IKeyword> getFunctions(String input) {
+		HashMap<KeywordType, IKeyword> functions = new HashMap<KeywordType, IKeyword>();
 		
-		functions.put(PrepositionType.AT, new PrepositionAt(input));
-		functions.put(PrepositionType.ON, new PrepositionOn(input));
-		functions.put(PrepositionType.FROM, new PrepositionFromTo(input));
-		functions.put(PrepositionType.IN, new PrepositionIn(input));
-		functions.put(PrepositionType.BY, new PrepositionBy(input));
+		functions.put(KeywordType.AT, new KeywordAt(input));
+		functions.put(KeywordType.ON, new KeywordOn(input));
+		functions.put(KeywordType.FROM, new KeywordFromTo(input));
+		functions.put(KeywordType.IN, new KeywordIn(input));
+		functions.put(KeywordType.BY, new KeywordBy(input));
 		
 		
 		/*ON,

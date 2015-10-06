@@ -3,10 +3,10 @@ package parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PrepositionBy implements IPreposition {
+public class KeywordBy implements IKeyword {
 	private static String _input = null;
 	
-	public PrepositionBy(String input) {
+	public KeywordBy(String input) {
 		_input = input;
 	}
 	
@@ -17,7 +17,7 @@ public class PrepositionBy implements IPreposition {
 		Matcher matcher = pattern.matcher(_input);
 		
 		if (matcher.matches()) {
-			Result result = PrepositionHelper.analyzeTwoInfo(false, 
+			Result result = KeywordHelper.analyzeTwoInfo(false, 
 															matcher.group(1), 
 															matcher.group(2));
 			return result;

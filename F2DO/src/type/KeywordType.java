@@ -1,6 +1,6 @@
 package type;
 
-public enum PrepositionType {
+public enum KeywordType {
 	AT,
 	ON,
 	FROM,

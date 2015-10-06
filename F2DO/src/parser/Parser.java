@@ -121,7 +121,7 @@ public class Parser {
 	}
 	
 	private static Result analyzeDateTitle(String input) {
-		IPreposition function = IPreposition.parsedPreposition(input);
+		IKeyword function = IKeyword.parsedPreposition(input);
 		return function.analyze();
 	}
 	

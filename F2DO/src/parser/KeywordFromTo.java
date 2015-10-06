@@ -3,10 +3,10 @@ package parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PrepositionFromTo implements IPreposition{
+public class KeywordFromTo implements IKeyword{
 	private static String _input = null;
 	
-	public PrepositionFromTo(String input) {
+	public KeywordFromTo(String input) {
 		_input = input;
 	}
 	
@@ -18,7 +18,7 @@ public class PrepositionFromTo implements IPreposition{
 		Matcher matcher = pattern.matcher(_input);
 		
 		if (matcher.matches()) {
-			Result result = PrepositionHelper.analyzeFourInfo(matcher.group(1),
+			Result result = KeywordHelper.analyzeFourInfo(matcher.group(1),
 																matcher.group(2),
 																matcher.group(3),
 																matcher.group(4));
@@ -29,7 +29,7 @@ public class PrepositionFromTo implements IPreposition{
 		matcher = pattern.matcher(_input);
 		
 		if (matcher.matches()) {
-			Result result = PrepositionHelper.analyzeThreeInfo(matcher.group(1), 
+			Result result = KeywordHelper.analyzeThreeInfo(matcher.group(1), 
 																matcher.group(2), 
 																matcher.group(3));
 			return result;

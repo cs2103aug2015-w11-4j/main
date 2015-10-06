@@ -3,10 +3,10 @@ package parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PrepositionIn implements IPreposition {
+public class KeywordIn implements IKeyword {
 	private String _input = null;
 	
-	public PrepositionIn(String input) {
+	public KeywordIn(String input) {
 		_input = input;
 	}
 
@@ -17,7 +17,7 @@ public class PrepositionIn implements IPreposition {
 		Matcher matcher = pattern.matcher(_input);
 		
 		if (matcher.matches()) {
-			Result result = PrepositionHelper.analyzeTwoInfo(false, 
+			Result result = KeywordHelper.analyzeTwoInfo(false, 
 															matcher.group(1), 
 															"in " + matcher.group(2));
 			return result;

@@ -1,9 +1,9 @@
 package parser;
 
-public class PrepositionDefault implements IPreposition {
+public class KeywordDefault implements IKeyword {
 	String _input = null;
 	
-	public PrepositionDefault(String input) {
+	public KeywordDefault(String input) {
 		// remove the redundant spacing
 		this._input = input.replaceAll("\\s+$", "");
 	}
