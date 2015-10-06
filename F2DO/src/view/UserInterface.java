@@ -1,13 +1,15 @@
 package view;
 	
 import javafx.application.Application;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -24,6 +26,7 @@ import javafx.scene.text.Text;
 import objects.Task;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class UserInterface extends Application {
 	
@@ -71,18 +74,27 @@ public class UserInterface extends Application {
         
         root.setBottom(hbox);
               
-        TableView<String> table = new TableView<String>();
+        TableView<Task> table = new TableView<Task>();
         table.setPrefWidth(10);
         table.setPrefHeight(10);
-        TableColumn ID = new TableColumn("ID");
-        TableColumn Task = new TableColumn("Task");
-        TableColumn DueDate = new TableColumn("Due Date");
+        
+		_taskList = LogicController.getTaskList();
+		ObservableList<Task> data = FXCollections.observableArrayList(_taskList);
+        TableColumn<Task, Integer> column_ID = new TableColumn<>("ID");
+        TableColumn<Task, String> column_Task = new TableColumn<>("Task Name");
+        TableColumn<Task, Date> column_endDate = new TableColumn<>("Deadline");
+        
+        column_ID.setCellValueFactory(new PropertyValueFactory<>("taskID"));
+        column_Task.setCellValueFactory(new PropertyValueFactory<>("taskName"));
+        column_endDate.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        
+        table.getColumns().addAll(column_ID, column_Task, column_endDate);
+        table.setItems(data);
 
-        table.getColumns().addAll(ID, Task, DueDate);
         BorderPane.setMargin(table, new Insets(0,12,12,12));
        
         root.setCenter(table);
-        updateTable(table);
+        //updateTable(table);
         
         /* ----- Setting up the scene for different category ->  Work, Personal etc----- */
         BorderPane work = new BorderPane();
@@ -124,9 +136,7 @@ public class UserInterface extends Application {
         primaryStage.show();
 	}
 	
-	private void updateTable(TableView<String> table) {
-		_taskList = LogicController.getTaskList();
-		
+	private void updateTable(TableView<Task> table) {
 		// For testing purpose. You can refer to this on how task details 
 		// can be called. However, Please delete this part after updateTable 
 		// function is implemented.
@@ -138,7 +148,7 @@ public class UserInterface extends Application {
 			System.out.println("Is completed: " + task.getCompleted());
 			System.out.println("Start Time: " + task.getStartDate());
 			System.out.println("End Time: " + task.getEndDate());
-			System.out.println("Is flating task: " + task.getFloating());
+			System.out.println("Is floating task: " + task.getFloating());
 		}
 		
 		// Display the task list in the table
