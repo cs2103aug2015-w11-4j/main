@@ -20,20 +20,29 @@ public class LogicController {
 	private static String MSG_DELETE = "Feedback: %1$s has been deleted!";
 	private static String MSG_SEARCH = "";
 	private static String MSG_NO_ACTION = "Feedback: No action is done!";
+	private static int taskID = 0;
 	
-	
-	public boolean initialize(){
-		// load any existing task to logic
-		return true;
+	static {
+		initialize();
 	}
 	
+	private static void initialize() {
+		_taskList = Storage.getTaskList();
+		if (_taskList.isEmpty()){
+			taskID = 1;
+		} else {
+			// Get last object in arraylist and increment by 1 for the ID
+			taskID = _taskList.get(_taskList.size()-1).getTaskID() + 1;
+		}
+	}
 	
 	public static String process(String input, ArrayList<Task> taskList) {	
 		Result result = Parser.parse(input, taskList);
 		
 		switch (result.getCmd()) {
 			case ADD: {
-				//taskList = LogicAdd.add(taskList, result);
+				taskList = LogicAdd.add(taskID,result,taskList);
+				taskID++;
 				return String.format(MSG_ADD, result.getTitle());
 			}
 			case DELETE: {
@@ -53,8 +62,8 @@ public class LogicController {
 		}
 		//return false;
 	}
-	
+
 	public static ArrayList<Task> getTaskList() {
-		return Storage.getTaskList();
+		return _taskList;
 	}
 }

@@ -1,5 +1,6 @@
 package objects;
 
+@SuppressWarnings("serial")
 public class TaskFloating extends Task {
 
 	/**
@@ -7,8 +8,8 @@ public class TaskFloating extends Task {
 	 * @param taskName
 	 * @param priority
 	 */
-	public TaskFloating(String taskName, int priority){
-		super(taskName, priority);
+	public TaskFloating(int taskID, String taskName, int priority){
+		super(taskID, taskName, priority);
 	}
 	
 	/**

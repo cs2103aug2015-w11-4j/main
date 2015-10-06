@@ -17,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.LogicController;
+import main.F2DOMain;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -31,7 +32,7 @@ import java.util.Date;
 public class UserInterface extends Application {
 	
 	private TextField field; 
-	private ArrayList<Task> _taskList;
+	private static ArrayList<Task> _taskList;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -121,7 +122,7 @@ public class UserInterface extends Application {
         		
         		String feedbackMsg = LogicController.process(userInput, _taskList);
         		feedback.setText(feedbackMsg);
-        		   		
+        		
         		updateTable(table);
         		
         	}
