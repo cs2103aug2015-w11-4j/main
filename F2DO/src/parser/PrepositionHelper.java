@@ -9,6 +9,7 @@ import type.PrepositionType;
 
 
 public class PrepositionHelper {
+	
 	public static TreeMap<Integer, PrepositionType> getKeywordIndex(String input) {
 		TreeMap<Integer, PrepositionType> keywordIndex = new TreeMap<Integer, PrepositionType>();
 		List<String> splitWords = Arrays.asList(input.split(" "));
