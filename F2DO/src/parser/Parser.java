@@ -67,31 +67,30 @@ public class Parser {
 	 */
 	private static int analyzeID(String input, ArrayList<Task> taskList) {
 		String[] splitWords = input.split(" ");
+		int storageID = -1;
 		
 		if (splitWords.length > 0) {
 			try {
 				int displayID = Integer.parseInt(splitWords[0]);
 
 				if (displayID < taskList.size()) {
-					int storageID = taskList.get(displayID - 1).getTaskID();
-
-					if (splitWords.length > 1) {
-						_removeCmdInput = "";
-						for (int i = 1; i < splitWords.length; i++) {
-							_removeCmdInput += splitWords[i] + " ";
-						}
-					}
-					
-					return storageID;
-				} else {
-					return -1;
+					storageID = taskList.get(displayID - 1).getTaskID();
 				}
+
+				if (splitWords.length > 1) {
+					_removeCmdInput = "";
+					for (int i = 1; i < splitWords.length; i++) {
+						_removeCmdInput += splitWords[i] + " ";
+					}
+				}
+				
+				return storageID;
 			} catch (NumberFormatException e) {
-				return -1;
+				return storageID;
 			}
 		}
 		
-		return -1;
+		return storageID;
 	}
 	
 	/**
@@ -121,7 +120,7 @@ public class Parser {
 	}
 	
 	public static void main(String[] args) {
-		String input = "edit 5 cs2103 meeting on 4 Sep 2015 6pm";
+		String input = "edit 5 cs2103 meeting on Nov 4 from 4pm to 8pm ";
 		Result result = Parser.parse(input, Storage.getTaskList());
 		
 		print("input", input);
