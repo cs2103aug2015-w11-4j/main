@@ -19,6 +19,8 @@ public class Parser {
 	 */
 	public static Result parse(String input, ArrayList<Task> taskList) {
 		int id = -1;
+		_removeCmdInput = "";
+		
 		CommandType cmd = analyzeCmd(input);
 		
 		if (cmd == CommandType.EDIT || cmd == CommandType.EDIT) {
@@ -120,7 +122,7 @@ public class Parser {
 	}
 	
 	public static void main(String[] args) {
-		String input = "edit 5 cs2103 meeting on Nov 4 from 4pm to 8pm ";
+		String input = "add one on Nov 4";
 		Result result = Parser.parse(input, Storage.getTaskList());
 		
 		print("input", input);
@@ -130,6 +132,18 @@ public class Parser {
 		print("type", result.getType());
 		print("startDate", result.getStartDate());
 		print("endDate", result.getEndDate());
+		print("", "");
+		
+		String input2 = "add two on Nov 3";
+		Result result2 = Parser.parse(input2, Storage.getTaskList());
+		
+		print("input", input2);
+		print("id", result2.getID());
+		print("cmd", result2.getCmd());
+		print("title", result2.getTitle());
+		print("type", result2.getType());
+		print("startDate", result2.getStartDate());
+		print("endDate", result2.getEndDate());
 	}
 	
 	private static void print(String indicator, Object obj) {

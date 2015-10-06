@@ -13,8 +13,13 @@ public class PrepositionOn implements IPreposition {
 	
 	public Result analyze() {
 		String title = null;
+		String removeOnInput = "";
 		Date startDate = null;
 		Date endDate = null;
+		
+		for (int i = 0 ; i < _splitWords.size(); i++) {
+			removeOnInput += _splitWords.get(i) + " ";
+		}
 		
 		if (_splitWords.size() > 0) {
 			title = _splitWords.get(0);
@@ -26,7 +31,7 @@ public class PrepositionOn implements IPreposition {
 			startDate = DateTime.parse(secondString);
 			
 			if (startDate == null) {
-				Result result = furtherAnalyze(secondString);
+				Result result = furtherAnalyze(removeOnInput);
 				startDate = result.getStartDate();
 				endDate = result.getEndDate();
 			}
@@ -39,19 +44,19 @@ public class PrepositionOn implements IPreposition {
 		Date startDate = null;
 		Date endDate = null;
 		
-		List<String> parsedSecondString = Arrays.asList(input.split(" "));
+		List<String> parsedString = Arrays.asList(input.split(" "));
 		
-		if (parsedSecondString.contains("from")) {	
+		if (parsedString.contains("from")) {	
 			PrepositionFromTo prepFromTo = new PrepositionFromTo(input);
-			Result secondResult = prepFromTo.analyze();
-			Date date = DateTime.parse(secondResult.getTitle());
+			Result tempResult = prepFromTo.analyze();
+			Date date = DateTime.parse(tempResult.getTitle());
 			
-			if (secondResult.getStartDate() != null) {
-				startDate = DateTime.combineDateTime(date, secondResult.getStartDate());
+			if (tempResult.getStartDate() != null) {
+				startDate = DateTime.combineDateTime(date, tempResult.getStartDate());
 			}
 			
-			if (secondResult.getEndDate() != null) {
-				endDate = DateTime.combineDateTime(date, secondResult.getEndDate());
+			if (tempResult.getEndDate() != null) {
+				endDate = DateTime.combineDateTime(date, tempResult.getEndDate());
 			}
 		}
 		
