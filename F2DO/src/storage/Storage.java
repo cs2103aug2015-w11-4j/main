@@ -1,5 +1,6 @@
 package storage;
 
+import java.beans.XMLDecoder;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,10 +26,12 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 	private static final String CHANGE_DIRECTORY = "user.dir";
 	
 	private static ArrayList<Task> taskList = new ArrayList<Task>();
-	private String saveFolder;
+	private static String saveFolder;
 	
 	// Initialize storage class
 	static {
+		saveFolder = DEFAULT_DIRECTORY;
+		createSaveDir(DEFAULT_DIRECTORY);
 		readFromFile();
 	}
 	
@@ -42,7 +45,7 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 		createSaveDir(DEFAULT_DIRECTORY);
 	}
 	
-	private void createSaveDir(String directory) {
+	private static void createSaveDir(String directory) {
 		File dir = new File(directory);
 		
 		if (!dir.exists()) {
@@ -91,7 +94,7 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 		saveToFile();
 	}
 	
-	private static void saveToFile() {
+	public static void saveToFile() {
 		nullRemovalCheck();
 		
 		try {
@@ -105,7 +108,9 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 		}
 	}
 	
-	public static void readFromFile() {
+	@SuppressWarnings("unchecked")
+	private static void readFromFile() {
+		XMLDecoder decoder = null;
 		try {
 			FileInputStream fin = new FileInputStream(FILENAME);
 			ObjectInputStream ois = new ObjectInputStream(fin);
@@ -152,6 +157,8 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 		public int compare(Task t1, Task t2) {
 			if (t1.getEndDate() == null || t2.getEndDate() == null) {
 				return 0;
+			} else if (t1.getEndDate().equals(t2.getEndDate())) {
+				return t1.getTaskName().compareTo(t2.getTaskName());
 			}
 			
 			return t1.getEndDate().compareTo(t2.getEndDate());
@@ -199,7 +206,13 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 		taskList.get(1).setTaskName("y testing Task 2");
 		
 		displayTaskList();
-		updateTask(0, "zzz testing Task 1", date1, date1);
+		/*
+		try {
+			updateTask(0, "zzz", sdf.parse(dateInput2), sdf.parse(dateInput2));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		*/
 		System.out.println("\n\n");
 		displayTaskList();
 		sortTaskList();

@@ -75,31 +75,32 @@ public class Task implements Serializable {
 		super();
 	}
 	
-	public Task(int taskID, Date startDate, Date endDate, String taskName, Boolean floating, Boolean completed) {
+	public Task(int taskID, Date startDate, Date endDate, String taskName) {
 		super();
 		this.taskID = taskID;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.taskName = taskName;
-		this.isFloating = floating;
-		this.isCompleted = completed;
 	}
 	
 	// Floating task
-	public Task(String taskName, int priority){
+	public Task(int taskID, String taskName, int priority){
+		this.taskID = taskID;
 		this.taskName = taskName;
 		this.priority = priority;
 	}
 	
 	// DeadLine Task
-	public Task(String taskName, Date deadLine, int priority) {
+	public Task(int taskID, String taskName, Date deadLine, int priority) {
+		this.taskID = taskID;
 		this.taskName = taskName;
 		this.endDate = deadLine;
 		this.priority = priority;
 	}
 	
 	// Event Task
-		public Task(String taskName, Date startDate, Date endDate, int priority) {
+		public Task(int taskID, String taskName, Date startDate, Date endDate, int priority) {
+			this.taskID = taskID;
 			this.taskName = taskName;
 			this.startDate = startDate;
 			this.endDate = endDate;
