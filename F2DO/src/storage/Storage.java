@@ -45,7 +45,7 @@ public class Storage implements Serializable {
 		createSaveDir(DEFAULT_DIRECTORY);
 	}
 	
-	private void createSaveDir(String directory) {
+	private static void createSaveDir(String directory) {
 		File dir = new File(directory);
 		
 		if (!dir.exists()) {
@@ -109,7 +109,7 @@ public class Storage implements Serializable {
 	
 	@SuppressWarnings("unchecked")
 	private static void readFromFile() {
-		XMLDecoder decoder=null;
+		XMLDecoder decoder = null;
 		try {
 			FileInputStream fis = new FileInputStream(FILENAME);
 			BufferedInputStream bis = new BufferedInputStream(fis);
@@ -152,6 +152,8 @@ public class Storage implements Serializable {
 		public int compare(Task t1, Task t2) {
 			if (t1.getEndDate() == null || t2.getEndDate() == null) {
 				return 0;
+			} else if (t1.getEndDate().equals(t2.getEndDate())) {
+				return t1.getTaskName().compareTo(t2.getTaskName());
 			}
 			
 			return t1.getEndDate().compareTo(t2.getEndDate());
@@ -196,13 +198,17 @@ public class Storage implements Serializable {
 		taskList.get(1).setTaskName("y testing Task 2");
 		
 		displayTaskList();
-//		updateTask(1, "yyy testing Task 2", date1, date1);
+		try {
+			updateTask(0, "zzz", sdf.parse(dateInput2), sdf.parse(dateInput2));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		System.out.println("\n\n");
 		displayTaskList();
 		sortTaskList();
 		System.out.println("\n\n");
 		displayTaskList();
-//		deleteTask(1);
+		deleteTask(1);
 		System.out.println("\n\n");
 		displayTaskList();
 
