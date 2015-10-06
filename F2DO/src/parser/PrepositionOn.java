@@ -17,16 +17,50 @@ public class PrepositionOn implements IPreposition {
 	}
 	
 	public Result analyze() {
-		Result result = null;
+		//Result result = null;
+		String regexFromToOn = "(.*?)from(.*?)to(.*)on(.*?)";
+		String regexOnFromTo = "(.*?)on(.*?)from(.*)to(.*?)";
+		String regexOn = "(.*?)on(.*?)";
+		boolean isFound = false;
 		
-		Pattern patternFromToOn = Pattern.compile("(.*?)from(.*?)to(.*)on(.*?)");
+		Pattern pattern = Pattern.compile(regexFromToOn);
+		Matcher matcher = pattern.matcher(_input);
+		
+		if (matcher.matches()) {
+			Result result = analyzeFromToOn(matcher.group(1).replaceAll("\\s+$", ""),
+											matcher.group(2),
+											matcher.group(3),
+											matcher.group(4));
+			return result;
+		}
+		
+		pattern = Pattern.compile(regexOnFromTo);
+		matcher = pattern.matcher(_input);
+		
+		if (matcher.matches()) {
+			Result result = analyzeFromToOn(matcher.group(1).replaceAll("\\s+$", ""),
+											matcher.group(3),
+											matcher.group(4),
+											matcher.group(2));
+			return result;
+		}
+		
+		pattern = Pattern.compile(regexOn);
+		matcher = pattern.matcher(_input);
+		
+		if (matcher.matches()) {
+			Date date = DateTime.parse(matcher.group(2));
+			return new Result(matcher.group(1), date, null);
+		}
+		
+		//Pattern patternFromToOn = Pattern.compile("(.*?)from(.*?)to(.*)on(.*?)");
 		//Pattern patternFromToOn = Pattern.compile("from\\w+");
 		//Pattern patternOnFromTo = Pattern.compile("(?<1>..)on(?<2>..)from(?<3>..)to(?<4>..)");
 		//Pattern patternOn = Pattern.compile("(?<1>..)on(?<2>..)");
 		
-		Pattern[] patterns = { patternFromToOn };//, patternOnFromTo, patternOn};
+		//Pattern[] patterns = { patternFromToOn };//, patternOnFromTo, patternOn};
 		
-		for (int i = 0; i < patterns.length; i++) {
+		/*for (int i = 0; i < patterns.length; i++) {
 			Pattern pattern = patterns[i];
 			Matcher matcher = pattern.matcher(_input);
 			
@@ -38,9 +72,28 @@ public class PrepositionOn implements IPreposition {
 				System.out.println(matcher.group(4).replaceAll("\\s+$", ""));
 				break;
 			}
+		}*/
+		
+		return new Result(null, null, null);
+	}
+	
+	private static Result analyzeFromToOn(String title, String startTimeString, 
+			String endTimeString, String dateString) {
+		Date startDate = null;
+		Date endDate = null;
+		Date startTime = DateTime.parse(startTimeString);
+		Date endTime = DateTime.parse(endTimeString);
+		Date date = DateTime.parse(dateString);
+		
+		if (startTime != null && date != null) {
+			startDate = DateTime.combineDateTime(date, startTime);
 		}
 		
-		return result;
+		if (endTime != null && date != null) {
+			endDate = DateTime.combineDateTime(date, endTime);
+		}
+		
+		return new Result(title, startDate, endDate);
 	}
 	
 	/*public Result analyze() {

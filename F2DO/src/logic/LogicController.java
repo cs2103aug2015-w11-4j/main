@@ -39,6 +39,9 @@ public class LogicController {
 	public static String process(String input, ArrayList<Task> taskList) {	
 		Result result = Parser.parse(input, taskList);
 		
+		System.out.println("displayID: " + result.getDisplayID());
+		System.out.println("storageID: " + result.getStorageID());
+		
 		switch (result.getCmd()) {
 			case ADD: {
 				taskList = LogicAdd.add(taskID,result,taskList);

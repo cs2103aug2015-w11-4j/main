@@ -119,8 +119,8 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 			} catch (EOFException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-			fin.close();
 			ois.close();
+			fin.close();
 			
 		} catch (IOException e) {
 			e.printStackTrace();

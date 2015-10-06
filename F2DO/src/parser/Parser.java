@@ -20,13 +20,16 @@ public class Parser {
 	 * @return the parsed result
 	 */
 	public static Result parse(String input, ArrayList<Task> taskList) {
-		int id = -1;
+		int displayID = -1;
+		int storageID = -1;
 		_removeCmdInput = "";
 		
 		CommandType cmd = analyzeCmd(input);
 		
 		if (cmd == CommandType.EDIT || cmd == CommandType.EDIT) {
-			id = analyzeID(_removeCmdInput, taskList);
+			Result idResult = analyzeID(_removeCmdInput, taskList);
+			displayID = idResult.getDisplayID();
+			storageID = idResult.getStorageID();
 		}
 		
 		Result tempResult = analyzeDateTitle(_removeCmdInput);
@@ -36,7 +39,7 @@ public class Parser {
 		Date endDate = tempResult.getEndDate();
 		TaskType type = analyzeTask(title, startDate, endDate);
 		
-		Result result = new Result(id, cmd, title, type, startDate, endDate);
+		Result result = new Result(displayID, storageID, cmd, title, type, startDate, endDate);
 		return result;
 	}
 	
@@ -69,7 +72,7 @@ public class Parser {
 	 * @param taskList - task list displayed in UI
 	 * @return ID in storage if exists, otherwise -1
 	 */
-	private static int analyzeID(String input, ArrayList<Task> taskList) {
+	private static Result analyzeID(String input, ArrayList<Task> taskList) {
 		String[] splitWords = input.split(" ");
 		int storageID = -1;
 		
@@ -88,13 +91,13 @@ public class Parser {
 					}
 				}
 				
-				return storageID;
+				return new Result(displayID, storageID);
 			} catch (NumberFormatException e) {
-				return storageID;
+				return new Result(-1, storageID);
 			}
 		}
 		
-		return storageID;
+		return new Result(-1, storageID);
 	}
 	
 	/**
@@ -124,28 +127,43 @@ public class Parser {
 	}
 	
 	public static void main(String[] args) {
-		String input = "add two from 4pm to 6pm on Nov 4";
+		String input = "add 1 one from 4pm to 6pm on Nov 4";
 		Result result = Parser.parse(input, Storage.getTaskList());
 		
 		print("input", input);
-		print("id", result.getID());
+		print("display id", result.getDisplayID());
+		print("storage id", result.getStorageID());
 		print("cmd", result.getCmd());
 		print("title", result.getTitle());
 		print("type", result.getType());
 		print("startDate", result.getStartDate());
 		print("endDate", result.getEndDate());
-		print("", "");
+		System.out.println();
 		
-		/*String input2 = "add two";
+		String input2 = "add two on Nov 4 from 4pm to 6pm";
 		Result result2 = Parser.parse(input2, Storage.getTaskList());
 		
 		print("input", input2);
-		print("id", result2.getID());
+		print("display id", result2.getDisplayID());
+		print("storage id", result2.getStorageID());
 		print("cmd", result2.getCmd());
 		print("title", result2.getTitle());
 		print("type", result2.getType());
 		print("startDate", result2.getStartDate());
-		print("endDate", result2.getEndDate());*/
+		print("endDate", result2.getEndDate());
+		System.out.println();
+		
+		String input3 = "add three on Nov 4 8pm";
+		Result result3 = Parser.parse(input3, Storage.getTaskList());
+		
+		print("input", input3);
+		print("display id", result3.getDisplayID());
+		print("storage id", result3.getStorageID());
+		print("cmd", result3.getCmd());
+		print("title", result3.getTitle());
+		print("type", result3.getType());
+		print("startDate", result3.getStartDate());
+		print("endDate", result3.getEndDate());
 
 	}
 	
