@@ -3,11 +3,11 @@ package parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PrepositionOn implements IPreposition {
+public class KeywordOn implements IKeyword {
 	
 	private String _input = null;
 	
-	public PrepositionOn(String input) {
+	public KeywordOn(String input) {
 		_input = input;
 	}
 	
@@ -19,7 +19,7 @@ public class PrepositionOn implements IPreposition {
 		Matcher matcher = pattern.matcher(_input);
 		
 		if (matcher.matches()) {
-			Result result = PrepositionHelper.analyzeFourInfo(matcher.group(1),
+			Result result = KeywordHelper.analyzeFourInfo(matcher.group(1),
 																matcher.group(3),
 																matcher.group(4),
 																matcher.group(2));
@@ -30,7 +30,7 @@ public class PrepositionOn implements IPreposition {
 		matcher = pattern.matcher(_input);
 		
 		if (matcher.matches()) {
-			Result result = PrepositionHelper.analyzeTwoInfo(true, 
+			Result result = KeywordHelper.analyzeTwoInfo(true, 
 															matcher.group(1), 
 															matcher.group(2));
 			return result;
