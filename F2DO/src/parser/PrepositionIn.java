@@ -1,27 +1,30 @@
 package parser;
 
-import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PrepositionIn implements IPreposition {
 	private String _input = null;
-	private String[] _splitWords = null;
 	
 	public PrepositionIn(String input) {
-		this._input = input;
-		this._splitWords = input.split(" in ");
+		_input = input;
 	}
 
 	public Result analyze() {
-		String title = null;
-		Date endDate = null;
+		String regexIn = "(.*?) in (.*?)";
 		
-		if (_splitWords.length > 0) {
-			title = _splitWords[0];
+		Pattern pattern = Pattern.compile(regexIn);
+		Matcher matcher = pattern.matcher(_input);
+		
+		if (matcher.matches()) {
+			Result result = PrepositionHelper.analyzeTwoInfo(false, 
+															matcher.group(1), 
+															"in " + matcher.group(2));
+			return result;
 		}
 		
-		endDate = DateTime.parse(_input);
 		
-		return new Result(title, null, endDate);
+		return new Result(null, null, null);
 	}
 
 }

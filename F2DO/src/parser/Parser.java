@@ -152,7 +152,7 @@ public class Parser {
 		print("endDate", result2.getEndDate());
 		System.out.println();
 		
-		String input3 = "add meeting by tomorrow 6pm";
+		String input3 = "add assignment in 3 days";
 		Result result3 = Parser.parse(input3, Storage.getTaskList());
 		
 		print("input", input3);
