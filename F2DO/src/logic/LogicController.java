@@ -61,6 +61,7 @@ public class LogicController {
 				if (result.getStorageID() == getTaskList().get(result.getDisplayID()).getTaskID()) {
 					Storage.deleteTask(result.getDisplayID());
 				}
+				//taskList = LogicDelete.delete(taskID, taskList, result);
 				return String.format(MSG_DELETE, result.getTitle());
 			} 
 			case EDIT: {
