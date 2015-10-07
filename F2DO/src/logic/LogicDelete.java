@@ -11,9 +11,7 @@ import storage.Storage;
 
 public class LogicDelete {
 	
-	private static int taskID;
-
-	public static ArrayList<Task> delete(ArrayList<Task> taskList, Result result) {
+	public static ArrayList<Task> delete(int taskID, ArrayList<Task> taskList, Result result) {
 		switch (result.getType()){
 			case EVENT: {
 			    TaskEvent ft = new TaskEvent(taskID, result.getTitle(),result.getStartDate(),result.getEndDate(),0);
