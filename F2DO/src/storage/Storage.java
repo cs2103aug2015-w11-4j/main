@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
@@ -34,9 +35,11 @@ public class Storage implements Serializable {
 	static {
 		saveFolder = DEFAULT_DIRECTORY;
 		createSaveDir(DEFAULT_DIRECTORY);
-		readFromFile();
+		if (!(isEmptyFile())) {
+			readFromFile();
+		}
 	}
-	
+		
 	public Storage(String directory) {
 		saveFolder = String.format(SAVED_DIRECTORY, directory);
 		createSaveDir(saveFolder);
@@ -122,6 +125,22 @@ public class Storage implements Serializable {
 		taskList = (ArrayList<Task>)decoder.readObject();
 	}
 	
+	private static boolean isEmptyFile() {
+		FileReader fr = null;
+		try {
+			fr = new FileReader(FILENAME);
+		} catch (FileNotFoundException e2) {
+			e2.printStackTrace();
+		}
+		try {
+			if (fr.read()==-1){
+				return true;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 	
 	public static ArrayList<Task> getTaskList() {
 		return taskList;
@@ -166,9 +185,13 @@ public class Storage implements Serializable {
 	}
 	
 	public static void main(String[] args) {		
+		saveFolder = DEFAULT_DIRECTORY;
+		createSaveDir(DEFAULT_DIRECTORY);
 		createSaveFile();
 		taskList.clear();
-		readFromFile();
+		if (!(isEmptyFile())) {
+			readFromFile();
+		}
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		String dateInput1 = "24/12/2015";
