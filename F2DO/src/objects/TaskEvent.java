@@ -10,8 +10,8 @@ public class TaskEvent extends Task {
 	 * @param 
 	 * @param 
 	 */
-	public TaskEvent(String title, Date startDate, Date endDate, int i) {
-		super(title, startDate, endDate, i);
+	public TaskEvent(int taskID, String title, Date startDate, Date endDate, int i) {
+		super(taskID, title, startDate, endDate, i);
 	}
 	
 	/**

@@ -10,8 +10,8 @@ public class TaskDeadLine extends Task {
 	 * @param taskName
 	 * @param priority
 	 */
-	public TaskDeadLine(String taskName, Date deadLine , int priority){
-		super(taskName, deadLine, priority);
+	public TaskDeadLine(int taskID, String taskName, Date deadLine , int priority){
+		super(taskID, taskName, deadLine, priority);
 	}
 	
 	/**

@@ -12,19 +12,23 @@ import storage.Storage;
 
 public class Parser {
 	private static String _removeCmdInput = "";
+	
 	/**
 	 * Parse the command.
 	 * @param input - command input
 	 * @return the parsed result
 	 */
 	public static Result parse(String input, ArrayList<Task> taskList) {
-		int id = -1;
+		int displayID = -1;
+		int storageID = -1;
 		_removeCmdInput = "";
 		
 		CommandType cmd = analyzeCmd(input);
 		
-		if (cmd == CommandType.EDIT || cmd == CommandType.EDIT) {
-			id = analyzeID(_removeCmdInput, taskList);
+		if (cmd == CommandType.DELETE || cmd == CommandType.EDIT) {
+			Result idResult = analyzeID(_removeCmdInput, taskList);
+			displayID = idResult.getDisplayID();
+			storageID = idResult.getStorageID();
 		}
 		
 		Result tempResult = analyzeDateTitle(_removeCmdInput);
@@ -34,7 +38,7 @@ public class Parser {
 		Date endDate = tempResult.getEndDate();
 		TaskType type = analyzeTask(title, startDate, endDate);
 		
-		Result result = new Result(id, cmd, title, type, startDate, endDate);
+		Result result = new Result(displayID, storageID, cmd, title, type, startDate, endDate);
 		return result;
 	}
 	
@@ -67,16 +71,16 @@ public class Parser {
 	 * @param taskList - task list displayed in UI
 	 * @return ID in storage if exists, otherwise -1
 	 */
-	private static int analyzeID(String input, ArrayList<Task> taskList) {
+	private static Result analyzeID(String input, ArrayList<Task> taskList) {
 		String[] splitWords = input.split(" ");
 		int storageID = -1;
 		
 		if (splitWords.length > 0) {
 			try {
-				int displayID = Integer.parseInt(splitWords[0]);
+				int displayID = Integer.parseInt(splitWords[0]) - 1;
 
-				if (displayID < taskList.size()) {
-					storageID = taskList.get(displayID - 1).getTaskID();
+				if (displayID < taskList.size() && displayID >= 0) {
+					storageID = taskList.get(displayID).getTaskID();
 				}
 
 				if (splitWords.length > 1) {
@@ -86,13 +90,13 @@ public class Parser {
 					}
 				}
 				
-				return storageID;
+				return new Result(displayID, storageID);
 			} catch (NumberFormatException e) {
-				return storageID;
+				return new Result(-1, storageID);
 			}
 		}
 		
-		return storageID;
+		return new Result(-1, storageID);
 	}
 	
 	/**
@@ -117,33 +121,49 @@ public class Parser {
 	}
 	
 	private static Result analyzeDateTitle(String input) {
-		IPreposition function = IPreposition.parsedPreposition(input);
+		IKeyword function = IKeyword.parsedPreposition(input);
 		return function.analyze();
 	}
 	
 	public static void main(String[] args) {
-		String input = "add one on Nov 4";
+		String input = "edit 1 task one";
 		Result result = Parser.parse(input, Storage.getTaskList());
 		
 		print("input", input);
-		print("id", result.getID());
+		print("display id", result.getDisplayID());
+		print("storage id", result.getStorageID());
 		print("cmd", result.getCmd());
 		print("title", result.getTitle());
 		print("type", result.getType());
 		print("startDate", result.getStartDate());
 		print("endDate", result.getEndDate());
-		print("", "");
+		System.out.println();
 		
-		String input2 = "add two on Nov 3";
+		String input2 = "add two on Nov 4 from 4pm to 6pm";
 		Result result2 = Parser.parse(input2, Storage.getTaskList());
 		
 		print("input", input2);
-		print("id", result2.getID());
+		print("display id", result2.getDisplayID());
+		print("storage id", result2.getStorageID());
 		print("cmd", result2.getCmd());
 		print("title", result2.getTitle());
 		print("type", result2.getType());
 		print("startDate", result2.getStartDate());
 		print("endDate", result2.getEndDate());
+		System.out.println();
+		
+		String input3 = "add assignment in 3 days";
+		Result result3 = Parser.parse(input3, Storage.getTaskList());
+		
+		print("input", input3);
+		print("display id", result3.getDisplayID());
+		print("storage id", result3.getStorageID());
+		print("cmd", result3.getCmd());
+		print("title", result3.getTitle());
+		print("type", result3.getType());
+		print("startDate", result3.getStartDate());
+		print("endDate", result3.getEndDate());
+
 	}
 	
 	private static void print(String indicator, Object obj) {

@@ -23,7 +23,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+//import main.F2DOMain;
 import objects.Task;
+import objects.TaskDeadLine;
+import objects.TaskEvent;
+import objects.TaskFloating;
+import parser.Parser;
+import parser.Result;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,7 +37,7 @@ import java.util.Date;
 public class UserInterface extends Application {
 	
 	private TextField field; 
-	private ArrayList<Task> _taskList;
+	private static ArrayList<Task> _taskList;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -49,19 +55,19 @@ public class UserInterface extends Application {
 		
 		Text text = new Text();
         text.setText("F2DO, your personalised task manager");
-        text.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 15));
+        text.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 16));
         text.setFill(Color.DARKTURQUOISE);
         
         field = new TextField();
+        
         Text feedback = new Text();
-        feedback.setText("Feedback: ");
-        feedback.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 10));
+        feedback.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 9));
         feedback.setFill(Color.GREY);
         
         VBox vbox = new VBox();
         vbox.setAlignment(Pos.CENTER);
-        vbox.setPadding(new Insets(10));
-        vbox.setSpacing(6);
+        vbox.setPadding(new Insets(12,10,5,10));
+        vbox.setSpacing(7);
         vbox.getChildren().addAll(text, field, feedback);
         
         root.setTop(vbox);
@@ -82,13 +88,20 @@ public class UserInterface extends Application {
 		ObservableList<Task> data = FXCollections.observableArrayList(_taskList);
         TableColumn<Task, Integer> column_ID = new TableColumn<>("ID");
         TableColumn<Task, String> column_Task = new TableColumn<>("Task Name");
-        TableColumn<Task, Date> column_endDate = new TableColumn<>("Deadline");
+        TableColumn<Task, String> column_startDate = new TableColumn<>("Start Date");
+        TableColumn<Task, Date> column_endDate = new TableColumn<>("End Date"); 
         
         column_ID.setCellValueFactory(new PropertyValueFactory<>("taskID"));
         column_Task.setCellValueFactory(new PropertyValueFactory<>("taskName"));
+        column_startDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         column_endDate.setCellValueFactory(new PropertyValueFactory<>("endDate"));
         
-        table.getColumns().addAll(column_ID, column_Task, column_endDate);
+        column_ID.prefWidthProperty().bind(table.widthProperty().divide(10)); 
+        column_Task.prefWidthProperty().bind(table.widthProperty().divide(2)); 
+        column_endDate.prefWidthProperty().bind(table.widthProperty().divide(3));
+        column_endDate.prefWidthProperty().bind(table.widthProperty().divide(3));
+        
+        table.getColumns().addAll(column_ID, column_Task, column_startDate, column_endDate);
         table.setItems(data);
 
         BorderPane.setMargin(table, new Insets(0,12,12,12));
@@ -121,8 +134,8 @@ public class UserInterface extends Application {
         		
         		String feedbackMsg = LogicController.process(userInput, _taskList);
         		feedback.setText(feedbackMsg);
-        		   		
-        		updateTable(table);
+        		
+        		updateTable(table, data, userInput, _taskList);
         		
         	}
         });
@@ -136,12 +149,48 @@ public class UserInterface extends Application {
         primaryStage.show();
 	}
 	
-	private void updateTable(TableView<Task> table) {
+	private void updateTable(TableView<Task> table, ObservableList<Task> data, String input, ArrayList<Task> _taskList) {
+		table.refresh();
+		data = FXCollections.observableArrayList(_taskList);
+		table.setItems(data);
+		
+		Result result = Parser.parse(input, _taskList);
+		
+		/* ------ update the dates provided based on each event type ----- */
+		switch(result.getType()) { 
+			case DEADLINE: {
+				
+				//provide only end/due date
+			}
+			case EVENT: {
+				
+				//provide either the starting date, or both start and end date.
+			}
+		    case FLOATING: {
+		    	
+		    	//no start or end date
+		    }
+		    case INVALID: {
+		    	
+		    }
+		    default: {
+		    	
+		    }   	
+		}
+		
 		// For testing purpose. You can refer to this on how task details 
 		// can be called. However, Please delete this part after updateTable 
 		// function is implemented.
 		for (int i = 0; i < _taskList.size(); i++) {
+			
 			Task task = _taskList.get(i);
+			if (task instanceof TaskFloating){
+				System.out.println("TASK FLOATING DETECTED");
+			}else if (task instanceof TaskDeadLine){
+				System.out.println("TASK DEADLINE DETECTED");
+			}else if (task instanceof TaskEvent){
+				System.out.println("TASK EVENT DETECTED");
+			}
 			
 			System.out.println("ID: " + task.getTaskID());
 			System.out.println("Title: " + task.getTaskName());
@@ -150,7 +199,5 @@ public class UserInterface extends Application {
 			System.out.println("End Time: " + task.getEndDate());
 			System.out.println("Is floating task: " + task.getFloating());
 		}
-		
-		// Display the task list in the table
 	}
 }

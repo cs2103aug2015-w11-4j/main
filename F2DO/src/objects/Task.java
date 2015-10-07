@@ -3,6 +3,9 @@ package objects;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import type.TaskType;
+
 import java.util.Comparator;
 
 @SuppressWarnings({ "serial"})
@@ -17,6 +20,7 @@ public class Task implements Serializable {
 	private Boolean isFloating;
 	private Boolean isCompleted;
 	private int priority;
+	private TaskType taskType;
 	
 	// ============ VARIABLES END ================ //
 	
@@ -65,6 +69,12 @@ public class Task implements Serializable {
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
+	public TaskType getTaskType() {
+		return taskType;
+	}
+	public void setTaskType(TaskType type) {
+		this.taskType = type;
+	}
 	
 	// ============ GETTERS/SETTERS END ================ //
 	
@@ -75,36 +85,46 @@ public class Task implements Serializable {
 		super();
 	}
 	
-	public Task(int taskID, Date startDate, Date endDate, String taskName, Boolean floating, Boolean completed) {
+	public Task(int taskID, Date startDate, Date endDate, String taskName) {
 		super();
 		this.taskID = taskID;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.taskName = taskName;
-		this.isFloating = floating;
-		this.isCompleted = completed;
 	}
 	
 	// Floating task
-	public Task(String taskName, int priority){
+	public Task(int taskID, String taskName, int priority){
+		this.taskID = taskID;
 		this.taskName = taskName;
 		this.priority = priority;
 	}
 	
 	// DeadLine Task
-	public Task(String taskName, Date deadLine, int priority) {
+	public Task(int taskID, String taskName, Date deadLine, int priority) {
+		this.taskID = taskID;
 		this.taskName = taskName;
 		this.endDate = deadLine;
 		this.priority = priority;
 	}
 	
 	// Event Task
-		public Task(String taskName, Date startDate, Date endDate, int priority) {
-			this.taskName = taskName;
-			this.startDate = startDate;
-			this.endDate = endDate;
-			this.priority = priority;
-		}
+	public Task(int taskID, String taskName, Date startDate, Date endDate, int priority) {
+		this.taskID = taskID;
+		this.taskName = taskName;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.priority = priority;
+	}
+
+	public Task(int taskID, TaskType type, String taskName, Date startDate, Date endDate, int priority) {
+		this.taskID = taskID;
+		this.taskType = type;
+		this.taskName = taskName;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.priority = priority;
+	}
 	
 	// ============ CONSTRUCTOR END ================ //
 
