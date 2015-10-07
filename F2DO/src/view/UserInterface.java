@@ -150,7 +150,7 @@ public class UserInterface extends Application {
 	}
 	
 	private void updateTable(TableView<Task> table, ObservableList<Task> data, String input, ArrayList<Task> _taskList) {
-		
+		table.refresh();
 		data = FXCollections.observableArrayList(_taskList);
 		table.setItems(data);
 		
