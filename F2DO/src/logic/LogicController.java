@@ -20,6 +20,9 @@ public class LogicController {
 	private static String MSG_SEARCH = "";
 	private static String MSG_NO_ACTION = "Feedback: No action is done!";
 	
+	private static String ERROR_EDIT = "Feedback: %1$s cannot be modified!";
+	private static String ERROR_DELETE = "Feedback: %1$s cannot be deleted!";
+	
 	// Initialize LogicController class
 	static {
 		initialize();
@@ -61,9 +64,11 @@ public class LogicController {
 				if (result.getDisplayID() != -1 && 
 						result.getStorageID() == getTaskList().get(result.getDisplayID()).getTaskID()) {
 					Storage.deleteTask(result.getDisplayID());
+					
+					return String.format(MSG_DELETE, result.getTitle());
 				}
 				//taskList = LogicDelete.delete(taskID, taskList, result);
-				return String.format(MSG_DELETE, result.getTitle());
+				return String.format(ERROR_DELETE, result.getTitle());
 			} 
 			case EDIT: {
 				if (result.getDisplayID() != -1 && 
@@ -72,8 +77,9 @@ public class LogicController {
 							result.getTitle(), 
 							result.getStartDate(), 
 							result.getEndDate());
+					return String.format(MSG_EDIT, result.getTitle());
 				}
-				return String.format(MSG_EDIT, result.getTitle());
+				return String.format(ERROR_EDIT, result.getTitle());
 			}
 			case SEARCH: {
 				LogicSearch.search(taskList, result);
