@@ -15,7 +15,7 @@ public class LogicController {
 	private static int taskID = 0;
 	
 	private static String MSG_ADD = "Feedback: %1$s has been successfully added!";
-	private static String MSG_EDIT = "Feedback: Task description has been modified!";
+	private static String MSG_EDIT = "Feedback: %1$s has been modified!";
 	private static String MSG_DELETE = "Feedback: %1$s has been deleted!";
 	private static String MSG_SEARCH = "";
 	private static String MSG_NO_ACTION = "Feedback: No action is done!";
@@ -58,20 +58,22 @@ public class LogicController {
 			}
 			case DELETE: {
 				//LogicDelete.delete(taskList, result);
-				if (result.getStorageID() == getTaskList().get(result.getDisplayID()).getTaskID()) {
+				if (result.getDisplayID() != -1 && 
+						result.getStorageID() == getTaskList().get(result.getDisplayID()).getTaskID()) {
 					Storage.deleteTask(result.getDisplayID());
 				}
 				//taskList = LogicDelete.delete(taskID, taskList, result);
 				return String.format(MSG_DELETE, result.getTitle());
 			} 
 			case EDIT: {
-				if (result.getStorageID() == getTaskList().get(result.getDisplayID()).getTaskID()) {
+				if (result.getDisplayID() != -1 && 
+						result.getStorageID() == getTaskList().get(result.getDisplayID()).getTaskID()) {
 					Storage.updateTask(result.getDisplayID(), 
 							result.getTitle(), 
 							result.getStartDate(), 
 							result.getEndDate());
 				}
-				return MSG_EDIT;
+				return String.format(MSG_EDIT, result.getTitle());
 			}
 			case SEARCH: {
 				LogicSearch.search(taskList, result);
