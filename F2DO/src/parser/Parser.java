@@ -25,7 +25,7 @@ public class Parser {
 		
 		CommandType cmd = analyzeCmd(input);
 		
-		if (cmd == CommandType.EDIT || cmd == CommandType.EDIT) {
+		if (cmd == CommandType.DELETE || cmd == CommandType.EDIT) {
 			Result idResult = analyzeID(_removeCmdInput, taskList);
 			displayID = idResult.getDisplayID();
 			storageID = idResult.getStorageID();
@@ -126,7 +126,7 @@ public class Parser {
 	}
 	
 	public static void main(String[] args) {
-		String input = "add one from 4pm to 6pm on Nov 4";
+		String input = "edit 1 task one";
 		Result result = Parser.parse(input, Storage.getTaskList());
 		
 		print("input", input);
