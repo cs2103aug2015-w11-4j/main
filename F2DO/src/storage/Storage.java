@@ -13,9 +13,15 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.GregorianCalendar;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import objects.Task;
 
@@ -95,6 +101,18 @@ public class Storage implements Serializable {
 	
 	private static void saveToFile() {
 		nullRemovalCheck();
+		
+		for (int i = 0; i < taskList.size(); i++) {
+			GregorianCalendar gregCal = new GregorianCalendar();
+			gregCal.setTime(taskList.get(i).getStartDate());
+			gregCal.setTime(taskList.get(i).getEndDate());
+			try {
+				XMLGregorianCalendar xmlDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregCal);
+			} catch (DatatypeConfigurationException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		XMLEncoder encoder = null;
 		try {
 			FileOutputStream fos = new FileOutputStream(FILENAME);
