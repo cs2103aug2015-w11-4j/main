@@ -48,7 +48,7 @@ public class LogicController {
 				return String.format(MSG_ADD, result.getTitle());
 			}
 			case DELETE: {
-				LogicDelete.delete(taskList, result);
+				taskList = LogicDelete.delete(taskID, taskList, result);
 				return String.format(MSG_DELETE, result.getTitle());
 			} 
 			case EDIT: {
