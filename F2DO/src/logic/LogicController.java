@@ -1,11 +1,13 @@
 package logic;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import objects.Task;
 import parser.Parser;
 import parser.Result;
 import storage.Storage;
+import type.TaskType;
 
 public class LogicController {
 	
@@ -43,15 +45,31 @@ public class LogicController {
 		
 		switch (result.getCmd()) {
 			case ADD: {
-				taskList = LogicAdd.add(taskID,result,taskList);
+				//taskList = LogicAdd.add(taskID,result,taskList);
+				Task task = new Task(taskID,
+						result.getType(),
+						result.getTitle(),
+						result.getStartDate(),
+						result.getEndDate(),
+						0);
+				Storage.addTask(task);
 				taskID++;
 				return String.format(MSG_ADD, result.getTitle());
 			}
 			case DELETE: {
-				LogicDelete.delete(taskList, result);
+				//LogicDelete.delete(taskList, result);
+				if (result.getStorageID() == getTaskList().get(result.getDisplayID()).getTaskID()) {
+					Storage.deleteTask(result.getDisplayID());
+				}
 				return String.format(MSG_DELETE, result.getTitle());
 			} 
 			case EDIT: {
+				if (result.getStorageID() == getTaskList().get(result.getDisplayID()).getTaskID()) {
+					Storage.updateTask(result.getDisplayID(), 
+							result.getTitle(), 
+							result.getStartDate(), 
+							result.getEndDate());
+				}
 				return MSG_EDIT;
 			}
 			case SEARCH: {
