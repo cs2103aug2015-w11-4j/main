@@ -28,8 +28,8 @@ import objects.Task;
 import objects.TaskDeadLine;
 import objects.TaskEvent;
 import objects.TaskFloating;
-import parser.Parser;
-import parser.Result;
+//import parser.Parser;
+//import parser.Result;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -154,10 +154,10 @@ public class UserInterface extends Application {
 		data = FXCollections.observableArrayList(_taskList);
 		table.setItems(data);
 		
-		Result result = Parser.parse(input, _taskList);
+		//Result result = Parser.parse(input, _taskList);
 		
 		/* ------ update the dates provided based on each event type ----- */
-		switch(result.getType()) { 
+		/*switch(result.getType()) { 
 			case DEADLINE: {
 				
 				//provide only end/due date
@@ -176,7 +176,7 @@ public class UserInterface extends Application {
 		    default: {
 		    	
 		    }   	
-		}
+		}*/
 		
 		// For testing purpose. You can refer to this on how task details 
 		// can be called. However, Please delete this part after updateTable 

@@ -8,7 +8,7 @@ import type.CommandType;
 import type.TaskType;
 
 import objects.Task;
-import storage.Storage;
+//import storage.Storage;
 
 public class Parser {
 	private static String _removeCmdInput = "";
@@ -125,7 +125,7 @@ public class Parser {
 		return function.analyze();
 	}
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		String input = "edit 1 task one";
 		Result result = Parser.parse(input, Storage.getTaskList());
 		
@@ -168,5 +168,5 @@ public class Parser {
 	
 	private static void print(String indicator, Object obj) {
 		System.out.println(indicator + ": " + obj);
-	}
+	}*/
 }

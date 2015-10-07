@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+//import java.text.ParseException;
+//import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -170,7 +170,7 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 		saveToFile();
 	}
 	
-	public static void main(String[] args) {		
+	/*public static void main(String[] args) {		
 		createSaveFile();
 		taskList.clear();
 		readFromFile();
@@ -205,7 +205,7 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 		taskList.get(1).setEndDate(date2);
 		taskList.get(1).setTaskName("y testing Task 2");
 		
-		displayTaskList();
+		displayTaskList();*/
 		/*
 		try {
 			updateTask(0, "zzz", sdf.parse(dateInput2), sdf.parse(dateInput2));
@@ -213,7 +213,7 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 			e.printStackTrace();
 		}
 		*/
-		System.out.println("\n\n");
+		/*System.out.println("\n\n");
 		displayTaskList();
 		sortTaskList();
 		System.out.println("\n\n");
@@ -222,5 +222,5 @@ public abstract class Storage implements Serializable, Comparator<Task> {
 		System.out.println("\n\n");
 		displayTaskList();
 
-	}
+	}*/
 }
