@@ -18,8 +18,8 @@ public class KeywordIn implements IKeyword {
 		
 		if (matcher.matches()) {
 			Result result = KeywordHelper.analyzeTwoInfo(false, 
-															matcher.group(1), 
-															"in " + matcher.group(2));
+					matcher.group(1), 
+					"in " + matcher.group(2));
 			return result;
 		}
 		

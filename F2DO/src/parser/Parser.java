@@ -9,6 +9,7 @@ import type.TaskType;
 
 import objects.Task;
 //import storage.Storage;
+import storage.Storage;
 
 public class Parser {
 	private static String _removeCmdInput = "";
@@ -125,8 +126,8 @@ public class Parser {
 		return function.analyze();
 	}
 	
-	/*public static void main(String[] args) {
-		String input = "edit 1 task one";
+	public static void main(String[] args) {
+		String input = "edit 1 task one at 18:00";
 		Result result = Parser.parse(input, Storage.getTaskList());
 		
 		print("input", input);
@@ -139,7 +140,7 @@ public class Parser {
 		print("endDate", result.getEndDate());
 		System.out.println();
 		
-		String input2 = "add two on Nov 4 from 4pm to 6pm";
+		String input2 = "add two on 4 Sep from 4pm to 6pm";
 		Result result2 = Parser.parse(input2, Storage.getTaskList());
 		
 		print("input", input2);
@@ -168,5 +169,5 @@ public class Parser {
 	
 	private static void print(String indicator, Object obj) {
 		System.out.println(indicator + ": " + obj);
-	}*/
+	}
 }

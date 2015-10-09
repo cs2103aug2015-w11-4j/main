@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_60" class="java.beans.XMLDecoder">
+ <object class="java.util.ArrayList">
+  <void method="add">
+   <object class="objects.Task">
+    <void property="endDate">
+     <object class="java.util.Date">
+      <long>1444968000000</long>
+     </object>
+    </void>
+    <void property="taskID">
+     <int>1</int>
+    </void>
+    <void property="taskName">
+     <string>report</string>
+    </void>
+    <void property="taskType">
+     <object class="java.lang.Enum" method="valueOf">
+      <class>type.TaskType</class>
+      <string>DEADLINE</string>
+     </object>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>
