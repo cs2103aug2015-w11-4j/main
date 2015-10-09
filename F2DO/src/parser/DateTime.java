@@ -16,6 +16,8 @@ public class DateTime {
 	private static final int DATE_SIZE = 3;
 	private static final int DAY_MONTH_SIZE = 2;
 	private static final int DAY_MONTH_YEAR_SIZE = 3;
+	private static final String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+			"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 	
 	
 	public static Date parse(String input) {
@@ -88,9 +90,9 @@ public class DateTime {
 			
 			if (time != null) {
 				dateTime += time;
-			}	
+			}
 			
-			//System.out.println(dateTime);
+			System.out.println(dateTime);
 			
 			return parseAmerican(dateTime);
 		}
@@ -100,8 +102,8 @@ public class DateTime {
 		String shortMonth = "jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec";
 		String regexNumbericDM = ".*?([0-9]{1,2})[/-]([0-9]{1,2}).*";
 		String regexShortDM = ".*?([0-9]{1,2})[ /-](" + shortMonth + ").*";
-		String regexNumericDMY = ".*?([0-9]{1,2})[/-]([0-9]{1,2})[/-]([0-9]{4}).*";
-		String regexShortDMY = ".*?([0-9]{1,2})[ /-](" + shortMonth + ")[ /-]([0-9]{4}).*";
+		String regexNumericDMY = ".*?([0-9]{1,2})[/-]([0-9]{1,2})[/-]([0-9]{2,4}).*";
+		String regexShortDMY = ".*?([0-9]{1,2})[ /-](" + shortMonth + ")[ /-]([0-9]{2,4}).*";
 		
 		String[] twoGroups = {regexNumbericDM, regexShortDM};
 		String[] threeGroups = {regexNumericDMY, regexShortDMY};
@@ -138,20 +140,22 @@ public class DateTime {
 				dayMonthYear[i] = matcher.group(i + 1);
 			}
 			
-			if (groupNumber >= DAY_MONTH_SIZE && !isConvertable(dayMonthYear[MONTH])) {
-				dateTime += dayMonthYear[MONTH] + " ";
-				dateTime += dayMonthYear[DAY] + " ";
-				
-				if (groupNumber == DAY_MONTH_YEAR_SIZE) {
-					dateTime += dayMonthYear[YEAR];
-				}
-			} else {
-				for (int i = groupNumber - 1; i >= 0; i--) {
-					dateTime += dayMonthYear[i];
-					if (i != DAY) {
-						dateTime += "-";
+			if (groupNumber >= DAY_MONTH_SIZE) {
+				if (isConvertable(dayMonthYear[MONTH])) {
+					int monthIndex = Integer.parseInt(dayMonthYear[MONTH]) - 1;
+
+					if (monthIndex < MONTHS.length) {
+						dateTime += MONTHS[monthIndex] + " ";
 					}
+				} else {
+					dateTime += dayMonthYear[MONTH] + " ";
 				}
+				
+				dateTime += dayMonthYear[DAY] + " ";
+			}
+			
+			if (groupNumber == DAY_MONTH_YEAR_SIZE) {
+				dateTime += dayMonthYear[YEAR];
 			}
 		}
 		
@@ -190,7 +194,9 @@ public class DateTime {
 	public static void main(String[] args) {
 		parseBritish("fjdiaf 2/4/1992 dfjdif");
 		parseBritish("16-04-1992");
+		parseBritish("16/12/15");
 		parseBritish("17-Apr-1992");
+		parseBritish("17-Apr-92");
 		parseBritish("fjdifd 18/Apr/1992 dfjidf");
 		parseBritish("19 Apr 1992");
 		parseBritish("20 Apr");

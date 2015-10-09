@@ -127,7 +127,7 @@ public class Parser {
 	}
 	
 	public static void main(String[] args) {
-		String input = "edit 1 task one at 18:00";
+		String input = "edit 1 task one by 16/12/15";
 		Result result = Parser.parse(input, Storage.getTaskList());
 		
 		print("input", input);
