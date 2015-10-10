@@ -38,8 +38,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.security.auth.callback.Callback;
-
 public class UserInterface extends Application {
 	
 	private TextField field; 
@@ -92,7 +90,7 @@ public class UserInterface extends Application {
         
 		_taskList = LogicController.getTaskList();
 		ObservableList<Task> data = FXCollections.observableArrayList(_taskList);
-        TableColumn<Task, String> column_ID = new TableColumn<>("ID");
+        TableColumn<Task, Integer> column_ID = new TableColumn<>("ID");
         TableColumn<Task, String> column_Task = new TableColumn<>("Task Name");
         TableColumn<Task, String> column_startDate = new TableColumn<>("Start Date");
         TableColumn<Task, String> column_endDate = new TableColumn<>("End Date"); 
@@ -101,6 +99,12 @@ public class UserInterface extends Application {
         column_Task.setCellValueFactory(new PropertyValueFactory<>("taskName"));
         //column_startDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         //column_endDate.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        
+        /*column_ID.setCellValueFactory( 
+        		task -> {
+        			task.getTableView()
+        		}
+        		);*/
 
         column_startDate.setCellValueFactory(
         		task -> {

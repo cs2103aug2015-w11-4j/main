@@ -10,6 +10,10 @@ public class KeywordFromTo implements IKeyword{
 		_input = input;
 	}
 	
+	/**
+	 * Analyze the pattern that contains 'from' and 'to'.
+	 * Return the analyzing result.
+	 */
 	public Result analyze() {
 		String regexFromToOn = "(.*?) from (.*?) to (.*) on (.*?)";
 		String regexFromTo = "(.*?) from (.*?) to (.*)";
@@ -19,9 +23,9 @@ public class KeywordFromTo implements IKeyword{
 		
 		if (matcher.matches()) {
 			Result result = KeywordHelper.analyzeFourInfo(matcher.group(1),
-																matcher.group(2),
-																matcher.group(3),
-																matcher.group(4));
+					matcher.group(2),
+					matcher.group(3),
+					matcher.group(4));
 			return result;
 		}
 		
@@ -30,8 +34,8 @@ public class KeywordFromTo implements IKeyword{
 		
 		if (matcher.matches()) {
 			Result result = KeywordHelper.analyzeThreeInfo(matcher.group(1), 
-																matcher.group(2), 
-																matcher.group(3));
+					matcher.group(2), 
+					matcher.group(3));
 			return result;
 		}
 		

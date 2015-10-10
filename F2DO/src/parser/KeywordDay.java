@@ -1,9 +1,9 @@
 package parser;
 
-public class KeywordTomorrowYesterday implements IKeyword {
+public class KeywordDay implements IKeyword {
 	private static String _input = null;
 	
-	public KeywordTomorrowYesterday(String input) {
+	public KeywordDay(String input) {
 		_input = input;
 	}
 	

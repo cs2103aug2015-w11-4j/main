@@ -10,6 +10,10 @@ public class KeywordBy implements IKeyword {
 		_input = input;
 	}
 	
+	/**
+	 * Analyze the pattern that contains 'by'.
+	 * Return the analyzing result.
+	 */
 	public Result analyze() {
 		String regexBy = "(.*?) by (.*?)";
 		
@@ -18,8 +22,8 @@ public class KeywordBy implements IKeyword {
 		
 		if (matcher.matches()) {
 			Result result = KeywordHelper.analyzeTwoInfo(false, 
-															matcher.group(1), 
-															matcher.group(2));
+					matcher.group(1), 
+					matcher.group(2));
 			return result;
 		}
 		

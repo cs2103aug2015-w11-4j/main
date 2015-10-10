@@ -121,6 +121,11 @@ public class Parser {
 		}
 	}
 	
+	/**
+	 * Determine the dates and title of the task.
+	 * @param input - input after removing command
+	 * @return title, start date and end date
+	 */
 	private static Result analyzeDateTitle(String input) {
 		IKeyword function = IKeyword.parsedPreposition(input);
 		return function.analyze();

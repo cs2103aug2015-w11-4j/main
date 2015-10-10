@@ -14,14 +14,6 @@ public class Result {
 	private Date _startDate = null;
 	private Date _endDate = null;
 	
-	/**
-	 * Store the information of the parsed result.
-	 * @param cmd
-	 * @param title
-	 * @param type
-	 * @param startDate
-	 * @param endDate
-	 */
 	public Result(int displayID, int storageID, CommandType cmd, String title, TaskType type, Date startDate, Date endDate) {
 		this._displayID = displayID;
 		this._storageID = storageID;
@@ -44,13 +36,17 @@ public class Result {
 	}
 	
 	/**
-	 * Get task ID.
-	 * @return task ID
+	 * Get display ID.
+	 * @return display ID
 	 */
 	public int getDisplayID() {
 		return _displayID;
 	}
 	
+	/**
+	 * Set storage ID.
+	 * @return storage ID
+	 */
 	public int getStorageID() {
 		return _storageID;
 	}

@@ -20,11 +20,21 @@ public class DateTime {
 	private static final String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
 			"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 	
-	
+	/**
+	 * Analyze input and return standard date format.
+	 * @param input - possible date input
+	 * @return standard date format
+	 */
 	public static Date parse(String input) {
 		return parse(input, true);
 	}
 	
+	/**
+	 * Combine the date and time into a standard date format.
+	 * @param date 
+	 * @param time
+	 * @return standard date format
+	 */
 	public static Date combineDateTime(Date date, Date time) {
 		Calendar calendar = Calendar.getInstance();
 		Calendar dateCalendar = Calendar.getInstance();
@@ -44,6 +54,13 @@ public class DateTime {
 		return calendar.getTime();
 	}
 	
+	/**
+	 * Analyze input and return standard date format with the option of date in 
+	 * British or American date format.
+	 * @param input - possible date input
+	 * @param isBritish - British or American format
+	 * @return standard date format
+	 */
 	private static Date parse(String input, boolean isBritish) {		
 		if (isBritish) {
 			return parseBritish(input);
@@ -52,6 +69,11 @@ public class DateTime {
 		}
 	}
 	
+	/**
+	 * Analyze the input in American date format. 
+	 * @param input - possible American date format
+	 * @return standard date format
+	 */
 	private static Date parseAmerican(String input) {
 		Date dateTime = null;
 		Span parsedDateTime = Chronic.parse(input);
@@ -65,6 +87,11 @@ public class DateTime {
 		return dateTime;
 	}
 	
+	/**
+	 * Analyze the input in British date format.
+	 * @param input - possible British date format input
+	 * @return standard date format
+	 */
 	private static Date parseBritish(String input) {
 		String date = getAmericanDate(input);
 		String time = getTime(input);
@@ -99,6 +126,11 @@ public class DateTime {
 		}
 	}
 	
+	/**
+	 * Convert the British date format into American date format, "MMM DD YYYY" or "MMM DD YY".
+	 * @param input - possible British date format input
+	 * @return standard date format
+	 */
 	private static String getAmericanDate(String input) {
 		String shortMonth = "jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec";
 		String regexNumbericDM = ".*?([0-9]{1,2})[/-]([0-9]{1,2}).*";
@@ -127,6 +159,13 @@ public class DateTime {
 		return null;
 	}
 	
+	/**
+	 * 
+	 * @param input
+	 * @param regex
+	 * @param groupNumber
+	 * @return
+	 */
 	private static String getDateMatcher(String input, String regex, int groupNumber) {
 		String dateTime = null;
 		String[] dayMonthYear = new String[DATE_SIZE];

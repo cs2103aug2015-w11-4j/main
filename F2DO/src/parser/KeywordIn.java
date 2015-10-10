@@ -9,7 +9,11 @@ public class KeywordIn implements IKeyword {
 	public KeywordIn(String input) {
 		_input = input;
 	}
-
+	
+	/**
+	 * Analyze the pattern that contains 'in'.
+	 * Return the analyzing result.
+	 */
 	public Result analyze() {
 		String regexIn = "(.*?) in (.*?)";
 		

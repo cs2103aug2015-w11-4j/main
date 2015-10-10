@@ -10,6 +10,10 @@ public class KeywordAt implements IKeyword {
 		_input = input;
 	}
 	
+	/**
+	 * Analyze the pattern that contains 'at'.
+	 * Return the analyzing result.
+	 */
 	public Result analyze() {
 		String regexAtOn = "(.*?) at (.*?) on (.*)";
 		String regexAt = "(.*?) at (.*?)";
@@ -19,9 +23,9 @@ public class KeywordAt implements IKeyword {
 		
 		if (matcher.matches()) {
 			Result result = KeywordHelper.analyzeThreeInfo(true, 
-												matcher.group(1),
-												matcher.group(2),
-												matcher.group(3));
+					matcher.group(1),
+					matcher.group(2),
+					matcher.group(3));
 			return result;
 		}
 		
@@ -30,8 +34,8 @@ public class KeywordAt implements IKeyword {
 		
 		if (matcher.matches()) {
 			Result result = KeywordHelper.analyzeTwoInfo(true, 
-															matcher.group(1), 
-															matcher.group(2));
+					matcher.group(1), 
+					matcher.group(2));
 			return result;
 		}
 		

@@ -11,6 +11,10 @@ public class KeywordOn implements IKeyword {
 		_input = input;
 	}
 	
+	/**
+	 * Analyze the pattern that contains 'on'.
+	 * Return the analyzing result.
+	 */
 	public Result analyze() {
 		String regexOnFromTo = "(.*?) on (.*?) from (.*) to (.*?)";
 		String regexOn = "(.*?) on (.*?)";
@@ -20,9 +24,9 @@ public class KeywordOn implements IKeyword {
 		
 		if (matcher.matches()) {
 			Result result = KeywordHelper.analyzeFourInfo(matcher.group(1),
-																matcher.group(3),
-																matcher.group(4),
-																matcher.group(2));
+					matcher.group(3),
+					matcher.group(4),
+					matcher.group(2));
 			return result;
 		}
 		
@@ -31,8 +35,8 @@ public class KeywordOn implements IKeyword {
 		
 		if (matcher.matches()) {
 			Result result = KeywordHelper.analyzeTwoInfo(true, 
-															matcher.group(1), 
-															matcher.group(2));
+					matcher.group(1), 
+					matcher.group(2));
 			return result;
 		}
 		
