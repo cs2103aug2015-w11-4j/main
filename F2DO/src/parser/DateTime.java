@@ -3,6 +3,7 @@ package parser;
 import com.mdimension.jchronic.Chronic;
 import com.mdimension.jchronic.utils.Span;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;

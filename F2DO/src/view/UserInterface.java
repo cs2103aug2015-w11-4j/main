@@ -1,6 +1,7 @@
 package view;
 	
 import javafx.application.Application;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -22,6 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.beans.property.SimpleStringProperty;
 
 //import main.F2DOMain;
 import objects.Task;
@@ -31,8 +33,12 @@ import objects.TaskFloating;
 //import parser.Parser;
 //import parser.Result;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import javax.security.auth.callback.Callback;
 
 public class UserInterface extends Application {
 	
@@ -86,15 +92,39 @@ public class UserInterface extends Application {
         
 		_taskList = LogicController.getTaskList();
 		ObservableList<Task> data = FXCollections.observableArrayList(_taskList);
-        TableColumn<Task, Integer> column_ID = new TableColumn<>("ID");
+        TableColumn<Task, String> column_ID = new TableColumn<>("ID");
         TableColumn<Task, String> column_Task = new TableColumn<>("Task Name");
         TableColumn<Task, String> column_startDate = new TableColumn<>("Start Date");
-        TableColumn<Task, Date> column_endDate = new TableColumn<>("End Date"); 
+        TableColumn<Task, String> column_endDate = new TableColumn<>("End Date"); 
         
         column_ID.setCellValueFactory(new PropertyValueFactory<>("taskID"));
         column_Task.setCellValueFactory(new PropertyValueFactory<>("taskName"));
-        column_startDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
-        column_endDate.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        //column_startDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        //column_endDate.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        
+        column_startDate.setCellValueFactory(
+        		   task -> {
+        		      SimpleStringProperty property = new SimpleStringProperty();
+        		      DateFormat dateFormat = new SimpleDateFormat("dd MMM hh:mm aaa");
+        		      Date date = task.getValue().getStartDate();
+        		      
+        		      if (date != null) {
+        		    	  property.setValue(dateFormat.format(date));
+        		      }
+        		      return property;
+        		   });
+        
+        column_endDate.setCellValueFactory(
+     		   task -> {
+     		      SimpleStringProperty property = new SimpleStringProperty();
+     		      DateFormat dateFormat = new SimpleDateFormat("dd MMM hh:mm aaa");
+     		      Date date = task.getValue().getEndDate();
+     		      
+     		      if (date != null) {
+     		    	  property.setValue(dateFormat.format(date));
+     		      }
+     		      return property;
+     		   });
         
         column_ID.prefWidthProperty().bind(table.widthProperty().divide(10)); 
         column_Task.prefWidthProperty().bind(table.widthProperty().divide(2)); 

@@ -15,10 +15,54 @@
      <string>report</string>
     </void>
     <void property="taskType">
-     <object class="java.lang.Enum" method="valueOf">
+     <object class="java.lang.Enum" id="TaskType0" method="valueOf">
       <class>type.TaskType</class>
       <string>DEADLINE</string>
      </object>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="objects.Task">
+    <void property="endDate">
+     <object class="java.util.Date">
+      <long>1446537600000</long>
+     </object>
+    </void>
+    <void property="startDate">
+     <object class="java.util.Date">
+      <long>1446516000000</long>
+     </object>
+    </void>
+    <void property="taskID">
+     <int>2</int>
+    </void>
+    <void property="taskName">
+     <string>task one</string>
+    </void>
+    <void property="taskType">
+     <object class="java.lang.Enum" method="valueOf">
+      <class>type.TaskType</class>
+      <string>EVENT</string>
+     </object>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="objects.Task">
+    <void property="endDate">
+     <object class="java.util.Date">
+      <long>1444485600000</long>
+     </object>
+    </void>
+    <void property="taskID">
+     <int>3</int>
+    </void>
+    <void property="taskName">
+     <string>task two</string>
+    </void>
+    <void property="taskType">
+     <object idref="TaskType0"/>
     </void>
    </object>
   </void>
