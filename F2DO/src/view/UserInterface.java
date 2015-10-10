@@ -23,13 +23,10 @@ import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleStringProperty;
 
-//import main.F2DOMain;
 import objects.Task;
 import objects.TaskDeadLine;
 import objects.TaskEvent;
 import objects.TaskFloating;
-//import parser.Parser;
-//import parser.Result;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -189,10 +186,7 @@ public class UserInterface extends Application {
         		String feedbackMsg = LogicController.process(userInput, _taskList);
         		feedback.setText(feedbackMsg);
         		
-        		//updateTable(table, userInput, _taskList);
-        		//updateTable(table, data, /*taskID*/userInput, _taskList);
-        		updateTable(table, id, taskName, _taskList, startDate, endDate, taskNum);
-        		 
+        		updateTable(table);
         	}
         });
         
@@ -205,9 +199,7 @@ public class UserInterface extends Application {
         primaryStage.show();
 	}
 	
-	private void updateTable(TableView<Integer> table, TableColumn<Integer, Number> id, TableColumn<Integer, String>taskName, ArrayList<Task> _taskList,
-			TableColumn<Integer, String> startDate, TableColumn<Integer, String> endDate, int[] taskNum) {
-		
+	private void updateTable(TableView<Integer> table) {
 		table.getItems().clear();
 		
 		for (int i = 0; i < _taskList.size(); i++) {
