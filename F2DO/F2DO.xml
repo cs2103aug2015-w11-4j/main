@@ -41,7 +41,7 @@
      <string>task one</string>
     </void>
     <void property="taskType">
-     <object class="java.lang.Enum" method="valueOf">
+     <object class="java.lang.Enum" id="TaskType1" method="valueOf">
       <class>type.TaskType</class>
       <string>EVENT</string>
      </object>
@@ -63,6 +63,24 @@
     </void>
     <void property="taskType">
      <object idref="TaskType0"/>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="objects.Task">
+    <void property="startDate">
+     <object class="java.util.Date">
+      <long>1288836000000</long>
+     </object>
+    </void>
+    <void property="taskID">
+     <int>4</int>
+    </void>
+    <void property="taskName">
+     <string>task one</string>
+    </void>
+    <void property="taskType">
+     <object idref="TaskType1"/>
     </void>
    </object>
   </void>

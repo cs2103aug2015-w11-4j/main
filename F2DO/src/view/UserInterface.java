@@ -101,30 +101,32 @@ public class UserInterface extends Application {
         column_Task.setCellValueFactory(new PropertyValueFactory<>("taskName"));
         //column_startDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         //column_endDate.setCellValueFactory(new PropertyValueFactory<>("endDate"));
-        
+
         column_startDate.setCellValueFactory(
-        		   task -> {
-        		      SimpleStringProperty property = new SimpleStringProperty();
-        		      DateFormat dateFormat = new SimpleDateFormat("dd MMM hh:mm aaa");
-        		      Date date = task.getValue().getStartDate();
-        		      
-        		      if (date != null) {
-        		    	  property.setValue(dateFormat.format(date));
-        		      }
-        		      return property;
-        		   });
-        
+        		task -> {
+        			SimpleStringProperty property = new SimpleStringProperty();
+        			DateFormat dateFormat = new SimpleDateFormat("dd MMM hh:mm aaa");
+        			Date date = task.getValue().getStartDate();
+
+        			if (date != null) {
+        				property.setValue(dateFormat.format(date));
+        			} 
+        			return property;
+        		});
+
         column_endDate.setCellValueFactory(
-     		   task -> {
-     		      SimpleStringProperty property = new SimpleStringProperty();
-     		      DateFormat dateFormat = new SimpleDateFormat("dd MMM hh:mm aaa");
-     		      Date date = task.getValue().getEndDate();
-     		      
-     		      if (date != null) {
-     		    	  property.setValue(dateFormat.format(date));
-     		      }
-     		      return property;
-     		   });
+        		task -> {
+        			SimpleStringProperty property = new SimpleStringProperty();
+        			DateFormat dateFormat = new SimpleDateFormat("dd MMM hh:mm aaa");
+        			Date date = task.getValue().getEndDate();
+
+        			if (date != null) {
+        				property.setValue(dateFormat.format(date));
+        			} else {
+        				property.setValue("NA");
+        			}
+        			return property;
+        		});
         
         column_ID.prefWidthProperty().bind(table.widthProperty().divide(10)); 
         column_Task.prefWidthProperty().bind(table.widthProperty().divide(2)); 
