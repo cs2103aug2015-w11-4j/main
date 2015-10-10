@@ -30,6 +30,7 @@ public class LogicController {
 	
 	private static void initialize() {
 		_taskList = Storage.getTaskList();
+		/*
 		if (_taskList.isEmpty()){
 			// If taskList is empty, set taskID to 1
 			taskID = 1;
@@ -38,6 +39,7 @@ public class LogicController {
 			// Then increment that ID by 1 and store to local var taskID
 			taskID = _taskList.get(_taskList.size()-1).getTaskID() + 1;
 		}
+		*/
 	}
 	
 	public static String process(String input, ArrayList<Task> taskList) {	
@@ -49,26 +51,24 @@ public class LogicController {
 		switch (result.getCmd()) {
 			case ADD: {
 				//taskList = LogicAdd.add(taskID,result,taskList);
-				Task task = new Task(taskID,
+				Task task = new Task(/*taskID,*/
 						result.getType(),
 						result.getTitle(),
 						result.getStartDate(),
 						result.getEndDate(),
 						0);
 				Storage.addTask(task);
-				taskID++;
+				//taskID++;
 				return String.format(MSG_ADD, result.getTitle());
 			}
 			case DELETE: {
 				//LogicDelete.delete(taskList, result);
+				/*
 				if (result.getDisplayID() != -1 && 
-						result.getStorageID() == getTaskList().get(result.getDisplayID()).getTaskID()) {
-					Storage.deleteTask(result.getDisplayID());
-					
-					return String.format(MSG_DELETE, result.getTitle());
-				}
-				//taskList = LogicDelete.delete(taskID, taskList, result);
-				return String.format(ERROR_DELETE, result.getTitle());
+						result.getStorageID() == getTaskList().get(result.getDisplayID()).getTaskID()) 
+				*/
+				Storage.deleteTask(result.getDisplayID());
+				return String.format(MSG_DELETE, result.getTitle());
 			} 
 			case EDIT: {
 				if (result.getDisplayID() != -1 && 
