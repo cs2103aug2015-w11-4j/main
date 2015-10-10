@@ -85,7 +85,7 @@ public class Task implements Serializable {
 		super();
 	}
 	
-	public Task(int taskID, Date startDate, Date endDate, String taskName) {
+	public Task(int taskID, String taskName, Date startDate, Date endDate) {
 		super();
 		this.taskID = taskID;
 		this.startDate = startDate;
@@ -117,8 +117,7 @@ public class Task implements Serializable {
 		this.priority = priority;
 	}
 
-	public Task(int taskID, TaskType type, String taskName, Date startDate, Date endDate, int priority) {
-		this.taskID = taskID;
+	public Task(TaskType type, String taskName, Date startDate, Date endDate, int priority) {
 		this.taskType = type;
 		this.taskName = taskName;
 		this.startDate = startDate;
