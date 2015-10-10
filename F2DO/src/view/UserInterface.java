@@ -52,7 +52,7 @@ public class UserInterface extends Application {
 		_taskList = LogicController.getTaskList();
 		
 		BorderPane root = new BorderPane();
-		Scene defaultScene = new Scene(root, 420, 420);
+		Scene defaultScene = new Scene(root, 500, 480);
 		
 		//root.setAlignment(Pos.TOP_CENTER);
 		//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -139,6 +139,8 @@ public class UserInterface extends Application {
 			} 
 			return property;
         });
+        
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         
         table.getColumns().add(id);
         table.getColumns().add(taskName);
