@@ -3,16 +3,16 @@
  <object class="java.util.ArrayList">
   <void method="add">
    <object class="objects.Task">
-    <void property="endDate">
+    <void property="startDate">
      <object class="java.util.Date">
-      <long>1444968000000</long>
+      <long>1697039940000</long>
      </object>
     </void>
     <void property="taskID">
      <int>1</int>
     </void>
     <void property="taskName">
-     <string>report</string>
+     <string>Developer guide</string>
     </void>
     <void property="taskType">
      <object class="java.lang.Enum" id="TaskType0" method="valueOf">

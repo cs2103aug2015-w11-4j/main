@@ -132,7 +132,7 @@ public class UserInterface extends Application {
         	int rowIndex = cellData.getValue();
         	SimpleStringProperty property = new SimpleStringProperty();
 			DateFormat dateFormat = new SimpleDateFormat("dd MMM hh:mm aaa");
-			Date date = _taskList.get(rowIndex).getStartDate();
+			Date date = _taskList.get(rowIndex).getEndDate();
 
 			if (date != null) {
 				property.setValue(dateFormat.format(date));
