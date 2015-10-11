@@ -53,10 +53,6 @@ public class UserInterface extends Application {
 		BorderPane root = new BorderPane();
 		Scene defaultScene = new Scene(root, 500, 480);
 		
-		//root.setAlignment(Pos.TOP_CENTER);
-		//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		//scene.getStylesheets().add("application.css");
-		
 		Text text = new Text();
 		setText(text);
         
@@ -93,17 +89,7 @@ public class UserInterface extends Application {
 		TableView<Integer> table = new TableView<>();
 		setTable(table);
        
-        /*
-        column_ID.prefWidthProperty().bind(table.widthProperty().divide(10)); 
-        column_Task.prefWidthProperty().bind(table.widthProperty().divide(2)); 
-        column_endDate.prefWidthProperty().bind(table.widthProperty().divide(3));
-        column_endDate.prefWidthProperty().bind(table.widthProperty().divide(3));
-        */
-		
-        //table.getColumns().addAll(column_ID, column_Task, column_startDate, column_endDate);
-        //table.setItems(data);
         
-
         BorderPane.setMargin(table, new Insets(0,12,12,12));
        
         root.setCenter(table);
@@ -196,6 +182,10 @@ public class UserInterface extends Application {
         });
         
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        id.setStyle( "-fx-alignment: CENTER;");
+        taskName.setStyle( "-fx-alignment: CENTER;");
+        startDate.setStyle( "-fx-alignment: CENTER;");
+        endDate.setStyle( "-fx-alignment: CENTER;");
         
         table.getColumns().add(id);
         table.getColumns().add(taskName);
