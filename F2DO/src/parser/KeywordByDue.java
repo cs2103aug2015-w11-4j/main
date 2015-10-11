@@ -3,10 +3,10 @@ package parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class KeywordBy implements IKeyword {
+public class KeywordByDue implements IKeyword {
 	private static String _input = null;
 	
-	public KeywordBy(String input) {
+	public KeywordByDue(String input) {
 		_input = input;
 	}
 	

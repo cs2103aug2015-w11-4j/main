@@ -28,7 +28,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="parser.KeywordBy" project="F2DO" file="/F2DO/src/parser/KeywordBy.java" 
+  <class id="4" language="java" name="parser.KeywordByDue" project="F2DO" file="/F2DO/src/parser/KeywordByDue.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="171" y="468"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -92,60 +92,60 @@
     </display>  
   </class>  
   <realization id="11">    
-    <end type="SOURCE" refId="3"/>    
+    <end type="SOURCE" refId="7"/>    
     <end type="TARGET" refId="2"/>  
   </realization>  
   <dependency id="12">    
     <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="8"/>  
+    <end type="TARGET" refId="10"/>  
   </dependency>  
-  <realization id="13">    
-    <end type="SOURCE" refId="4"/>    
+  <dependency id="13">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <realization id="14">    
+    <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="2"/>  
   </realization>  
-  <dependency id="14">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="3"/>  
-  </dependency>  
   <realization id="15">    
-    <end type="SOURCE" refId="5"/>    
+    <end type="SOURCE" refId="6"/>    
     <end type="TARGET" refId="2"/>  
   </realization>  
   <dependency id="16">    
     <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="10"/>  
+    <end type="TARGET" refId="3"/>  
   </dependency>  
-  <dependency id="17">    
+  <realization id="17">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="2"/>  
+  </realization>  
+  <dependency id="18">    
     <end type="SOURCE" refId="9"/>    
     <end type="TARGET" refId="2"/>  
   </dependency>  
-  <dependency id="18">    
+  <dependency id="19">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="8"/>  
+  </dependency>  
+  <dependency id="20">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="21">    
     <end type="SOURCE" refId="1"/>    
     <end type="TARGET" refId="2"/>  
   </dependency>  
-  <realization id="19">    
-    <end type="SOURCE" refId="7"/>    
+  <realization id="22">    
+    <end type="SOURCE" refId="4"/>    
     <end type="TARGET" refId="2"/>  
   </realization>  
-  <realization id="20">    
+  <realization id="23">    
     <end type="SOURCE" refId="8"/>    
     <end type="TARGET" refId="2"/>  
   </realization>  
-  <dependency id="21">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="4"/>  
-  </dependency>  
-  <realization id="22">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="2"/>  
-  </realization>  
-  <dependency id="23">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="6"/>  
-  </dependency>  
   <dependency id="24">    
     <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="7"/>  
+    <end type="TARGET" refId="4"/>  
   </dependency>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    

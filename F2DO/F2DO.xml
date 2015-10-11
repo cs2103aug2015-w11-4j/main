@@ -5,14 +5,14 @@
    <object class="objects.Task">
     <void property="endDate">
      <object class="java.util.Date">
-      <long>1318305540000</long>
+      <long>1447992000000</long>
      </object>
     </void>
     <void property="taskID">
      <int>1</int>
     </void>
     <void property="taskName">
-     <string>Developer guide</string>
+     <string>task 0</string>
     </void>
     <void property="taskType">
      <object class="java.lang.Enum" id="TaskType0" method="valueOf">
@@ -31,7 +31,7 @@
     </void>
     <void property="startDate">
      <object class="java.util.Date">
-      <long>1446516000000</long>
+      <long>1446519600000</long>
      </object>
     </void>
     <void property="taskID">
@@ -41,7 +41,7 @@
      <string>task one</string>
     </void>
     <void property="taskType">
-     <object class="java.lang.Enum" method="valueOf">
+     <object class="java.lang.Enum" id="TaskType1" method="valueOf">
       <class>type.TaskType</class>
       <string>EVENT</string>
      </object>
@@ -78,6 +78,21 @@
     </void>
     <void property="taskType">
      <object idref="TaskType0"/>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="objects.Task">
+    <void property="startDate">
+     <object class="java.util.Date">
+      <long>1324177200000</long>
+     </object>
+    </void>
+    <void property="taskName">
+     <string>task two</string>
+    </void>
+    <void property="taskType">
+     <object idref="TaskType1"/>
     </void>
    </object>
   </void>

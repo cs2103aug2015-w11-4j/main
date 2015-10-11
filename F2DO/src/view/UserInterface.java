@@ -36,10 +36,9 @@ import java.util.Date;
 //import javax.security.auth.callback.Callback;
 
 public class UserInterface extends Application {
-	
-	private TextField field; 
+	//
 	private static ArrayList<Task> _taskList;
-	private int[] taskNum = new int[100000];
+	private int[] _taskNum = new int[100000];
 
 	
 	public static void main(String[] args) {
@@ -59,20 +58,15 @@ public class UserInterface extends Application {
 		//scene.getStylesheets().add("application.css");
 		
 		Text text = new Text();
-        text.setText("F2DO, your personalised task manager");
-        text.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 16));
-        text.setFill(Color.DARKTURQUOISE);
+		setText(text);
         
-        field = new TextField();
+        TextField field = new TextField();
         
         Text feedback = new Text();
-        feedback.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 9));
-        feedback.setFill(Color.GREY);
+        setFeedback(feedback);
         
         VBox vbox = new VBox();
-        vbox.setAlignment(Pos.CENTER);
-        vbox.setPadding(new Insets(12,10,5,10));
-        vbox.setSpacing(7);
+        setVbox(vbox);
         vbox.getChildren().addAll(text, field, feedback);
         
         root.setTop(vbox);
@@ -87,25 +81,86 @@ public class UserInterface extends Application {
         
 		int index = 1;
 		
-		for (int i = 0; i < 100000; i++) {
-			taskNum[i] = 0;
+		for (int i = 0; i < _taskNum.length; i++) {
+			_taskNum[i] = 0;
 		}
 		
-		for (int i = 0; i < 10000; i++) {
-			taskNum[i] = index;
+		for (int i = 0; i < _taskNum.length; i++) {
+			_taskNum[i] = index;
 			index++;
 		}
 		
 		TableView<Integer> table = new TableView<>();
+		setTable(table);
+       
+        /*
+        column_ID.prefWidthProperty().bind(table.widthProperty().divide(10)); 
+        column_Task.prefWidthProperty().bind(table.widthProperty().divide(2)); 
+        column_endDate.prefWidthProperty().bind(table.widthProperty().divide(3));
+        column_endDate.prefWidthProperty().bind(table.widthProperty().divide(3));
+        */
 		
-        for (int i = 0; i < _taskList.size(); i++) {
+        //table.getColumns().addAll(column_ID, column_Task, column_startDate, column_endDate);
+        //table.setItems(data);
+        
+
+        BorderPane.setMargin(table, new Insets(0,12,12,12));
+       
+        root.setCenter(table);
+        
+        /* ----- Setting up the scene for different category ->  Work, Personal etc----- */
+        BorderPane work = new BorderPane();
+        Scene workScene = new Scene(work, 400, 400);
+        BorderPane personal = new BorderPane();
+        Scene personalTaskScene = new Scene(personal, 400, 400);
+        
+        /* ----- Event handler to switch between scenes -> check out the tasks under respective categories ----- */
+        HBox categories = new HBox();
+        Button tab1 = new Button("All"); 
+        Button tab2 = new Button("Work");
+        Button tab3 = new Button("Personal");
+        categories.getChildren().addAll(tab1, tab2, tab3);
+        
+        work.setBottom(categories);
+        
+        /* ----- Event handler for input processing ----- */ 
+        setKeyPressed(field, feedback, table);
+        
+        /* ------ Event handler for scene switching ----- */
+        category2.setOnAction(e -> primaryStage.setScene(workScene)); 
+        tab1.setOnAction(e -> primaryStage.setScene(defaultScene));
+        
+        primaryStage.setTitle("F2DO");
+        primaryStage.setScene(defaultScene);
+        primaryStage.show();
+	}
+	
+	private void setText(Text text) {
+		text.setText("F2DO, your personalised task manager");
+        text.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 16));
+        text.setFill(Color.DARKTURQUOISE);
+	}
+	
+	private void setFeedback(Text feedback) {
+		feedback.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 9));
+        feedback.setFill(Color.GREY);
+	}
+	
+	private void setVbox (VBox vbox) {
+		vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(12,10,5,10));
+        vbox.setSpacing(7);
+	}
+	
+	private void setTable(TableView<Integer> table) {
+		for (int i = 0; i < _taskList.size(); i++) {
             table.getItems().add(i);
         }
         
         TableColumn<Integer, Number> id = new TableColumn<>("Task ID");
         id.setCellValueFactory(cellData -> {
             Integer rowIndex = cellData.getValue();
-            return new ReadOnlyIntegerWrapper(taskNum[rowIndex]);
+            return new ReadOnlyIntegerWrapper(_taskNum[rowIndex]);
         });
 
         TableColumn<Integer, String> taskName = new TableColumn<>("Task Description");
@@ -146,59 +201,22 @@ public class UserInterface extends Application {
         table.getColumns().add(taskName);
         table.getColumns().add(startDate);
         table.getColumns().add(endDate);
-       
-        /*
-        column_ID.prefWidthProperty().bind(table.widthProperty().divide(10)); 
-        column_Task.prefWidthProperty().bind(table.widthProperty().divide(2)); 
-        column_endDate.prefWidthProperty().bind(table.widthProperty().divide(3));
-        column_endDate.prefWidthProperty().bind(table.widthProperty().divide(3));
-        */
-		
-        //table.getColumns().addAll(column_ID, column_Task, column_startDate, column_endDate);
-        //table.setItems(data);
-        
+	}
+	
+	private void setKeyPressed(TextField field, Text feedback, TableView<Integer> table) {
+		field.setOnKeyPressed((KeyEvent event) -> {
 
-        BorderPane.setMargin(table, new Insets(0,12,12,12));
-       
-        root.setCenter(table);
-        
-        /* ----- Setting up the scene for different category ->  Work, Personal etc----- */
-        BorderPane work = new BorderPane();
-        Scene workScene = new Scene(work, 400, 400);
-        BorderPane personal = new BorderPane();
-        Scene personalTaskScene = new Scene(personal, 400, 400);
-        
-        /* ----- Event handler to switch between scenes -> check out the tasks under respective categories ----- */
-        HBox categories = new HBox();
-        Button tab1 = new Button("All"); 
-        Button tab2 = new Button("Work");
-        Button tab3 = new Button("Personal");
-        categories.getChildren().addAll(tab1, tab2, tab3);
-        
-        work.setBottom(categories);
-        
-        /* ----- Event handler for input processing ----- */ 
-        field.setOnKeyPressed((KeyEvent event) -> {
-        	
-        	if (event.getCode() == KeyCode.ENTER) {
-  
-        		String userInput = field.getText();
-        		field.clear();
-        		
-        		String feedbackMsg = LogicController.process(userInput, _taskList);
-        		feedback.setText(feedbackMsg);
-        		
-        		updateTable(table);
-        	}
-        });
-        
-        /* ------ Event handler for scene switching ----- */
-        category2.setOnAction(e -> primaryStage.setScene(workScene)); 
-        tab1.setOnAction(e -> primaryStage.setScene(defaultScene));
-        
-        primaryStage.setTitle("F2DO");
-        primaryStage.setScene(defaultScene);
-        primaryStage.show();
+			if (event.getCode() == KeyCode.ENTER) {
+
+				String userInput = field.getText();
+				field.clear();
+
+				String feedbackMsg = LogicController.process(userInput, _taskList);
+				feedback.setText(feedbackMsg);
+
+				updateTable(table);
+			}
+		});
 	}
 	
 	private void updateTable(TableView<Integer> table) {
