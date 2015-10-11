@@ -11,13 +11,28 @@ public class KeywordBy implements IKeyword {
 	}
 	
 	/**
-	 * Analyze the pattern that contains 'by'.
+	 * Analyze the pattern that contains 'by' and 'due'.
 	 * Return the analyzing result.
 	 */
 	public Result analyze() {
 		String regexBy = "(.*?) by (.*?)";
+		String regexDue = "(.*?) due (.*?)";
 		
-		Pattern pattern = Pattern.compile(regexBy);
+		String[] regex = {regexBy, regexDue};
+		
+		for (int i = 0; i < regex.length; i++) {
+			Result regexResult = getMatcher(regex[i]);
+			
+			if (regexResult != null) {
+				return regexResult;
+			}
+		}
+		
+		return new Result(null, null, null);
+	}
+	
+	private Result getMatcher(String regex) {
+		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(_input);
 		
 		if (matcher.matches()) {
@@ -27,6 +42,6 @@ public class KeywordBy implements IKeyword {
 			return result;
 		}
 		
-		return new Result(null, null, null);
+		return null;
 	}
 }

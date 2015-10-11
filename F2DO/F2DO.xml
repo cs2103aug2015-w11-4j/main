@@ -3,9 +3,9 @@
  <object class="java.util.ArrayList">
   <void method="add">
    <object class="objects.Task">
-    <void property="startDate">
+    <void property="endDate">
      <object class="java.util.Date">
-      <long>1697039940000</long>
+      <long>1318305540000</long>
      </object>
     </void>
     <void property="taskID">
@@ -41,7 +41,7 @@
      <string>task one</string>
     </void>
     <void property="taskType">
-     <object class="java.lang.Enum" id="TaskType1" method="valueOf">
+     <object class="java.lang.Enum" method="valueOf">
       <class>type.TaskType</class>
       <string>EVENT</string>
      </object>
@@ -68,19 +68,16 @@
   </void>
   <void method="add">
    <object class="objects.Task">
-    <void property="startDate">
+    <void property="endDate">
      <object class="java.util.Date">
-      <long>1288836000000</long>
+      <long>1444622400000</long>
      </object>
     </void>
-    <void property="taskID">
-     <int>4</int>
-    </void>
     <void property="taskName">
-     <string>task one</string>
+     <string>task three</string>
     </void>
     <void property="taskType">
-     <object idref="TaskType1"/>
+     <object idref="TaskType0"/>
     </void>
    </object>
   </void>

@@ -39,6 +39,7 @@ public class KeywordHelper {
 		functions.put(KeywordType.FROM, new KeywordFromTo(input));
 		functions.put(KeywordType.IN, new KeywordIn(input));
 		functions.put(KeywordType.BY, new KeywordBy(input));
+		functions.put(KeywordType.DUE, new KeywordBy(input));
 		functions.put(KeywordType.TOMORROW, new KeywordDay(input));
 		functions.put(KeywordType.YESTERDAY, new KeywordDay(input));
 		

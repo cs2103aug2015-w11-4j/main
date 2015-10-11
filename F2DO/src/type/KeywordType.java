@@ -6,6 +6,7 @@ public enum KeywordType {
 	FROM,
 	IN,
 	BY,
+	DUE,
 	UNTIL,
 	TOMORROW,
 	YESTERDAY
