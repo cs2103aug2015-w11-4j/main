@@ -77,11 +77,12 @@ public class Storage implements Serializable {
 		}
 	}
 	
-	// Takes in task object created by parser and adds it to ArrayList
+	// Takes in task object created by logic and adds it to ArrayList
 	public static boolean addTask(Task newTask) {
 		nullRemovalCheck();
 		taskList.add(newTask);
 		
+		saveToFile();
 		assertTrue(saveToFile());
 		
 		return true;
@@ -92,6 +93,7 @@ public class Storage implements Serializable {
 		taskList.remove(taskNumber);
 		nullRemovalCheck();
 		
+		saveToFile();
 		assertTrue(saveToFile());
 		
 		return true;
@@ -105,6 +107,7 @@ public class Storage implements Serializable {
 		taskList.get(taskNumber).setStartDate(newStartDate);
 		taskList.get(taskNumber).setEndDate(newEndDate);
 		
+		saveToFile();
 		assertTrue(saveToFile());
 		
 		return true;
@@ -194,6 +197,7 @@ public class Storage implements Serializable {
 		nullRemovalCheck();
 		Collections.sort(taskList, taskComparator);
 		
+		saveToFile();
 		assertTrue(saveToFile());
 	
 		return true;

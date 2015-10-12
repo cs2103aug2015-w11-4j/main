@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_60" class="java.beans.XMLDecoder">
+ <object class="java.util.ArrayList">
+  <void method="add">
+   <object class="objects.Task" id="Task0">
+    <void property="endDate">
+     <object class="java.util.Date">
+      <long>1422806400000</long>
+     </object>
+    </void>
+    <void property="startDate">
+     <object class="java.util.Date">
+      <long>1420041600000</long>
+     </object>
+    </void>
+    <void property="taskID">
+     <int>5</int>
+    </void>
+    <void property="taskName">
+     <string>first</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object idref="Task0"/>
+  </void>
+  <void method="add">
+   <object class="objects.Task" id="Task1">
+    <void property="startDate">
+     <object class="java.util.Date">
+      <long>1450713600000</long>
+     </object>
+    </void>
+    <void property="taskID">
+     <int>4</int>
+    </void>
+    <void property="taskName">
+     <string>w testing Task 4</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object idref="Task1"/>
+  </void>
+  <void method="add">
+   <object class="objects.Task" id="Task2">
+    <void property="endDate">
+     <object class="java.util.Date">
+      <long>1450886400000</long>
+     </object>
+    </void>
+    <void property="startDate">
+     <object class="java.util.Date">
+      <long>1450886400000</long>
+     </object>
+    </void>
+    <void property="taskID">
+     <int>1</int>
+    </void>
+    <void property="taskName">
+     <string>z testing Task 1</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object idref="Task2"/>
+  </void>
+  <void method="add">
+   <object class="objects.Task" id="Task3">
+    <void property="taskID">
+     <int>3</int>
+    </void>
+    <void property="taskName">
+     <string>x testing Task 3</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object idref="Task3"/>
+  </void>
+  <void method="add">
+   <object class="objects.Task" id="Task4">
+    <void property="taskID">
+     <int>2</int>
+    </void>
+    <void property="taskName">
+     <string>y testing Task 2</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object idref="Task4"/>
+  </void>
+ </object>
+</java>
