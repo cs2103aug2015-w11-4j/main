@@ -27,7 +27,6 @@ import objects.Task;
 import objects.TaskDeadLine;
 import objects.TaskEvent;
 import objects.TaskFloating;
-import parser.Parser;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -283,10 +282,6 @@ public class UserInterface extends Application {
 		    }
 		}
 		*/
-		
-		for (int i = 0; i < _taskList.size(); i++) {
-            table.getItems().add(i);
-		}
 		
 		for (int i = 0; i < _taskList.size(); i++) {
 			
