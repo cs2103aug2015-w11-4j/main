@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -19,6 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleStringProperty;
@@ -41,7 +43,7 @@ public class UserInterface extends Application {
 	private int[] _taskNum = new int[100000];
 
 	/*-----history of commands/input keyed in by user-----*/
-	//private ArrayList<String> log; 
+	private ArrayList<String> log; 
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -51,7 +53,7 @@ public class UserInterface extends Application {
 	public void start(Stage primaryStage) {
 		
 		_taskList = LogicController.getTaskList();
-		//log = new ArrayList<String>();
+		log = new ArrayList<String>();
 		
 		/*-------testing------*/
 		if (_taskList.isEmpty()){
@@ -66,17 +68,12 @@ public class UserInterface extends Application {
 		
         TextField field = new TextField();
         
-        Text feedback = new Text();
+        Label feedback = new Label();
         setFeedback(feedback);
-        
-        /*
-        Text lastAction = new Text();
-        setLastAction(lastAction);
-        */
         
         VBox vbox = new VBox();
         setVbox(vbox);
-        vbox.getChildren().addAll(text, field, feedback/*, lastAction*/);
+        vbox.getChildren().addAll(text, field, feedback);
         
         BorderPane.setMargin(vbox, new Insets(10, 15, 0, 15));
         root.setTop(vbox);
@@ -143,16 +140,19 @@ public class UserInterface extends Application {
         text.setFill(Color.DARKTURQUOISE);
 	}
 	
-	private void setFeedback(Text feedback) {
+	/*------This function displays the last action by user by default-----*/
+	/*------After the table is updated, however, it displays a feedback to the user-----*/
+	private void setFeedback(Label feedback) {
+		int size;
+	
 		feedback.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 12));
-        feedback.setFill(Color.GREY);
+        feedback.setTextFill(Color.GREY);
+        
+        size = log.size();
+		System.out.println(size);
+		
+        feedback.setText("No previous commands");
 	}
-	/*
-	private void setLastAction(Text lastAction) {
-		lastAction.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 8));
-        lastAction.setFill(Color.GREY);
-	}
-	*/
 	
 	private void setVbox (VBox vbox) {
 		vbox.setAlignment(Pos.CENTER);
@@ -252,10 +252,10 @@ public class UserInterface extends Application {
         table.getColumns().add(endDate);
 	}
 	
-	private void setKeyPressed(TextField field, Text feedback, /*Text lastAction, */ TableView<Integer> table) {
+	private void setKeyPressed(TextField field, Label feedback, TableView<Integer> table) {
 		field.setOnKeyPressed((KeyEvent event) -> {
 			
-			//int size; 
+			int size;
 
 			if (event.getCode() == KeyCode.ENTER) {
 
@@ -263,15 +263,18 @@ public class UserInterface extends Application {
 				field.clear();
 				
 				String feedbackMsg = LogicController.process(userInput, _taskList);
-				feedback.setText(feedbackMsg);
-				
-				/*
-				log.add(userInput); 
 				size = log.size();
-				if (size > 1) {
-					lastAction.setText("Last Action: " + log.get(size-1));
+				System.out.println("Size = " + size);
+				
+				log.add(userInput); 
+				feedback.setWrapText(true);
+				feedback.setTextAlignment(TextAlignment.CENTER);
+				
+				if (log.size() <= 1) {
+					feedback.setText(feedbackMsg);
+				} else {
+					feedback.setText(feedbackMsg + "\n" + "Previous command: " + log.get(size-1));
 				}
-				*/
 
 				updateTable(table);
 			}
