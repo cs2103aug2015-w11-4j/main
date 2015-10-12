@@ -1,5 +1,7 @@
 package storage;
 
+import static org.junit.Assert.*;
+
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
@@ -11,12 +13,11 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+
 
 import objects.Task;
 
@@ -28,7 +29,7 @@ public class Storage implements Serializable {
 	private static final String SAVED_DIRECTORY = "%s\\F2DO";
 	private static final String CHANGE_DIRECTORY = "user.dir";
 	
-	private static ArrayList<Task> taskList = new ArrayList<Task>();
+	static ArrayList<Task> taskList = new ArrayList<Task>();
 	private static String saveFolder;
 	private static String filePath;
 	
@@ -81,11 +82,9 @@ public class Storage implements Serializable {
 		nullRemovalCheck();
 		taskList.add(newTask);
 		
-		if (saveToFile()) {
-			return true;
-		}
+		assertTrue(saveToFile());
 		
-		return false;
+		return true;
 	}
 	
 	// Deletes the task object located at the index supplied by the user
@@ -93,11 +92,9 @@ public class Storage implements Serializable {
 		taskList.remove(taskNumber);
 		nullRemovalCheck();
 		
-		if (saveToFile()) {
-			return true;
-		}
+		assertTrue(saveToFile());
 		
-		return false;
+		return true;
 	}
 	
 	// Updates the desired task with the new information
@@ -108,11 +105,9 @@ public class Storage implements Serializable {
 		taskList.get(taskNumber).setStartDate(newStartDate);
 		taskList.get(taskNumber).setEndDate(newEndDate);
 		
-		if (saveToFile()) {
-			return true;
-		}
+		assertTrue(saveToFile());
 		
-		return false;
+		return true;
 	}
 	
 	// Saves the ArrayList into an XML file.
@@ -198,15 +193,16 @@ public class Storage implements Serializable {
 	public static boolean sortTaskList() {
 		nullRemovalCheck();
 		Collections.sort(taskList, taskComparator);
-
-		if (saveToFile()) {
-			return true;
-		}
+		
+		assertTrue(saveToFile());
 	
-		return false;
+		return true;
 	}
 
-	// Overriding comparator to compare by start/end dates.
+	/* Overriding comparator to compare by start/end dates.
+	 * Custom comparator will set tasks with dates allocated (deadlines etc) based on chronological order first,
+	 * followed by floating tasks (in alphabetical order).
+	 */
 	public static Comparator<Task> taskComparator = new Comparator<Task>() {
 	    
         @Override
@@ -222,10 +218,18 @@ public class Storage implements Serializable {
 				return t1.getStartDate().compareTo(t2.getEndDate());
 			} else if (t1.getStartDate() != null && t2.getStartDate() != null) {
 				return t1.getStartDate().compareTo(t2.getStartDate());
+			} else if (t1.getStartDate() == null && t1.getEndDate() == null && t2.getStartDate() != null
+						|| t2.getEndDate() != null) {
+				return 1;
+			} else if (t1.getStartDate() != null || t1.getEndDate() != null && t2.getStartDate() == null
+						&& t2.getEndDate() == null) {
+				return -1;
+			} else if (t1.getStartDate() == null && t1.getEndDate() == null && t2.getStartDate() == null
+						&& t2.getEndDate() == null) {
+				return t1.getTaskName().compareTo(t2.getTaskName());
 			}
         	
-        	// If either t1 or t2 is a floating task, or both.
-        	return t1.getTaskName().compareTo(t2.getTaskName());
+        	return 0;
 		}
 	};
 	
@@ -252,44 +256,11 @@ public class Storage implements Serializable {
 			readFromFile();
 		}
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		String dateInput1 = "24/12/2015";
-		
-		Task testTask1 = new Task();
-		taskList.add(testTask1);
-		taskList.get(0).setTaskID(1);
-		try {
-			taskList.get(0).setStartDate(sdf.parse(dateInput1));
-			taskList.get(0).setEndDate(sdf.parse(dateInput1));
-		} catch (ParseException e1) {
-			e1.printStackTrace();
-		}
-		taskList.get(0).setTaskName("z testing Task 1");
-		
-		String dateInput2 = "23/12/2015";
-		
-		Task testTask2 = new Task();
-		taskList.add(testTask2);
-		taskList.get(1).setTaskID(2);
-		try {
-			taskList.get(1).setStartDate(sdf.parse(dateInput2));
-			taskList.get(1).setEndDate(sdf.parse(dateInput2));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		taskList.get(1).setTaskName("y testing Task 2");
 		displayTaskList();
 
 		if (sortTaskList()) {
 			System.out.println("\n\n");
 			displayTaskList();
 		}
-	
-/*		if (deleteTask(1)) {
-			System.out.println("\n\n");
-			displayTaskList();
-		}
-*/
 	}
 }
