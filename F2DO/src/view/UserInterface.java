@@ -51,7 +51,7 @@ public class UserInterface extends Application {
 		_taskList = LogicController.getTaskList();
 		
 		BorderPane root = new BorderPane();
-		Scene defaultScene = new Scene(root, 500, 480);
+		Scene defaultScene = new Scene(root, 550, 500);
 		
 		Text text = new Text();
 		setText(text);
@@ -65,6 +65,7 @@ public class UserInterface extends Application {
         setVbox(vbox);
         vbox.getChildren().addAll(text, field, feedback);
         
+        BorderPane.setMargin(vbox, new Insets(10, 15, 0, 15));
         root.setTop(vbox);
             
         HBox hbox = new HBox();
@@ -73,8 +74,10 @@ public class UserInterface extends Application {
         Button category3 = new Button("Personal");
         hbox.getChildren().addAll(category1, category2, category3);
         
-        root.setBottom(hbox);
+        BorderPane.setMargin(hbox, new Insets(0, 25, 20, 25));
         
+        root.setBottom(hbox);
+        hbox.setSpacing(10);
 		int index = 1;
 		
 		for (int i = 0; i < _taskNum.length; i++) {
@@ -90,15 +93,15 @@ public class UserInterface extends Application {
 		setTable(table);
        
         
-        BorderPane.setMargin(table, new Insets(0,12,12,12));
+        BorderPane.setMargin(table, new Insets(0,25,20,25));
        
         root.setCenter(table);
         
         /* ----- Setting up the scene for different category ->  Work, Personal etc----- */
         BorderPane work = new BorderPane();
-        Scene workScene = new Scene(work, 400, 400);
+        Scene workScene = new Scene(work, 550, 500);
         BorderPane personal = new BorderPane();
-        Scene personalTaskScene = new Scene(personal, 400, 400);
+        Scene personalTaskScene = new Scene(personal, 550, 500);
         
         /* ----- Event handler to switch between scenes -> check out the tasks under respective categories ----- */
         HBox categories = new HBox();
@@ -116,26 +119,26 @@ public class UserInterface extends Application {
         category2.setOnAction(e -> primaryStage.setScene(workScene)); 
         tab1.setOnAction(e -> primaryStage.setScene(defaultScene));
         
-        primaryStage.setTitle("F2DO");
+        primaryStage.setTitle("Welcome to F2DO, your personalised task manager (:");
         primaryStage.setScene(defaultScene);
         primaryStage.show();
 	}
 	
 	private void setText(Text text) {
-		text.setText("F2DO, your personalised task manager");
-        text.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 16));
+		text.setText("Viewing All Tasks");
+        text.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 18));
         text.setFill(Color.DARKTURQUOISE);
 	}
 	
 	private void setFeedback(Text feedback) {
-		feedback.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 9));
+		feedback.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 12));
         feedback.setFill(Color.GREY);
 	}
 	
 	private void setVbox (VBox vbox) {
 		vbox.setAlignment(Pos.CENTER);
-        vbox.setPadding(new Insets(12,10,5,10));
-        vbox.setSpacing(7);
+        vbox.setPadding(new Insets(10,10,5,10));
+        vbox.setSpacing(10);
 	}
 	
 	private void setTable(TableView<Integer> table) {
