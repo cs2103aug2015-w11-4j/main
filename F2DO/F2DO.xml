@@ -5,55 +5,39 @@
    <object class="objects.Task">
     <void property="endDate">
      <object class="java.util.Date">
-      <long>1445227200000</long>
-     </object>
-    </void>
-    <void property="taskName">
-     <string>task one</string>
-    </void>
-    <void property="taskType">
-     <object class="java.lang.Enum" id="TaskType0" method="valueOf">
-      <class>type.TaskType</class>
-      <string>DEADLINE</string>
-     </object>
-    </void>
-   </object>
-  </void>
-  <void method="add">
-   <object class="objects.Task">
-    <void property="endDate">
-     <object class="java.util.Date">
-      <long>1444730400000</long>
-     </object>
-    </void>
-    <void property="taskName">
-     <string>task two</string>
-    </void>
-    <void property="taskType">
-     <object idref="TaskType0"/>
-    </void>
-   </object>
-  </void>
-  <void method="add">
-   <object class="objects.Task">
-    <void property="endDate">
-     <object class="java.util.Date">
-      <long>1446645600000</long>
+      <long>1450800000000</long>
      </object>
     </void>
     <void property="startDate">
      <object class="java.util.Date">
-      <long>1446638400000</long>
+      <long>1450800000000</long>
      </object>
+    </void>
+    <void property="taskID">
+     <int>2</int>
     </void>
     <void property="taskName">
-     <string>task three</string>
+     <string>y testing Task 2</string>
     </void>
-    <void property="taskType">
-     <object class="java.lang.Enum" method="valueOf">
-      <class>type.TaskType</class>
-      <string>EVENT</string>
+   </object>
+  </void>
+  <void method="add">
+   <object class="objects.Task">
+    <void property="endDate">
+     <object class="java.util.Date">
+      <long>1450886400000</long>
      </object>
+    </void>
+    <void property="startDate">
+     <object class="java.util.Date">
+      <long>1450886400000</long>
+     </object>
+    </void>
+    <void property="taskID">
+     <int>1</int>
+    </void>
+    <void property="taskName">
+     <string>z testing Task 1</string>
     </void>
    </object>
   </void>

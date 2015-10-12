@@ -56,6 +56,7 @@ public class Storage implements Serializable {
 		File dir = new File(directory);
 		
 		if (!dir.exists()) {
+			System.out.println("CREATE SAVE DIR");
 			dir.mkdir();
 		}
 		
@@ -65,9 +66,9 @@ public class Storage implements Serializable {
 	
 	private static void createSaveFile() {
 		File file = new File(FILENAME);
-		
 		if (!file.exists()) {
 			try {
+				System.out.println("CREATE SAVE FILE");
 				file.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -139,6 +140,7 @@ public class Storage implements Serializable {
 	private static boolean readFromFile() {
 
 		if (isEmptyFile()) {
+			System.out.println("EMPTY FILE");
 			return false;
 		}
 		
@@ -162,7 +164,6 @@ public class Storage implements Serializable {
 	// Checks if the file contains any data.
 	private static boolean isEmptyFile() {
 		FileReader fr = null;
-		boolean isNothingRead = true;
 		
 		try {
 			fr = new FileReader(FILENAME);
@@ -172,13 +173,12 @@ public class Storage implements Serializable {
 		
 		try {
 			if (fr.read() == -1) {
-				return isNothingRead;
+				return true;
 			}
 		} catch (IOException e) {
-			isNothingRead = false;
+			return true;
 		}
-		
-		return isNothingRead;
+		return false;
 	}
 	
 	
