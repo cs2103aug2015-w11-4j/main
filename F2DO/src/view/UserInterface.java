@@ -36,10 +36,12 @@ import java.util.Date;
 //import javax.security.auth.callback.Callback;
 
 public class UserInterface extends Application {
-	//
+	
 	private static ArrayList<Task> _taskList;
 	private int[] _taskNum = new int[100000];
 
+	/*-----history of commands/input keyed in by user-----*/
+	//private ArrayList<String> log; 
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -49,21 +51,32 @@ public class UserInterface extends Application {
 	public void start(Stage primaryStage) {
 		
 		_taskList = LogicController.getTaskList();
+		//log = new ArrayList<String>();
+		
+		/*-------testing------*/
+		if (_taskList.isEmpty()){
+			System.out.println("List is empty!");
+		}
 		
 		BorderPane root = new BorderPane();
 		Scene defaultScene = new Scene(root, 550, 480);
 		
 		Text text = new Text();
 		setText(text);
-        
+		
         TextField field = new TextField();
         
         Text feedback = new Text();
         setFeedback(feedback);
         
+        /*
+        Text lastAction = new Text();
+        setLastAction(lastAction);
+        */
+        
         VBox vbox = new VBox();
         setVbox(vbox);
-        vbox.getChildren().addAll(text, field, feedback);
+        vbox.getChildren().addAll(text, field, feedback/*, lastAction*/);
         
         BorderPane.setMargin(vbox, new Insets(10, 15, 0, 15));
         root.setTop(vbox);
@@ -113,7 +126,7 @@ public class UserInterface extends Application {
         work.setBottom(categories);
         
         /* ----- Event handler for input processing ----- */ 
-        setKeyPressed(field, feedback, table);
+        setKeyPressed(field, feedback,/*lastAction,*/ table);
         
         /* ------ Event handler for scene switching ----- */
         category2.setOnAction(e -> primaryStage.setScene(workScene)); 
@@ -134,11 +147,17 @@ public class UserInterface extends Application {
 		feedback.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 12));
         feedback.setFill(Color.GREY);
 	}
+	/*
+	private void setLastAction(Text lastAction) {
+		lastAction.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 8));
+        lastAction.setFill(Color.GREY);
+	}
+	*/
 	
 	private void setVbox (VBox vbox) {
 		vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(10,10,5,10));
-        vbox.setSpacing(10);
+        vbox.setSpacing(8);
 	}
 	
 	private void setTable(TableView<Integer> table) {
@@ -233,16 +252,26 @@ public class UserInterface extends Application {
         table.getColumns().add(endDate);
 	}
 	
-	private void setKeyPressed(TextField field, Text feedback, TableView<Integer> table) {
+	private void setKeyPressed(TextField field, Text feedback, /*Text lastAction, */ TableView<Integer> table) {
 		field.setOnKeyPressed((KeyEvent event) -> {
+			
+			//int size; 
 
 			if (event.getCode() == KeyCode.ENTER) {
 
 				String userInput = field.getText();
 				field.clear();
-
+				
 				String feedbackMsg = LogicController.process(userInput, _taskList);
 				feedback.setText(feedbackMsg);
+				
+				/*
+				log.add(userInput); 
+				size = log.size();
+				if (size > 1) {
+					lastAction.setText("Last Action: " + log.get(size-1));
+				}
+				*/
 
 				updateTable(table);
 			}
