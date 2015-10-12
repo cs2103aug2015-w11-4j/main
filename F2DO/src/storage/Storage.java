@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
+import org.json.JSONObject;
 
 import objects.Task;
 
@@ -116,6 +117,7 @@ public class Storage implements Serializable {
 	// Saves the ArrayList into an XML file.
 	public static boolean saveToFile() {
 		boolean isSaveSuccess = true;
+		
 		nullRemovalCheck();
 		XMLEncoder encoder = null;
 		
@@ -130,6 +132,29 @@ public class Storage implements Serializable {
 		encoder.writeObject(taskList);
 		encoder.close();
 		
+		return isSaveSuccess;
+	}
+	
+	public static boolean saveToFile2() {
+		boolean isSaveSuccess = true;
+		
+		ArrayList<JSONObject> jsonList = StorageHelper.jsonList(taskList);
+		StorageHelper.convertToXML(jsonList);
+		
+		/*nullRemovalCheck();
+		XMLEncoder encoder = null;
+		
+		try {
+			FileOutputStream fos = new FileOutputStream(filePath);
+			BufferedOutputStream bos = new BufferedOutputStream(fos);
+			encoder = new XMLEncoder(bos);
+		} catch (FileNotFoundException e) {
+			isSaveSuccess = false;
+		}
+		
+		encoder.writeObject(taskList);
+		encoder.close();
+		*/
 		return isSaveSuccess;
 	}
 	

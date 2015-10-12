@@ -2,94 +2,98 @@
 <java version="1.8.0_60" class="java.beans.XMLDecoder">
  <object class="java.util.ArrayList">
   <void method="add">
-   <object class="objects.Task" id="Task0">
+   <object class="objects.Task">
     <void property="endDate">
      <object class="java.util.Date">
-      <long>1422806400000</long>
+      <long>1697126340000</long>
      </object>
-    </void>
-    <void property="startDate">
-     <object class="java.util.Date">
-      <long>1420041600000</long>
-     </object>
-    </void>
-    <void property="taskID">
-     <int>5</int>
     </void>
     <void property="taskName">
-     <string>first</string>
+     <string>CS2101 Developer Guide</string>
+    </void>
+    <void property="taskType">
+     <object class="java.lang.Enum" id="TaskType0" method="valueOf">
+      <class>type.TaskType</class>
+      <string>DEADLINE</string>
+     </object>
     </void>
    </object>
   </void>
   <void method="add">
-   <object idref="Task0"/>
-  </void>
-  <void method="add">
-   <object class="objects.Task" id="Task1">
-    <void property="startDate">
-     <object class="java.util.Date">
-      <long>1450713600000</long>
-     </object>
-    </void>
-    <void property="taskID">
-     <int>4</int>
-    </void>
-    <void property="taskName">
-     <string>w testing Task 4</string>
-    </void>
-   </object>
-  </void>
-  <void method="add">
-   <object idref="Task1"/>
-  </void>
-  <void method="add">
-   <object class="objects.Task" id="Task2">
+   <object class="objects.Task">
     <void property="endDate">
      <object class="java.util.Date">
-      <long>1450886400000</long>
+      <long>1697126340000</long>
+     </object>
+    </void>
+    <void property="taskName">
+     <string>CS2101 User Guide</string>
+    </void>
+    <void property="taskType">
+     <object idref="TaskType0"/>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="objects.Task">
+    <void property="startDate">
+     <object class="java.util.Date">
+      <long>1318474800000</long>
+     </object>
+    </void>
+    <void property="taskName">
+     <string>CS2103 V0.2 Demonstration</string>
+    </void>
+    <void property="taskType">
+     <object class="java.lang.Enum" id="TaskType1" method="valueOf">
+      <class>type.TaskType</class>
+      <string>EVENT</string>
+     </object>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="objects.Task">
+    <void property="endDate">
+     <object class="java.util.Date">
+      <long>1444806000000</long>
      </object>
     </void>
     <void property="startDate">
      <object class="java.util.Date">
-      <long>1450886400000</long>
+      <long>1381726800000</long>
      </object>
     </void>
-    <void property="taskID">
-     <int>1</int>
-    </void>
     <void property="taskName">
-     <string>z testing Task 1</string>
+     <string>CS2103 Group Meeting</string>
+    </void>
+    <void property="taskType">
+     <object idref="TaskType1"/>
     </void>
    </object>
   </void>
   <void method="add">
-   <object idref="Task2"/>
-  </void>
-  <void method="add">
-   <object class="objects.Task" id="Task3">
-    <void property="taskID">
-     <int>3</int>
+   <object class="objects.Task">
+    <void property="endDate">
+     <object class="java.util.Date">
+      <long>1444636800000</long>
+     </object>
+    </void>
+    <void property="startDate">
+     <object class="java.util.Date">
+      <long>1444633200000</long>
+     </object>
     </void>
     <void property="taskName">
-     <string>x testing Task 3</string>
+     <string>Exercise</string>
+    </void>
+    <void property="taskType">
+     <object class="java.lang.Enum" method="valueOf">
+      <class>type.TaskType</class>
+      <string>FLOATING</string>
+     </object>
     </void>
    </object>
-  </void>
-  <void method="add">
-   <object idref="Task3"/>
-  </void>
-  <void method="add">
-   <object class="objects.Task" id="Task4">
-    <void property="taskID">
-     <int>2</int>
-    </void>
-    <void property="taskName">
-     <string>y testing Task 2</string>
-    </void>
-   </object>
-  </void>
-  <void method="add">
-   <object idref="Task4"/>
   </void>
  </object>
 </java>
