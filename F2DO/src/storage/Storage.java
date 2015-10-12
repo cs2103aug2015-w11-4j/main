@@ -30,10 +30,12 @@ public class Storage implements Serializable {
 	
 	private static ArrayList<Task> taskList = new ArrayList<Task>();
 	private static String saveFolder;
+	private static String filePath;
 	
 	// Initialize storage class
 	static {
 		saveFolder = DEFAULT_DIRECTORY;
+		filePath = DEFAULT_DIRECTORY + "/" + FILENAME;
 		createSaveDir(DEFAULT_DIRECTORY);
 		readFromFile();
 	}
@@ -56,7 +58,6 @@ public class Storage implements Serializable {
 		File dir = new File(directory);
 		
 		if (!dir.exists()) {
-			System.out.println("CREATE SAVE DIR");
 			dir.mkdir();
 		}
 		
@@ -65,10 +66,9 @@ public class Storage implements Serializable {
 	}
 	
 	private static void createSaveFile() {
-		File file = new File(FILENAME);
+		File file = new File(filePath);
 		if (!file.exists()) {
 			try {
-				System.out.println("CREATE SAVE FILE");
 				file.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -122,7 +122,7 @@ public class Storage implements Serializable {
 		XMLEncoder encoder = null;
 		
 		try {
-			FileOutputStream fos = new FileOutputStream(FILENAME);
+			FileOutputStream fos = new FileOutputStream(filePath);
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			encoder = new XMLEncoder(bos);
 		} catch (FileNotFoundException e) {
@@ -140,7 +140,6 @@ public class Storage implements Serializable {
 	private static boolean readFromFile() {
 
 		if (isEmptyFile()) {
-			System.out.println("EMPTY FILE");
 			return false;
 		}
 		
@@ -149,7 +148,7 @@ public class Storage implements Serializable {
 		XMLDecoder decoder = null;
 				
 		try {
-			FileInputStream fis = new FileInputStream(FILENAME);
+			FileInputStream fis = new FileInputStream(filePath);
 			BufferedInputStream bis = new BufferedInputStream(fis);
 			decoder = new XMLDecoder(bis);
 		} catch (FileNotFoundException e) {
@@ -166,7 +165,7 @@ public class Storage implements Serializable {
 		FileReader fr = null;
 		
 		try {
-			fr = new FileReader(FILENAME);
+			fr = new FileReader(filePath);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
