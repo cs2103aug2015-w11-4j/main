@@ -162,7 +162,7 @@ public class UserInterface extends Application {
         startDate.setCellValueFactory(cellData -> {
         	int rowIndex = cellData.getValue();
         	SimpleStringProperty property = new SimpleStringProperty();
-        	DateFormat dateWithTime = new SimpleDateFormat("dd MMM hh:mm aaa");
+        	DateFormat dateWithTime = new SimpleDateFormat("dd MMM HH:mm");
         	DateFormat dateWithoutTime = new SimpleDateFormat("dd MMM");
 			Date date = _taskList.get(rowIndex).getStartDate();
 			
@@ -226,8 +226,6 @@ public class UserInterface extends Application {
           }
         });
         */
-        
-        //resizeColumnWithContent();
         
         table.getColumns().add(id);
         table.getColumns().add(taskName);
