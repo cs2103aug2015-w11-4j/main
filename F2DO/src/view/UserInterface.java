@@ -27,6 +27,7 @@ import objects.Task;
 import objects.TaskDeadLine;
 import objects.TaskEvent;
 import objects.TaskFloating;
+import parser.Parser;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -51,7 +52,7 @@ public class UserInterface extends Application {
 		_taskList = LogicController.getTaskList();
 		
 		BorderPane root = new BorderPane();
-		Scene defaultScene = new Scene(root, 550, 500);
+		Scene defaultScene = new Scene(root, 550, 480);
 		
 		Text text = new Text();
 		setText(text);
@@ -93,7 +94,7 @@ public class UserInterface extends Application {
 		setTable(table);
        
         
-        BorderPane.setMargin(table, new Insets(0,25,20,25));
+        BorderPane.setMargin(table, new Insets(2,25,20,25));
        
         root.setCenter(table);
         
@@ -146,7 +147,7 @@ public class UserInterface extends Application {
             table.getItems().add(i);
         }
         
-        TableColumn<Integer, Number> id = new TableColumn<>("Task ID");
+        TableColumn<Integer, Number> id = new TableColumn<>("ID");
         id.setCellValueFactory(cellData -> {
             Integer rowIndex = cellData.getValue();
             return new ReadOnlyIntegerWrapper(_taskNum[rowIndex]);
@@ -162,12 +163,22 @@ public class UserInterface extends Application {
         startDate.setCellValueFactory(cellData -> {
         	int rowIndex = cellData.getValue();
         	SimpleStringProperty property = new SimpleStringProperty();
-			DateFormat dateFormat = new SimpleDateFormat("dd MMM hh:mm aaa");
+        	DateFormat dateWithTime = new SimpleDateFormat("dd MMM hh:mm aaa");
+        	DateFormat dateWithoutTime = new SimpleDateFormat("dd MMM");
 			Date date = _taskList.get(rowIndex).getStartDate();
-
+			
 			if (date != null) {
-				property.setValue(dateFormat.format(date));
+				String date_string = date.toString();
+				//- to be edited : would not work if user inputs 12:00am/pm as the time
+				if (date_string.contains("12:00")) {
+					property.setValue(dateWithoutTime.format(date));
+				} else {
+					property.setValue(dateWithTime.format(date));
+				}		
+			} else {
+				property.setValue("?");
 			} 
+	
 			return property;
         });
         
@@ -175,20 +186,49 @@ public class UserInterface extends Application {
         endDate.setCellValueFactory(cellData -> {
         	int rowIndex = cellData.getValue();
         	SimpleStringProperty property = new SimpleStringProperty();
-			DateFormat dateFormat = new SimpleDateFormat("dd MMM hh:mm aaa");
+			DateFormat dateWithTime = new SimpleDateFormat("dd MMM hh:mm aaa");
+			DateFormat dateWithoutTime = new SimpleDateFormat("dd MMM");
 			Date date = _taskList.get(rowIndex).getEndDate();
-
+			
 			if (date != null) {
-				property.setValue(dateFormat.format(date));
+				String date_string = date.toString();
+				//- to be edited : would not work if user inputs 12:00am/pm as the time
+				if (date_string.contains("12:00")) {
+					property.setValue(dateWithoutTime.format(date));
+				} else {
+					property.setValue(dateWithTime.format(date));
+				}		
+			} else {
+				property.setValue("?");
 			} 
+			
 			return property;
         });
         
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         id.setStyle( "-fx-alignment: CENTER;");
         taskName.setStyle( "-fx-alignment: CENTER;");
         startDate.setStyle( "-fx-alignment: CENTER;");
         endDate.setStyle( "-fx-alignment: CENTER;");
+        
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+       
+        /*
+        id.prefWidthProperty().bind(table.widthProperty().divide(10)); 
+        taskName.prefWidthProperty().bind(table.widthProperty().divide(2)); 
+        startDate.prefWidthProperty().bind(table.widthProperty().divide(5)); 
+        endDate.prefWidthProperty().bind(table.widthProperty().divide(5)); 
+        */
+        
+        /*
+        table.setColumnResizePolicy(new Callback<TableView.ResizeFeatures<Integer>, Boolean>() {
+          @Override
+          public Boolean call(ResizeFeatures p) {
+             return true;
+          }
+        });
+        */
+        
+        //resizeColumnWithContent();
         
         table.getColumns().add(id);
         table.getColumns().add(taskName);
@@ -213,12 +253,12 @@ public class UserInterface extends Application {
 	}
 	
 	private void updateTable(TableView<Integer> table) {
+		
 		table.getItems().clear();
 		
 		for (int i = 0; i < _taskList.size(); i++) {
             table.getItems().add(i);
 		}
-		
 		
 		//Result result = Parser.parse(input, _taskList);
 		
@@ -226,7 +266,7 @@ public class UserInterface extends Application {
 		/*
 		switch(result.getType()) { 
 			case DEADLINE: {
-				
+		        
 			}
 			case EVENT: {
 				//provide either the starting date, or both start and end date.
@@ -243,6 +283,10 @@ public class UserInterface extends Application {
 		    }
 		}
 		*/
+		
+		for (int i = 0; i < _taskList.size(); i++) {
+            table.getItems().add(i);
+		}
 		
 		for (int i = 0; i < _taskList.size(); i++) {
 			
