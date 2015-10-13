@@ -74,7 +74,7 @@
    <object idref="Task3"/>
   </void>
   <void method="add">
-   <object class="objects.Task" id="Task4">
+   <object class="objects.Task">
     <void property="taskID">
      <int>2</int>
     </void>
@@ -82,9 +82,6 @@
      <string>y testing Task 2</string>
     </void>
    </object>
-  </void>
-  <void method="add">
-   <object idref="Task4"/>
   </void>
  </object>
 </java>

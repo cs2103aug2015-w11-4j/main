@@ -204,7 +204,7 @@ public class DateTime {
 	
 	private static String getTime(String input) {
 		String regexAmPm = ".*?([0-9]{1,2})(am|pm).*";
-		String regexColon = ".*?([0-9]{1,2}:[0-9]{1,2}).*";
+		String regexColon = ".*?([0-9]{1,2})[:.]([0-9]{1,2}).*";
 		
 		Pattern pattern = Pattern.compile(regexAmPm, Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattern.matcher(input);
@@ -217,7 +217,7 @@ public class DateTime {
 		matcher = pattern.matcher(input);
 		
 		if (matcher.matches()) {
-			return matcher.group(1);
+			return matcher.group(1) + ":" + matcher.group(2);
 		}
 		return null;
 	}
@@ -244,6 +244,7 @@ public class DateTime {
 		
 		parseBritish("4pm");
 		parseBritish("2:30");
+		parseBritish("4.30");
 		parseBritish("6 Nov 2pm");
 		parseBritish("Nov 7 2pm");
 	}
