@@ -61,7 +61,7 @@ public class DateTime {
 	 * @param isBritish - British or American format
 	 * @return standard date format
 	 */
-	private static Date parse(String input, boolean isBritish) {		
+	private static Date parse(String input, boolean isBritish) {	
 		if (isBritish) {
 			return parseBritish(input);
 		} else {
@@ -95,11 +95,13 @@ public class DateTime {
 	private static Date parseBritish(String input) {
 		String date = getAmericanDate(input);
 		String time = getTime(input);
+		Date resultDate = null;
 		
 		if (date == null && time == null) {
 			return parseAmerican(input);
 		} else {
 			String dateTime = "";
+			//System.out.println("DATE: " + date);
 			
 			if (date != null) {
 				dateTime += date + " ";
@@ -122,7 +124,29 @@ public class DateTime {
 			
 			System.out.println(dateTime);
 			
-			return parseAmerican(dateTime);
+			resultDate = parseAmerican(dateTime);
+			
+			if (date == null && resultDate != null) {
+				Date currentTime = new Date();
+				
+				if (resultDate.compareTo(currentTime) < 0) {
+					Calendar newCalendar = Calendar.getInstance();
+					Calendar oldCalendar = Calendar.getInstance();
+					
+					newCalendar.clear();
+					oldCalendar.setTime(resultDate);
+					newCalendar.set(oldCalendar.get(Calendar.YEAR) + 1, 
+							oldCalendar.get(Calendar.MONTH), 
+							oldCalendar.get(Calendar.DATE), 
+							oldCalendar.get(Calendar.HOUR_OF_DAY), 
+							oldCalendar.get(Calendar.MINUTE), 
+							oldCalendar.get(Calendar.MILLISECOND));
+					
+					resultDate = newCalendar.getTime();
+				}
+			}
+			
+			return resultDate;
 		}
 	}
 	
