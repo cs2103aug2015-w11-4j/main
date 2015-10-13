@@ -4,21 +4,26 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 import objects.Task;
 import org.json.XML;
 public class StorageHelper {
 
-	@SuppressWarnings("unchecked")
 	public static ArrayList<JSONObject> jsonList(ArrayList<Task> taskList){
 		ArrayList<JSONObject> jsonList = new ArrayList<JSONObject>();
 		JSONObject obj;
 		for (int i = 0; i<taskList.size();i++){
 			obj = new JSONObject();
-			obj.put("TaskID", taskList.get(i).getTaskID());
-			obj.put("TaskName", taskList.get(i).getTaskName());
-			obj.put("StartDate", taskList.get(i).getStartDate());
-			obj.put("EndDate", taskList.get(i).getEndDate());
+			try {
+				obj.put("TaskID", taskList.get(i).getTaskID());
+				obj.put("TaskName", taskList.get(i).getTaskName());
+				obj.put("StartDate", taskList.get(i).getStartDate());
+				obj.put("EndDate", taskList.get(i).getEndDate());
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 			jsonList.add(obj);
 		}
 
@@ -36,7 +41,6 @@ public class StorageHelper {
 			try {
 				//obj.writeJSONString(out);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				System.out.println("Error printing JSON Object");
 			}
 			String jsonText = out.toString();
@@ -67,8 +71,7 @@ public class StorageHelper {
 			file.close();
 			file2.flush();
 			file2.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException | JSONException e) {
 			e.printStackTrace();
 		}
 
