@@ -13,6 +13,11 @@ public enum CommandType {
 	
 	public static CommandType toCmd(String word) {
 		try {
+			
+			if (word.equals("DEL")) {
+				return DELETE;
+			}
+			
 			return valueOf(word); 
 		} catch (Exception e) {
 			return INVALID; 
