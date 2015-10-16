@@ -262,7 +262,7 @@ public class UserInterface extends Application {
 				String userInput = field.getText();
 				field.clear();
 				
-				String feedbackMsg = LogicController.process(userInput, _taskList);
+				String feedbackMsg = LogicController.process(userInput);
 				size = log.size();
 				System.out.println("Size = " + size);
 				
@@ -324,12 +324,12 @@ public class UserInterface extends Application {
 				System.out.println("TASK EVENT DETECTED");
 			}
 			
-			System.out.println("ID: " + task.getTaskID());
-			System.out.println("Title: " + task.getTaskName());
-			System.out.println("Is completed: " + task.getCompleted());
-			System.out.println("Start Time: " + task.getStartDate());
-			System.out.println("End Time: " + task.getEndDate());
-			System.out.println("Is floating task: " + task.getFloating());
+			//System.out.println("ID: " + task.getTaskID());
+			//System.out.println("Title: " + task.getTaskName());
+			//System.out.println("Is completed: " + task.getCompleted());
+			//System.out.println("Start Time: " + task.getStartDate());
+			//System.out.println("End Time: " + task.getEndDate());
+			//aSystem.out.println("Is floating task: " + task.getFloating());
 		}
 	}
 }

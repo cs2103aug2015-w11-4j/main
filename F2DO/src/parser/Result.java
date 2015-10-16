@@ -10,7 +10,7 @@ public class Result {
 	private int _storageID = -1;
 	private CommandType _cmd = null;
 	private TaskType _type = null;
-	private String _title = null;
+	private String _title = "";
 	private Date _startDate = null;
 	private Date _endDate = null;
 	

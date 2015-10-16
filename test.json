@@ -1,1 +1,25 @@
-{"TaskID":0,"TaskName":"CS2101 Developer Guide","EndDate":"Thu Oct 12 23:59:00 SGT 2023"}{"TaskID":0,"TaskName":"CS2101 User Guide","EndDate":"Thu Oct 12 23:59:00 SGT 2023"}{"StartDate":"Thu Oct 13 11:00:00 SGT 2011","TaskID":0,"TaskName":"CS2103 V0.2 Demonstration"}{"StartDate":"Mon Oct 14 13:00:00 SGT 2013","TaskID":0,"TaskName":"CS2103 Group Meeting","EndDate":"Wed Oct 14 15:00:00 SGT 2015"}{"StartDate":"Mon Oct 12 15:00:00 SGT 2015","TaskID":0,"TaskName":"Exercise","EndDate":"Mon Oct 12 16:00:00 SGT 2015"}{"TaskID":0,"TaskName":"happy"}
+{
+    "StartDate": null,
+    "TaskID": 1,
+    "TaskName": "happy",
+    "TaskType": "FLOATING",
+    "EndDate": null
+}{
+    "StartDate": "Sun Oct 16 12:00:00 SGT 2016",
+    "TaskID": 2,
+    "TaskName": "unjveo",
+    "TaskType": "EVENT",
+    "EndDate": "Sun Oct 16 12:00:00 SGT 2016"
+}{
+    "StartDate": "Sun Oct 16 12:00:00 SGT 2016",
+    "TaskID": 3,
+    "TaskName": "boebe",
+    "TaskType": "EVENT",
+    "EndDate": null
+}{
+    "StartDate": null,
+    "TaskID": 4,
+    "TaskName": "oebebk",
+    "TaskType": "DEADLINE",
+    "EndDate": "Wed Oct 21 12:00:00 SGT 2015"
+}

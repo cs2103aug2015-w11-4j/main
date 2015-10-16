@@ -3,38 +3,19 @@ package logic;
 import java.util.ArrayList;
 
 import objects.Task;
-import objects.TaskDeadLine;
-import objects.TaskEvent;
-import objects.TaskFloating;
 import parser.Result;
-import storage.Storage;
 
 public class LogicDelete {
 	
-	public static ArrayList<Task> delete(int taskID, ArrayList<Task> taskList, Result result) {
-		switch (result.getType()){
-			case EVENT: {
-			    TaskEvent ft = new TaskEvent(taskID, result.getTitle(),result.getStartDate(),result.getEndDate(),0);
-			    taskID = ft.getTaskID();
-			    taskList.remove(taskID);
-			    Storage.saveToFile();
-		     } break;
-			case DEADLINE: {
-				TaskDeadLine ft = new TaskDeadLine(taskID, result.getTitle(),result.getEndDate(),0);
-				taskID = ft.getTaskID();
-				taskList.remove(taskID);
-				Storage.saveToFile();
-			} break;
-			case FLOATING: {
-				TaskFloating ft = new TaskFloating(taskID, result.getTitle(),0);
-				taskID = ft.getTaskID();
-				taskList.remove(taskID);
-			} break;
-			case INVALID: default: {
-			//same as invalid
-			}
-		}
-		return taskList;
+	public static boolean delete(Result result, ArrayList<Task> taskList) {
+		
+		try {
+			taskList.remove(result.getDisplayID());
+			return true;
+		} catch (Exception e) {
+			System.out.println("LogicDelete = Error Removing Task");
+			return false;
+		}	
 	}
 }
 

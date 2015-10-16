@@ -41,7 +41,8 @@ public class Storage implements Serializable {
 		saveFolder = DEFAULT_DIRECTORY;
 		filePath = DEFAULT_DIRECTORY + "/" + FILENAME;
 		createSaveDir(DEFAULT_DIRECTORY);
-		readFromFile();
+		taskList = StorageHelper.readFromjsonFile();
+		//readFromFile();
 	}
 		
 	public Storage(String directory) {
@@ -114,34 +115,63 @@ public class Storage implements Serializable {
 	}
 	
 	// Saves the ArrayList into an XML file.
-	public static boolean saveToFile() {
-		boolean isSaveSuccess = true;
-		XMLEncoder encoder = null;
-		
-		Logger.log(Level.INFO, "Saving is going to start");
-		
-		try {
-			FileOutputStream fos = new FileOutputStream(filePath);
-			BufferedOutputStream bos = new BufferedOutputStream(fos);
-			encoder = new XMLEncoder(bos);
-		} catch (FileNotFoundException e) {
-			isSaveSuccess = false;
-			Logger.log(Level.WARNING, "Saving error due to file not found", e);
+		public static boolean saveToFile() {
+			boolean isSaveSuccess = true;
+			XMLEncoder encoder = null;
+			
+			//Logger.log(Level.INFO, "Saving is going to start");
+			
+			try {
+				FileOutputStream fos = new FileOutputStream(filePath);
+				BufferedOutputStream bos = new BufferedOutputStream(fos);
+				encoder = new XMLEncoder(bos);
+			} catch (FileNotFoundException e) {
+				isSaveSuccess = false;
+				//Logger.log(Level.WARNING, "Saving error due to file not found", e);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			encoder.writeObject(taskList);
+			encoder.close();
+			
+			//Logger.log(Level.INFO, "Saving is completed");
+			
+			return isSaveSuccess;
 		}
-		
-		encoder.writeObject(taskList);
-		encoder.close();
-		
-		Logger.log(Level.INFO, "Saving is completed");
-		
-		return isSaveSuccess;
-	}
 	
-	public static boolean saveToFile2() {
+	
+	// Saves the ArrayList into an XML file.
+		public static boolean saveToFile(ArrayList<Task> taskList) {
+			boolean isSaveSuccess = true;
+			XMLEncoder encoder = null;
+			
+			//Logger.log(Level.INFO, "Saving is going to start");
+			
+			try {
+				FileOutputStream fos = new FileOutputStream(filePath);
+				BufferedOutputStream bos = new BufferedOutputStream(fos);
+				encoder = new XMLEncoder(bos);
+			} catch (FileNotFoundException e) {
+				isSaveSuccess = false;
+				//Logger.log(Level.WARNING, "Saving error due to file not found", e);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			encoder.writeObject(taskList);
+			encoder.close();
+			
+			//Logger.log(Level.INFO, "Saving is completed");
+			
+			return isSaveSuccess;
+		}
+	
+	public static boolean saveToFile2(ArrayList<Task> taskList) {
 		boolean isSaveSuccess = true;
 		
 		ArrayList<JSONObject> jsonList = StorageHelper.jsonList(taskList);
-		StorageHelper.convertToXML(jsonList);
+		StorageHelper.saveTojsonFile(jsonList);
+		StorageHelper.readFromjsonFile();
+		//StorageHelper.convertToXML(jsonList);
 		
 		/*nullRemovalCheck();
 		XMLEncoder encoder = null;
@@ -209,6 +239,8 @@ public class Storage implements Serializable {
 	// Testing driver to show existing saved tasks
 	public static void displayTaskList() {
 		for (int i = 0; i < taskList.size(); i++) {
+			
+			System.out.println("LOL "+ taskList.size() + " int " + i);
 			System.out.println("Task ID: " + taskList.get(i).getTaskID() + 
 					"\nTask Name: " + taskList.get(i).getTaskName() + 
 					"\nStart Date: " + taskList.get(i).getStartDate() + 

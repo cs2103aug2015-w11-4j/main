@@ -13,14 +13,14 @@ public class Task implements Serializable {
 
 
 	// ============ VARIABLES START ================ //
-	private int taskID;
-	private Date startDate;
-	private Date endDate;
-	private String taskName;
-	private Boolean isFloating;
-	private Boolean isCompleted;
-	private int priority;
-	private TaskType taskType;
+	private int taskID = -1;
+	private Date startDate = null;
+	private Date endDate = null;
+	private String taskName = "";
+	private Boolean isFloating = null;
+	private Boolean isCompleted = null;
+	private int priority = -1;
+	private TaskType taskType = null;
 	
 	// ============ VARIABLES END ================ //
 	
