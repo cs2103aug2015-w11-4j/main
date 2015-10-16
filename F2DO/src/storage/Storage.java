@@ -86,8 +86,9 @@ public class Storage implements Serializable {
 	
 	// Takes in task object created by logic and adds it to ArrayList
 	public static boolean addTask(Task newTask) {
+		assertNotNull(newTask);
 		taskList.add(newTask);
-		assertTrue(saveToFile());
+		assertTrue(sortTaskList());
 				
 		return true;
 	}
@@ -107,7 +108,6 @@ public class Storage implements Serializable {
 		taskList.get(taskNumber).setStartDate(newStartDate);
 		taskList.get(taskNumber).setEndDate(newEndDate);
 		
-		saveToFile();
 		assertTrue(saveToFile());
 		
 		return true;
