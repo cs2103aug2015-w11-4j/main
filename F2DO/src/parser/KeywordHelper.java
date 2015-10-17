@@ -53,6 +53,20 @@ public class KeywordHelper {
 		return functions;
 	}
 	
+	// analyze Only On (day)
+	public static Result analyzeOneInfo(boolean isStartDate, String dateTimeString) {
+		Date dateTime = DateTime.parse(dateTimeString);
+		Result res = new Result();
+		
+		if (isStartDate) {
+			res.setStartDate(dateTime);
+			return res;
+		} else {
+			res.setEndDate(dateTime);
+			return res;
+		}
+	}
+	
 	public static Result analyzeTwoInfo(boolean isStartDate, String title, 
 			String dateTimeString) {
 		Date dateTime = DateTime.parse(dateTimeString);

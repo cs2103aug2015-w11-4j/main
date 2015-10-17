@@ -21,11 +21,16 @@ public class LogicEdit {
 						// and also set priority when available
 					} else {
 						// check title, if its changed, then change it.
-						if (result.getTitle().isEmpty() || result.getTitle().trim().equals("") || result.getTitle() == null){
-							// do nothing
-						} else {
-							task.setTaskName(result.getTitle());
+						try {
+							if (result.getTitle().isEmpty() || result.getTitle().trim().equals("") || result.getTitle() == null){
+								// do nothing
+							} else {
+								task.setTaskName(result.getTitle());
+							}	
+						} catch (NullPointerException e ){
+							// do nothing	
 						}
+						
 						// then add the end date for deadline task
 						task.setEndDate(result.getEndDate());
 						// set priority if any
@@ -39,6 +44,7 @@ public class LogicEdit {
 							// create new task obj
 							TaskEvent taskEvent = new TaskEvent(task.getTaskID(), task.getTaskName(), task.getStartDate(), task.getEndDate(), 0);
 							// remove old task
+							taskEvent.setTaskType(TaskType.EVENT);
 							taskList.remove(result.getDisplayID());
 							// replace with new one
 							taskList.add(result.getDisplayID(),taskEvent);
@@ -48,6 +54,7 @@ public class LogicEdit {
 							// create new task obj
 							TaskDeadLine taskDead = new TaskDeadLine(task.getTaskID(), task.getTaskName(), task.getEndDate(), 0);
 							// remove old task
+							taskDead.setTaskType(TaskType.DEADLINE);
 							taskList.remove(result.getDisplayID());
 							// replace with new one
 							taskList.add(result.getDisplayID(),taskDead);
@@ -100,11 +107,17 @@ public class LogicEdit {
 				} 
 				case EVENT: {
 					// check the task description and change if necessary
-					if (result.getTitle().isEmpty() || result.getTitle().trim().equals("")){
-						// do nothing cause task description still same
-					} else {
-						task.setTaskName(result.getTitle());
+					try {
+						if (result.getTitle().isEmpty() || result.getTitle().trim().equals("") || result.getTitle() == null){
+							// do nothing cause task description still same
+						} else {
+							task.setTaskName(result.getTitle());
+						}
+					} catch (NullPointerException e){
+						// do nothing
+						//task.setTaskName(result.getTitle());
 					}
+					
 	
 					// if new task same as current task
 					if (result.getType() == task.getTaskType()){

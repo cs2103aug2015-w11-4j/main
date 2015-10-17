@@ -14,6 +14,10 @@ public class Result {
 	private Date _startDate = null;
 	private Date _endDate = null;
 	
+	public Result(){
+		super();
+	}
+	
 	public Result(int displayID, int storageID, CommandType cmd, String title, TaskType type, Date startDate, Date endDate) {
 		this._displayID = displayID;
 		this._storageID = storageID;
@@ -90,4 +94,19 @@ public class Result {
 	public Date getEndDate() {
 		return _endDate;
 	}
+	
+	/**
+	 * set the start date and time of the event or deadline.
+	 */
+	public void setStartDate(Date startDate) {
+		this._startDate = startDate;
+	}
+	
+	/**
+	 * set the start date and time of the event or deadline.
+	 */
+	public void setEndDate(Date endDate) {
+		this._endDate = endDate;
+	}
+	
 }

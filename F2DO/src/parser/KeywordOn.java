@@ -18,6 +18,7 @@ public class KeywordOn implements IKeyword {
 	public Result analyze() {
 		String regexOnFromTo = "(.*?) on (.*?) from (.*) to (.*?)";
 		String regexOn = "(.*?) on (.*?)";
+		String regexOnlyOn = "on (.*?)";
 		
 		Pattern pattern = Pattern.compile(regexOnFromTo);
 		Matcher matcher = pattern.matcher(_input);
@@ -37,6 +38,15 @@ public class KeywordOn implements IKeyword {
 			Result result = KeywordHelper.analyzeTwoInfo(true, 
 					matcher.group(1), 
 					matcher.group(2));
+			return result;
+		}
+		
+		pattern = Pattern.compile(regexOnlyOn);
+		matcher = pattern.matcher(_input);
+		
+		if (matcher.matches()) {
+			Result result = KeywordHelper.analyzeOneInfo(true, 
+					matcher.group(1));
 			return result;
 		}
 		
