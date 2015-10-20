@@ -1,31 +1,7 @@
 {
-    "StartDate": null,
-    "TaskID": 1,
-    "TaskName": "Happy",
-    "TaskType": "FLOATING",
-    "EndDate": null
-}{
-    "StartDate": null,
-    "TaskID": 2,
-    "TaskName": "Sad",
-    "TaskType": "FLOATING",
-    "EndDate": null
-}{
-    "StartDate": "Wed Oct 21 12:00:00 SGT 2015",
-    "TaskID": 3,
-    "TaskName": "Angry",
-    "TaskType": "EVENT",
-    "EndDate": "Fri Oct 23 12:00:00 SGT 2015"
-}{
-    "StartDate": null,
-    "TaskID": 4,
-    "TaskName": "Homework",
-    "TaskType": "DEADLINE",
-    "EndDate": "Wed Oct 21 12:00:00 SGT 2015"
-}{
     "StartDate": "Fri Oct 23 12:00:00 SGT 2015",
-    "TaskID": 5,
-    "TaskName": "Testing",
+    "TaskID": 1,
+    "TaskName": "task",
     "TaskType": "EVENT",
     "EndDate": null
 }

@@ -120,24 +120,33 @@ public class StorageHelper extends Storage {
 					task.setTaskType(TaskType.FLOATING);
 					taskList.add(task);
 				} else if (obj.get("TaskType").equals(TaskType.DEADLINE.toString())) {
+					String endDateString = obj.get("EndDate").toString();
+					endDateString = endDateString.substring(4, 20);
 					try {
-						edate = DateTime.parse(obj.get("EndDate").toString());
+						edate = DateTime.parse(endDateString);
+//						edate = DateTime.parse(obj.get("EndDate").toString());
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+//					Fri Oct 23 12:00:00 SGT 2015 - saved format
 					task = new TaskDeadLine((int)obj.get("TaskID"), obj.get("TaskName").toString(),edate, 0);
 					task.setTaskType(TaskType.DEADLINE);
 					taskList.add(task);
 				} else if (obj.get("TaskType").equals(TaskType.EVENT.toString()) ){
+					String endDateString = obj.get("EndDate").toString();
+					endDateString = endDateString.substring(4, 20);
+					String startDateString = obj.get("StartDate").toString();
+					startDateString = startDateString.substring(4, 20);
 					try {
-						sdate = DateTime.parse(obj.get("StartDate").toString());
-						edate = DateTime.parse(obj.get("EndDate").toString());
+						sdate = DateTime.parse(startDateString);
+						edate = DateTime.parse(endDateString);
+//						sdate = DateTime.parse(obj.get("StartDate").toString());
+//						edate = DateTime.parse(obj.get("EndDate").toString());
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
 					task = new TaskEvent((int)obj.get("TaskID"), obj.get("TaskName").toString(),sdate,edate, 0);
 					task.setTaskType(TaskType.EVENT);
 					taskList.add(task);

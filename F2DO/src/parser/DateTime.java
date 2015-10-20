@@ -271,6 +271,8 @@ public class DateTime {
 		parseBritish("4.30");
 		parseBritish("6 Nov 2pm");
 		parseBritish("Nov 7 2pm");
+		
+		parseBritish("Fri Oct 23 12:00:00 SGT 2015");
 	}
 }
 
