@@ -16,7 +16,8 @@ import objects.*;
 import parser.DateTime;
 import type.TaskType;
 
-public class StorageHelper {
+@SuppressWarnings("serial")
+public class StorageHelper extends Storage {
 
 	public static ArrayList<JSONObject> jsonList(ArrayList<Task> taskList){
 		ArrayList<JSONObject> jsonList = new ArrayList<JSONObject>();
@@ -71,7 +72,7 @@ public class StorageHelper {
 		JSONObject obj;
 		FileWriter file;
 		try {
-			file = new FileWriter("test.json");
+			file = new FileWriter(filePath);
 
 			for (int i = 0;i<jsonList.size();i++){
 				obj = new JSONObject();
@@ -92,7 +93,7 @@ public class StorageHelper {
 		Date sdate = null,edate = null;
 		FileReader reader = null;
 		try {
-			reader = new FileReader("test.json");
+			reader = new FileReader(filePath);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -27,13 +27,13 @@ import objects.Task;
 public class Storage implements Serializable {
 	
 	private static final String DEFAULT_DIRECTORY = "F2DO";
-	private static final String FILENAME = "F2DO.xml";
+	private static final String FILENAME = "F2DO.json";
 	private static final String SAVED_DIRECTORY = "%s\\F2DO";
 	private static final String CHANGE_DIRECTORY = "user.dir";
 	
 	private static ArrayList<Task> taskList = new ArrayList<Task>();
 	private static String saveFolder;
-	private static String filePath;
+	protected static String filePath;
 	private static Logger Logger = java.util.logging.Logger.getLogger("Storage");
 	
 	// Initialize storage class
@@ -41,6 +41,7 @@ public class Storage implements Serializable {
 		saveFolder = DEFAULT_DIRECTORY;
 		filePath = DEFAULT_DIRECTORY + "/" + FILENAME;
 		createSaveDir(DEFAULT_DIRECTORY);
+		createSaveFile();
 		taskList = StorageHelper.readFromjsonFile();
 		//readFromFile();
 	}
