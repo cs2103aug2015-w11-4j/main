@@ -14,6 +14,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.logging.*;
 
+import org.json.JSONObject;
+
 import objects.Task;
 
 @SuppressWarnings("serial")
@@ -129,7 +131,15 @@ public class Storage implements Serializable {
 		return false;
 	}
 	
-	
+	public static boolean saveToFile2(ArrayList<Task> taskList) {		
+			boolean isSaveSuccess = true;		
+					
+			ArrayList<JSONObject> jsonList = StorageHelper.jsonList(taskList);		
+			StorageHelper.saveTojsonFile(jsonList);		
+			StorageHelper.readFromjsonFile();		
+					
+			return isSaveSuccess;		
+		}
 	
 	// Testing driver to show existing saved tasks
 	public static void displayTaskList() {
