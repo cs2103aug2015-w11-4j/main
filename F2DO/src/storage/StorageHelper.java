@@ -120,7 +120,7 @@ public class StorageHelper extends Storage {
 					taskList.add(task);
 				} else if (obj.get("TaskType").equals(TaskType.DEADLINE.toString())) {
 					String endDateString = obj.get("EndDate").toString();
-					endDateString = endDateString.substring(4, endDateString.length());
+					endDateString = endDateString.substring(4, endDateString.length()-8);
 					try {
 						edate = DateTime.parse(endDateString);
 					} catch (JSONException e) {
@@ -132,12 +132,18 @@ public class StorageHelper extends Storage {
 					taskList.add(task);
 				} else if (obj.get("TaskType").equals(TaskType.EVENT.toString()) ){
 					String endDateString = obj.get("EndDate").toString();
-					endDateString = endDateString.substring(4, endDateString.length());
+					try {
+						endDateString = endDateString.substring(4, endDateString.length()-8);
+						edate = DateTime.parse(endDateString);
+					} catch (Exception e) {
+						endDateString = null;
+						edate = null;
+					}
 					String startDateString = obj.get("StartDate").toString();
-					startDateString = startDateString.substring(4, startDateString.length());
+					startDateString = startDateString.substring(4, startDateString.length()-8);
 					try {
 						sdate = DateTime.parse(startDateString);
-						edate = DateTime.parse(endDateString);
+						
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
