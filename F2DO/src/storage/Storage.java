@@ -93,7 +93,7 @@ public class Storage implements Serializable {
 	// Deletes the task object located at the index supplied by the user
 	public static boolean deleteTask(int taskNumber) {
 		taskList.remove(taskNumber);
-		assertTrue(StorageHelper.saveTojsonFile(StorageHelper.jsonList(taskList)));
+		assertTrue(saveToFile(taskList));
 		
 		return true;
 	}
@@ -105,7 +105,7 @@ public class Storage implements Serializable {
 		taskList.get(taskNumber).setStartDate(newStartDate);
 		taskList.get(taskNumber).setEndDate(newEndDate);
 		
-		assertTrue(StorageHelper.saveTojsonFile(StorageHelper.jsonList(taskList)));
+		assertTrue(saveToFile(taskList));
 		
 		return true;
 	}
@@ -131,14 +131,14 @@ public class Storage implements Serializable {
 		return false;
 	}
 	
-	public static boolean saveToFile2(ArrayList<Task> taskList) {		
+	public static boolean saveToFile(ArrayList<Task> taskList) {		
 			boolean isSaveSuccess = true;		
 					
 			ArrayList<JSONObject> jsonList = StorageHelper.jsonList(taskList);		
-			StorageHelper.saveTojsonFile(jsonList);		
+			assertTrue(StorageHelper.saveTojsonFile(jsonList));		
 			StorageHelper.readFromjsonFile();		
 					
-			return isSaveSuccess;		
+			return isSaveSuccess;	
 		}
 	
 	// Testing driver to show existing saved tasks
@@ -156,8 +156,7 @@ public class Storage implements Serializable {
 	// Organizes the tasks to optimize displaying
 	public static boolean sortTaskList() {
 		Collections.sort(taskList, taskComparator);
-		assertTrue(StorageHelper.saveTojsonFile(StorageHelper.jsonList(taskList)));
-	
+		assertTrue(saveToFile(taskList));
 		return true;
 	}
 

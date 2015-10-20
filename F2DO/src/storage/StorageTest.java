@@ -101,7 +101,7 @@ public class StorageTest {
 
 	@Test
 	public void testSaveToFile() {
-		assertTrue(StorageHelper.saveTojsonFile(StorageHelper.jsonList(Storage.getTaskList())));
+		assertTrue(Storage.saveToFile(Storage.getTaskList()));
 	}
 
 	@Test
