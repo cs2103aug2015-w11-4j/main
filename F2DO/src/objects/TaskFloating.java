@@ -2,7 +2,7 @@ package objects;
 
 @SuppressWarnings("serial")
 public class TaskFloating extends Task {
-
+	
 	/**
 	 * Constructor to create the Floating task object
 	 * @param taskName
@@ -12,6 +12,10 @@ public class TaskFloating extends Task {
 		super(taskID, taskName, priority);
 	}
 	
+	public TaskFloating() {
+		super();
+	}
+
 	/**
 	 * Generate the Floating task to be displayed
 	 * @return String format of the Floating task

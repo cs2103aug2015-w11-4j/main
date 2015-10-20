@@ -4,7 +4,7 @@ import java.util.Date;
 
 @SuppressWarnings("serial")
 public class TaskDeadLine extends Task {
-
+	
 	/**
 	 * Constructor to create the Floating task object
 	 * @param taskName
@@ -14,6 +14,10 @@ public class TaskDeadLine extends Task {
 		super(taskID, taskName, deadLine, priority);
 	}
 	
+	public TaskDeadLine() {
+		super();
+	}
+
 	/**
 	 * Generate the DeadLine task to be displayed
 	 * @return String format of the Floating task
@@ -23,6 +27,5 @@ public class TaskDeadLine extends Task {
 		return "DeadLine Task [getTaskId() = " + getTaskID() + ", getTaskName() = "
 				+ getTaskName() + ", getPriority() = " + getPriority() + "]";
 	}
-	
 	
 }

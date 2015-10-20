@@ -149,11 +149,11 @@ public class StorageHelper extends Storage {
 			} while (tokener.more());
 
 
-		System.out.println("SIZE = "+taskList.size());
-		for (int i = 0 ;i <taskList.size() ;i++){
+		//System.out.println("SIZE = "+taskList.size());
+		//for (int i = 0 ;i <taskList.size() ;i++){
 			
-			System.out.println("LOL "+taskList.get(i).getTaskName());
-		}
+			//System.out.println("LOL "+taskList.get(i).getTaskName());
+		//}
 		
 		return taskList;
 	}

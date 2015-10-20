@@ -14,6 +14,10 @@ public class TaskEvent extends Task {
 		super(taskID, title, startDate, endDate, i);
 	}
 	
+	public TaskEvent() {
+		super();
+	}
+
 	/**
 	 * Generate the Event task to be displayed
 	 * @return String format of the Event task

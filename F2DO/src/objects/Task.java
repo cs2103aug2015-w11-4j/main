@@ -1,11 +1,8 @@
 package objects;
 
-
 import java.io.Serializable;
 import java.util.Date;
-
 import type.TaskType;
-
 import java.util.Comparator;
 
 @SuppressWarnings({ "serial"})
@@ -21,6 +18,7 @@ public class Task implements Serializable {
 	private Boolean isCompleted = null;
 	private int priority = -1;
 	private TaskType taskType = null;
+	private String cat[];
 	
 	// ============ VARIABLES END ================ //
 	
@@ -72,14 +70,19 @@ public class Task implements Serializable {
 	public TaskType getTaskType() {
 		return taskType;
 	}
-	public void setTaskType(TaskType type) {
-		this.taskType = type;
+	public void setTaskType(TaskType taskType) {
+		this.taskType = taskType;
+	}
+	public String[] getCat() {
+		return cat;
+	}
+	public void setCat(String cat[]) {
+		this.cat = cat;
 	}
 	
 	// ============ GETTERS/SETTERS END ================ //
 	
 	// ============ CONSTRUCTOR START ================ //
-	
 	
 	public Task() {
 		super();
@@ -117,8 +120,7 @@ public class Task implements Serializable {
 		this.priority = priority;
 	}
 
-	public Task(TaskType type, String taskName, Date startDate, Date endDate, int priority) {
-		this.taskType = type;
+	public Task(String taskName, Date startDate, Date endDate, int priority) {
 		this.taskName = taskName;
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -160,6 +162,8 @@ public class Task implements Serializable {
 			return returnVal;
 		}
 	};
+
+	
 	
 	
 }

@@ -19,7 +19,7 @@ public class LogicController {
 	private static String MSG_NO_ACTION = "Feedback: No action is done!";
 	private static String ERROR_SEARCH = "Feedback: No results found!";
 	private static String ERROR_EDIT = "Feedback: %1$s cannot be modified!";
-	private static String ERROR_DELETE = "Feedback: %1$s cannot be deleted!";
+	//private static String ERROR_DELETE = "Feedback: %1$s cannot be deleted!";
 
 	// Initialize LogicController class, Only runs once
 	static {
@@ -40,38 +40,34 @@ public class LogicController {
 
 	}
 
+	
+	/**
+	 * Handles all the operations by user based on parsed result
+	 * @param input
+	 * @return String message whether operation is successful or not
+	 * @author A0111758
+	 */
 	public static String process(String input) {	
 		Result result = Parser.parse(input, _taskList);
 
-		System.out.println("LogicController = TaskID: " + taskID);
-		System.out.println("LogicController = DisplayID: " + result.getDisplayID());
-		System.out.println("LogicController = StorageID: " + result.getStorageID());
+		//System.out.println("LogicController = TaskID: " + taskID);
+		//System.out.println("LogicController = DisplayID: " + result.getDisplayID());
+		//System.out.println("LogicController = StorageID: " + result.getStorageID());
 
 		switch (result.getCmd()) {
-			case ADD: {
-				/*	
-				Task task = new Task(taskID, result.getType(), result.getTitle(), result.getStartDate(), result.getEndDate(), 0);
-				 Storage.addTask(task);
-				 */
-	
+			case ADD: {	
 				LogicAdd.add(taskID, result, _taskList);
 				taskID++;
-				Storage.saveToFile2(_taskList);
 				return String.format(MSG_ADD, result.getTitle());
 			}
 			case DELETE: {
-				/*
-				if (result.getDisplayID() != -1 && result.getStorageID() == getTaskList().get(result.getDisplayID()).getTaskID()) 
-				Storage.deleteTask(result.getDisplayID());
-				 */
 				LogicDelete.delete(result, _taskList);
 				taskID = _taskList.get(_taskList.size()-1).getTaskID() + 1;
-				Storage.saveToFile2(_taskList);
 				return String.format(MSG_DELETE, result.getTitle());
 			} 
 			case EDIT: {
 				if (LogicEdit.edit(result,_taskList)){
-					Storage.saveToFile2(_taskList);
+					Storage.saveToFile(_taskList);
 					return String.format(MSG_EDIT, result.getTitle());
 				} else {
 					return String.format(ERROR_EDIT, result.getTitle());
@@ -84,11 +80,18 @@ public class LogicController {
 				} else {
 					return MSG_SEARCH;
 				}
-			} 
+			}
+			case COMPLETE: {
+				
+			} break;
+			case INCOMPLETE: {
+				
+			} break;
 			default: {
 				return MSG_NO_ACTION;
 			} 
 		}
+		return MSG_NO_ACTION;
 	}
 
 	public static ArrayList<Task> getTaskList() {

@@ -29,6 +29,7 @@ public class Storage implements Serializable {
 	private static ArrayList<Task> taskList = new ArrayList<Task>();
 	private static String saveFolder;
 	protected static String filePath;
+	@SuppressWarnings("unused")
 	private static Logger Logger = java.util.logging.Logger.getLogger("Storage");
 	
 	// Initialize storage class

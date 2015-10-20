@@ -12,28 +12,41 @@ public class LogicAdd {
 	 * @param taskList
 	 * @param result
 	 * @return boolean result whether add operation is successful or not
+	 * @author A0111758
 	 */
 	public static boolean add(int taskID, Result result,ArrayList<Task> taskList) {
 		switch (result.getType()){
 			case EVENT: {
-				TaskEvent ft = new TaskEvent(taskID, result.getTitle(),result.getStartDate(),result.getEndDate(),0);
+				TaskEvent ft = new TaskEvent();
+				ft.setTaskID(taskID);
+				ft.setTaskName(result.getTitle());
+				ft.setStartDate(result.getStartDate());
+				ft.setEndDate(result.getEndDate());
 				ft.setTaskType(result.getType());
+				
 				taskList.add(ft);
-				Storage.saveToFile();
+				Storage.saveToFile(taskList);
 				return true;
 			} 
 			case DEADLINE: {
-				TaskDeadLine ft = new TaskDeadLine(taskID, result.getTitle(),result.getEndDate(),0);
+				TaskDeadLine ft = new TaskDeadLine();
+				ft.setTaskID(taskID);
+				ft.setTaskName(result.getTitle());
+				ft.setEndDate(result.getEndDate());
 				ft.setTaskType(result.getType());
+				
 				taskList.add(ft);
-				Storage.saveToFile();
+				Storage.saveToFile(taskList);
 				return true;
 			} 
 			case FLOATING: {
-				TaskFloating ft = new TaskFloating(taskID, result.getTitle(),0);
+				TaskFloating ft = new TaskFloating();
+				ft.setTaskID(taskID);
+				ft.setTaskName(result.getTitle());
 				ft.setTaskType(result.getType());
+				
 				taskList.add(ft);
-				Storage.saveToFile();
+				Storage.saveToFile(taskList);
 				return true;
 			} 
 			case INVALID: default: {
