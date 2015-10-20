@@ -2,14 +2,9 @@ package storage;
 
 import static org.junit.Assert.*; 
 
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
+
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
@@ -18,8 +13,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.logging.*;
-
-import org.json.JSONObject;
 
 import objects.Task;
 
@@ -98,7 +91,7 @@ public class Storage implements Serializable {
 	// Deletes the task object located at the index supplied by the user
 	public static boolean deleteTask(int taskNumber) {
 		taskList.remove(taskNumber);
-		assertTrue(saveToFile());
+		assertTrue(StorageHelper.saveTojsonFile(StorageHelper.jsonList(taskList)));
 		
 		return true;
 	}
@@ -110,111 +103,12 @@ public class Storage implements Serializable {
 		taskList.get(taskNumber).setStartDate(newStartDate);
 		taskList.get(taskNumber).setEndDate(newEndDate);
 		
-		assertTrue(saveToFile());
+		assertTrue(StorageHelper.saveTojsonFile(StorageHelper.jsonList(taskList)));
 		
 		return true;
 	}
 	
-	// Saves the ArrayList into an XML file.
-		public static boolean saveToFile() {
-			boolean isSaveSuccess = true;
-			XMLEncoder encoder = null;
-			
-			//Logger.log(Level.INFO, "Saving is going to start");
-			
-			try {
-				FileOutputStream fos = new FileOutputStream(filePath);
-				BufferedOutputStream bos = new BufferedOutputStream(fos);
-				encoder = new XMLEncoder(bos);
-			} catch (FileNotFoundException e) {
-				isSaveSuccess = false;
-				//Logger.log(Level.WARNING, "Saving error due to file not found", e);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			encoder.writeObject(taskList);
-			encoder.close();
-			
-			//Logger.log(Level.INFO, "Saving is completed");
-			
-			return isSaveSuccess;
-		}
-	
-	
-	// Saves the ArrayList into an XML file.
-		public static boolean saveToFile(ArrayList<Task> taskList) {
-			boolean isSaveSuccess = true;
-			XMLEncoder encoder = null;
-			
-			//Logger.log(Level.INFO, "Saving is going to start");
-			
-			try {
-				FileOutputStream fos = new FileOutputStream(filePath);
-				BufferedOutputStream bos = new BufferedOutputStream(fos);
-				encoder = new XMLEncoder(bos);
-			} catch (FileNotFoundException e) {
-				isSaveSuccess = false;
-				//Logger.log(Level.WARNING, "Saving error due to file not found", e);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			encoder.writeObject(taskList);
-			encoder.close();
-			
-			//Logger.log(Level.INFO, "Saving is completed");
-			
-			return isSaveSuccess;
-		}
-	
-	public static boolean saveToFile2(ArrayList<Task> taskList) {
-		boolean isSaveSuccess = true;
 		
-		ArrayList<JSONObject> jsonList = StorageHelper.jsonList(taskList);
-		StorageHelper.saveTojsonFile(jsonList);
-		StorageHelper.readFromjsonFile();
-		//StorageHelper.convertToXML(jsonList);
-		
-		/*nullRemovalCheck();
-		XMLEncoder encoder = null;
-		
-		try {
-			FileOutputStream fos = new FileOutputStream(filePath);
-			BufferedOutputStream bos = new BufferedOutputStream(fos);
-			encoder = new XMLEncoder(bos);
-		} catch (FileNotFoundException e) {
-			isSaveSuccess = false;
-		}
-		
-		encoder.writeObject(taskList);
-		encoder.close();
-		*/
-		return isSaveSuccess;
-	}
-	
-	// Loads the ArrayList with data from the XML file.
-	@SuppressWarnings("unchecked")
-	private static boolean readFromFile() {
-
-		if (isEmptyFile()) {
-			return false;
-		}
-		
-		boolean isReadSuccess = true;
-		XMLDecoder decoder = null;
-				
-		try {
-			FileInputStream fis = new FileInputStream(filePath);
-			BufferedInputStream bis = new BufferedInputStream(fis);
-			decoder = new XMLDecoder(bis);
-		} catch (FileNotFoundException e) {
-			isReadSuccess = false;
-		}
-		
-		taskList = (ArrayList<Task>)decoder.readObject();
-		
-		return isReadSuccess;
-	}
-	
 	// Checks if the file contains any data.
 	private static boolean isEmptyFile() {
 		FileReader fr = null;
@@ -252,7 +146,7 @@ public class Storage implements Serializable {
 	// Organizes the tasks to optimize displaying
 	public static boolean sortTaskList() {
 		Collections.sort(taskList, taskComparator);
-		assertTrue(saveToFile());
+		assertTrue(StorageHelper.saveTojsonFile(StorageHelper.jsonList(taskList)));
 	
 		return true;
 	}
@@ -298,7 +192,7 @@ public class Storage implements Serializable {
 		taskList.clear();
 		
 		if (!(isEmptyFile())) {
-			readFromFile();
+			StorageHelper.readFromjsonFile();
 		}
 		
 		displayTaskList();

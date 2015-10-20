@@ -22,7 +22,7 @@ public class StorageHelper extends Storage {
 	public static ArrayList<JSONObject> jsonList(ArrayList<Task> taskList){
 		ArrayList<JSONObject> jsonList = new ArrayList<JSONObject>();
 		JSONObject obj;
-		for (int i = 0; i<taskList.size();i++){
+		for (int i = 0; i < taskList.size(); i++) {
 			obj = new JSONObject();
 			try {
 				obj.put("TaskID", taskList.get(i).getTaskID());
@@ -42,7 +42,8 @@ public class StorageHelper extends Storage {
 				}
 
 			} catch (JSONException e) {
-				e.printStackTrace();
+				System.out.println("JSONException detected!");
+				e.printStackTrace();	
 			}
 			jsonList.add(obj);
 		}
@@ -68,7 +69,8 @@ public class StorageHelper extends Storage {
 		}
 	}
 
-	public static void saveTojsonFile(ArrayList<JSONObject> jsonList){
+	public static boolean saveTojsonFile(ArrayList<JSONObject> jsonList){
+		boolean isSaveSuccess = false;
 		JSONObject obj;
 		FileWriter file;
 		try {
@@ -79,13 +81,14 @@ public class StorageHelper extends Storage {
 				obj = jsonList.get(i);
 				file.write(obj.toString(4));
 				//System.out.println(obj.toString());
+				isSaveSuccess = true;
 			}
 			file.flush();
 			file.close();
 		} catch (IOException | JSONException e) {
 			e.printStackTrace();
 		}
-
+		return isSaveSuccess;
 	}
 
 	public static ArrayList<Task> readFromjsonFile(){
@@ -146,7 +149,7 @@ public class StorageHelper extends Storage {
 			} while (tokener.more());
 
 
-System.out.println("SIZE = "+taskList.size());
+		System.out.println("SIZE = "+taskList.size());
 		for (int i = 0 ;i <taskList.size() ;i++){
 			
 			System.out.println("LOL "+taskList.get(i).getTaskName());

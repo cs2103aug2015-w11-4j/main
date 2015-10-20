@@ -101,7 +101,7 @@ public class StorageTest {
 
 	@Test
 	public void testSaveToFile() {
-		assertTrue(Storage.saveToFile());
+		assertTrue(StorageHelper.saveTojsonFile(StorageHelper.jsonList(Storage.getTaskList())));
 	}
 
 	@Test
@@ -110,14 +110,14 @@ public class StorageTest {
 		Storage.displayTaskList();
 		
 		//Clearing the file
-		PrintWriter writer = null;
+/*		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter(Storage.getFilePath());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		writer.close();
-	
+	*/
 	}
 	
 }
