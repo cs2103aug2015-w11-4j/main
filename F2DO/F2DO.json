@@ -1,12 +1,1 @@
-{
-    "StartDate": "Thu Dec 24 00:00:00 SGT 2015",
-    "TaskID": 1,
-    "TaskName": "z testing Task 1",
-    "EndDate": "Thu Dec 24 00:00:00 SGT 2015"
-}{
-    "StartDate": null,
-    "TaskID": 2,
-    "TaskName": "randomtesttask",
-    "TaskType": "DEADLINE",
-    "EndDate": "Fri Oct 23 12:00:00 SGT 2015"
-}
+{"1":{"taskID":1,"startDate":1445572800000,"endDate":null,"taskName":"task","priority":-1,"taskType":"EVENT","cat":null,"floating":null,"completed":null},"2":{"taskID":2,"startDate":1445918400000,"endDate":1446004800000,"taskName":"task","priority":-1,"taskType":"EVENT","cat":null,"floating":null,"completed":null}}
