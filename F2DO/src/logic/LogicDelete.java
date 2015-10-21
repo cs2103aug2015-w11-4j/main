@@ -18,8 +18,9 @@ public class LogicDelete {
 	public static boolean delete(Result result, ArrayList<Task> taskList) {
 		if (result.getDisplayID() != -1 && result.getStorageID() == taskList.get(result.getDisplayID()).getTaskID()) {
 			try {
-				taskList.remove(result.getDisplayID());
-				Storage.saveToFile(taskList);
+				//taskList.remove(result.getDisplayID());
+				//Storage.saveToFile(taskList);
+				Storage.deleteTask(result.getStorageID());
 				return true;
 			} catch (NullPointerException e) {
 				System.out.println("LogicDelete = Error Removing Task");

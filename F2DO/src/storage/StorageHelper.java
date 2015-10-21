@@ -1,25 +1,21 @@
 package storage;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.File;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.concurrent.ConcurrentSkipListMap;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import objects.*;
-import parser.DateTime;
-import type.TaskType;
 
 @SuppressWarnings("serial")
 public class StorageHelper extends Storage {
 
-	public static ArrayList<JSONObject> jsonList(ArrayList<Task> taskList){
+	/*public static ArrayList<JSONObject> jsonList(ArrayList<Task> taskList){
 		ArrayList<JSONObject> jsonList = new ArrayList<JSONObject>();
 		JSONObject obj;
 		for (int i = 0; i < taskList.size(); i++) {
@@ -50,9 +46,9 @@ public class StorageHelper extends Storage {
 
 		return jsonList;
 
-	}
+	}*/
 
-	public void jsonListToString(ArrayList<JSONObject> jsonList){
+	/*public void jsonListToString(ArrayList<JSONObject> jsonList){
 		StringWriter out;
 		JSONObject obj;
 		for (int i = 0;i<jsonList.size();i++){
@@ -67,9 +63,9 @@ public class StorageHelper extends Storage {
 			String jsonText = out.toString();
 			System.out.println(jsonText);
 		}
-	}
+	}*/
 
-	public static boolean saveTojsonFile(ArrayList<JSONObject> jsonList){
+	/*public static boolean saveTojsonFile(ArrayList<JSONObject> jsonList){
 		boolean isSaveSuccess = false;
 		JSONObject obj;
 		FileWriter file;
@@ -89,9 +85,58 @@ public class StorageHelper extends Storage {
 			e.printStackTrace();
 		}
 		return isSaveSuccess;
-	}
+	}*/
+	
+	public static boolean writeJsonFile(ConcurrentSkipListMap<Integer, Task> taskList) {
 
-	public static ArrayList<Task> readFromjsonFile(){
+		try {
+			ObjectMapper objMapper = new ObjectMapper();
+			File file = new File(filePath);
+			
+			objMapper.writeValue(file, taskList);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} 
+		return true;
+	}
+	
+	public static ConcurrentSkipListMap<Integer, Task> readJsonFile(){
+		ConcurrentSkipListMap<Integer, Task> taskList = new ConcurrentSkipListMap<Integer, Task>();
+		
+		try {
+			ObjectMapper objMapper = new ObjectMapper();
+			File file = new File(filePath);
+			TypeReference<ConcurrentSkipListMap<Integer, Task>> typeRef = new TypeReference<ConcurrentSkipListMap<Integer, Task>>(){};
+			
+			taskList = objMapper.readValue(file, typeRef);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return taskList;
+		} 
+		
+		return taskList;
+	}
+	
+	public static boolean createJsonFile() {
+		try {
+			ConcurrentSkipListMap<Integer, Task> taskList = new ConcurrentSkipListMap<Integer, Task>();
+			ObjectMapper objMapper = new ObjectMapper();
+			File file = new File(filePath);
+			
+			objMapper.writeValue(file, taskList);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} 
+		return true;
+	}
+	
+
+	/*public static ArrayList<Task> readFromjsonFile(){
 		ArrayList<Task> taskList = new ArrayList<Task>();
 		Date sdate = null,edate = null;
 		FileReader reader = null;
@@ -165,6 +210,6 @@ public class StorageHelper extends Storage {
 		//}
 		
 		return taskList;
-	}	
+	}*/
 	
 }

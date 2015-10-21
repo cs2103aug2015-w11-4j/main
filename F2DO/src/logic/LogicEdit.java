@@ -3,6 +3,7 @@ package logic;
 import java.util.ArrayList;
 import objects.*;
 import parser.Result;
+import storage.Storage;
 import type.TaskType;
 
 public class LogicEdit {
@@ -16,8 +17,9 @@ public class LogicEdit {
 	 */
 	public static boolean edit(Result result, ArrayList<Task> taskList) {
 
-		if (result.getDisplayID() != -1 && 
-				result.getStorageID() == taskList.get(result.getDisplayID()).getTaskID()) {
+		//if (result.getDisplayID() != -1 && 
+				//result.getStorageID() == taskList.get(result.getDisplayID()).getTaskID()) 
+		{
 
 			Task task = taskList.get(result.getDisplayID());
 			// original task type
@@ -28,12 +30,15 @@ public class LogicEdit {
 						case FLOATING:{
 							// If both tasks are Floating
 							editTaskName(result, task);
+							Storage.updateTask(result.getStorageID(), task);
 							// edit priority and category too
 							// remove previous task;
-							taskList.remove(result.getDisplayID());
+							//taskList.remove(result.getDisplayID());
 							// replace with new floating task
-							taskList.add(result.getDisplayID(),(TaskFloating)task);
-							return true;
+							//taskList.add(result.getDisplayID(),(TaskFloating)task);
+							
+							//return true;
+							//Storage.updateTask(result.getStorageID(), result.getTitle(), newStartDate, newEndDate)
 						}
 						case DEADLINE: {
 							// If original task is Floating and new task is DeadLine
@@ -41,7 +46,7 @@ public class LogicEdit {
 							editEndDate(result, task);
 							// edit priority and category too
 							// remove previous task;
-							taskList.remove(result.getDisplayID());
+							//taskList.remove(result.getDisplayID());
 							// replace with new floating task
 							TaskDeadLine td = new TaskDeadLine();
 							td.setTaskID(task.getTaskID());
@@ -49,7 +54,8 @@ public class LogicEdit {
 							td.setEndDate(task.getEndDate());
 							td.setStartDate(null);
 							td.setTaskType(TaskType.DEADLINE);
-							taskList.add(result.getDisplayID(),td);
+							Storage.updateTask(result.getStorageID(), task);
+							//taskList.add(result.getDisplayID(),td);
 							return true;
 						}
 						case EVENT: {
@@ -59,7 +65,7 @@ public class LogicEdit {
 							editStartDate(result, task);
 							// edit priority and category too
 							// remove previous task;
-							taskList.remove(result.getDisplayID());
+							//taskList.remove(result.getDisplayID());
 							// replace with new floating task
 							TaskEvent te = new TaskEvent();
 							te.setTaskType(TaskType.EVENT);
@@ -67,7 +73,8 @@ public class LogicEdit {
 							te.setTaskName(task.getTaskName());
 							te.setEndDate(task.getEndDate());
 							te.setStartDate(task.getStartDate());
-							taskList.add(result.getDisplayID(),te);
+							//taskList.add(result.getDisplayID(),te);
+							Storage.updateTask(result.getStorageID(), task);
 							return true;
 						}
 						case INVALID: default: {
@@ -82,7 +89,7 @@ public class LogicEdit {
 							editTaskName(result, task);
 							// edit priority and category too
 							// remove previous task;
-							taskList.remove(result.getDisplayID());
+							//taskList.remove(result.getDisplayID());
 							// replace with new floating task
 							TaskFloating tf = new TaskFloating();
 							tf.setTaskID(task.getTaskID());
@@ -90,7 +97,8 @@ public class LogicEdit {
 							tf.setEndDate(null);
 							tf.setStartDate(null);
 							tf.setTaskType(TaskType.FLOATING);
-							taskList.add(result.getDisplayID(),tf);
+							//taskList.add(result.getDisplayID(),tf);
+							Storage.updateTask(result.getStorageID(), task);
 							return true;
 						}
 						// If both types are deadline
@@ -99,9 +107,10 @@ public class LogicEdit {
 							editEndDate(result, task);
 							// edit priority and category too
 							// remove previous task;
-							taskList.remove(result.getDisplayID());
+							//taskList.remove(result.getDisplayID());
 							// replace with new floating task
-							taskList.add(result.getDisplayID(),(TaskDeadLine)task);	
+							//taskList.add(result.getDisplayID(),(TaskDeadLine)task);	
+							Storage.updateTask(result.getStorageID(), task);
 							return true;
 						}
 						// If original task is DeadLine and new task is Event
@@ -111,7 +120,7 @@ public class LogicEdit {
 							editStartDate(result, task);
 							// edit priority and category too
 							// remove previous task;
-							taskList.remove(result.getDisplayID());
+							//taskList.remove(result.getDisplayID());
 							// replace with new floating task
 							TaskEvent te = new TaskEvent();
 							te.setTaskType(TaskType.EVENT);
@@ -119,7 +128,8 @@ public class LogicEdit {
 							te.setTaskName(task.getTaskName());
 							te.setEndDate(task.getEndDate());
 							te.setStartDate(task.getStartDate());
-							taskList.add(result.getDisplayID(),te);
+							//taskList.add(result.getDisplayID(),te);
+							Storage.updateTask(result.getStorageID(), task);
 							return true;
 						}
 						case INVALID: default: {
@@ -135,7 +145,7 @@ public class LogicEdit {
 							editTaskName(result, task);
 							// edit priority and category too
 							// remove previous task;
-							taskList.remove(result.getDisplayID());
+							//taskList.remove(result.getDisplayID());
 							// replace with new floating task
 							TaskFloating tf = new TaskFloating();
 							tf.setTaskID(task.getTaskID());
@@ -143,7 +153,8 @@ public class LogicEdit {
 							tf.setEndDate(null);
 							tf.setStartDate(null);
 							tf.setTaskType(TaskType.FLOATING);
-							taskList.add(result.getDisplayID(),tf);
+							//taskList.add(result.getDisplayID(),tf);
+							Storage.updateTask(result.getStorageID(), task);
 							return true;
 						}
 						case DEADLINE: {
@@ -152,7 +163,7 @@ public class LogicEdit {
 							editEndDate(result, task);
 							// edit priority and category too
 							// remove previous task;
-							taskList.remove(result.getDisplayID());
+							//taskList.remove(result.getDisplayID());
 							// replace with new floating task
 							task.setStartDate(null);
 							TaskDeadLine td = new TaskDeadLine();
@@ -161,7 +172,8 @@ public class LogicEdit {
 							td.setStartDate(null);
 							td.setEndDate(task.getEndDate());
 							td.setTaskType(TaskType.DEADLINE);
-							taskList.add(result.getDisplayID(),td);
+							//taskList.add(result.getDisplayID(),td);
+							Storage.updateTask(result.getStorageID(), task);
 						}
 						case EVENT: {
 							editTaskName(result, task);
@@ -169,9 +181,10 @@ public class LogicEdit {
 							editStartDate(result, task);
 							// edit priority and category too
 							// remove previous task;
-							taskList.remove(result.getDisplayID());
+							//taskList.remove(result.getDisplayID());
 							// replace with new floating task
-							taskList.add(result.getDisplayID(),(TaskEvent)task);
+							//taskList.add(result.getDisplayID(),(TaskEvent)task);
+							Storage.updateTask(result.getStorageID(), task);
 							return true;
 						}
 						case INVALID: default: {
@@ -184,10 +197,9 @@ public class LogicEdit {
 					return false;
 					// then both tasks are different type.
 				}
-			}
-			
+			}	
 		}
-		return false;
+		//return false;
 	}
 
 	private static void editStartDate(Result result, Task task) {
