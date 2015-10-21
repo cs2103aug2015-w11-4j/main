@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import objects.Task;
 import parser.Parser;
 import parser.Result;
+import static org.junit.Assert.*;
 import storage.Storage;
 
 public class LogicController {
@@ -56,18 +57,18 @@ public class LogicController {
 
 		switch (result.getCmd()) {
 			case ADD: {	
-				LogicAdd.add(taskID, result, _taskList);
+				assertTrue(LogicAdd.add(taskID, result, _taskList));
 				taskID++;
 				return String.format(MSG_ADD, result.getTitle());
 			}
 			case DELETE: {
-				LogicDelete.delete(result, _taskList);
+				assertTrue(LogicDelete.delete(result, _taskList));
 				taskID = _taskList.get(_taskList.size()-1).getTaskID() + 1;
 				return String.format(MSG_DELETE, result.getTitle());
 			} 
 			case EDIT: {
 				if (LogicEdit.edit(result,_taskList)){
-					Storage.saveToFile(_taskList);
+					assertTrue(Storage.saveToFile(_taskList));
 					return String.format(MSG_EDIT, result.getTitle());
 				} else {
 					return String.format(ERROR_EDIT, result.getTitle());
