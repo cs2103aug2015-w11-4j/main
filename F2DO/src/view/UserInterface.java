@@ -39,7 +39,7 @@ import java.util.Date;
 
 public class UserInterface extends Application {
 	
-	private static ArrayList<Task> _taskList;
+	private static ArrayList<Task> _taskList; // Please use it locally
 	private int[] _taskNum = new int[100000];
 
 	/*-----history of commands/input keyed in by user-----*/
@@ -282,8 +282,10 @@ public class UserInterface extends Application {
 	}
 	
 	private void updateTable(TableView<Integer> table) {
-		
+		_taskList = LogicController.getTaskList();
 		table.getItems().clear();
+		
+		//System.out.println("updateTable taskList size: " + taskList.size());
 		
 		for (int i = 0; i < _taskList.size(); i++) {
             table.getItems().add(i);
@@ -313,9 +315,9 @@ public class UserInterface extends Application {
 		}
 		*/
 		
-		for (int i = 0; i < _taskList.size(); i++) {
+		/*for (int i = 0; i < taskList.size(); i++) {
 			
-			Task task = _taskList.get(i);
+			Task task = taskList.get(i);
 			if (task instanceof TaskFloating){
 				System.out.println("TASK FLOATING DETECTED");
 			}else if (task instanceof TaskDeadLine){
@@ -330,6 +332,6 @@ public class UserInterface extends Application {
 			//System.out.println("Start Time: " + task.getStartDate());
 			//System.out.println("End Time: " + task.getEndDate());
 			//aSystem.out.println("Is floating task: " + task.getFloating());
-		}
+		}*/
 	}
 }

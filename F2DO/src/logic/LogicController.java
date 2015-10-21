@@ -27,7 +27,7 @@ public class LogicController {
 	}
 
 	private static void initialize() {
-		_taskList = Storage.getTaskList();
+		_taskList = getTaskList();
 
 		if (_taskList.isEmpty()){
 			// If taskList is empty, set taskID to 1
@@ -67,7 +67,8 @@ public class LogicController {
 			} 
 			case EDIT: {
 				if (LogicEdit.edit(result,_taskList)){
-					Storage.saveToFile(_taskList);
+					//Storage.saveToFile(_taskList)
+					//Storage.updateTask(result.getStorageID(), result.getTitle(), result.getStartDate(), result.getEndDate());
 					return String.format(MSG_EDIT, result.getTitle());
 				} else {
 					return String.format(ERROR_EDIT, result.getTitle());
@@ -95,7 +96,7 @@ public class LogicController {
 	}
 
 	public static ArrayList<Task> getTaskList() {
-		return _taskList;
+		return Storage.getTaskList();
 	}
 
 	public static ArrayList<Task> getSearchList() {

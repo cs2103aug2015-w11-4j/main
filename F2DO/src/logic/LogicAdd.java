@@ -15,6 +15,7 @@ public class LogicAdd {
 	 * @author A0111758
 	 */
 	public static boolean add(int taskID, Result result,ArrayList<Task> taskList) {
+		
 		switch (result.getType()){
 			case EVENT: {
 				TaskEvent ft = new TaskEvent();
@@ -24,8 +25,9 @@ public class LogicAdd {
 				ft.setEndDate(result.getEndDate());
 				ft.setTaskType(result.getType());
 				
-				taskList.add(ft);
-				Storage.saveToFile(taskList);
+				//taskList.add(ft);
+				//Storage.saveToFile(taskList);
+				Storage.addTask(ft);
 				return true;
 			} 
 			case DEADLINE: {
@@ -35,8 +37,9 @@ public class LogicAdd {
 				ft.setEndDate(result.getEndDate());
 				ft.setTaskType(result.getType());
 				
-				taskList.add(ft);
-				Storage.saveToFile(taskList);
+				//taskList.add(ft);
+				//Storage.saveToFile(taskList);
+				Storage.addTask(ft);
 				return true;
 			} 
 			case FLOATING: {
@@ -45,8 +48,9 @@ public class LogicAdd {
 				ft.setTaskName(result.getTitle());
 				ft.setTaskType(result.getType());
 				
-				taskList.add(ft);
-				Storage.saveToFile(taskList);
+				//taskList.add(ft);
+				//Storage.saveToFile(taskList);
+				Storage.addTask(ft);
 				return true;
 			} 
 			case INVALID: default: {
