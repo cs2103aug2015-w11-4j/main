@@ -2,8 +2,6 @@ package storage;
 
 import static org.junit.Assert.*;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import org.junit.Test;

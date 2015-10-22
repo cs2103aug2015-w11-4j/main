@@ -1,19 +1,15 @@
 package storage;
 
 import java.io.File;
-import java.io.StringWriter;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.concurrent.ConcurrentSkipListMap;
-
-import org.json.JSONObject;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import objects.*;
 
-@SuppressWarnings("serial")
-public class StorageHelper extends Storage {
+public class StorageHelper {
 
 	/*public static ArrayList<JSONObject> jsonList(ArrayList<Task> taskList){
 		ArrayList<JSONObject> jsonList = new ArrayList<JSONObject>();
@@ -87,12 +83,15 @@ public class StorageHelper extends Storage {
 		return isSaveSuccess;
 	}*/
 	
-	public static boolean writeJsonFile(ConcurrentSkipListMap<Integer, Task> taskList) {
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd MMM HH:mm:ss zzz yyyy");
+	
+	public static boolean writeJsonFile(ConcurrentSkipListMap<Integer, Task> taskList, String filePath) {
 
 		try {
 			ObjectMapper objMapper = new ObjectMapper();
 			File file = new File(filePath);
 			
+			objMapper.setDateFormat(dateFormat);
 			objMapper.writeValue(file, taskList);
 
 		} catch (Exception e) {
@@ -102,7 +101,7 @@ public class StorageHelper extends Storage {
 		return true;
 	}
 	
-	public static ConcurrentSkipListMap<Integer, Task> readJsonFile(){
+	public static ConcurrentSkipListMap<Integer, Task> readJsonFile(String filePath){
 		ConcurrentSkipListMap<Integer, Task> taskList = new ConcurrentSkipListMap<Integer, Task>();
 		
 		try {
@@ -110,6 +109,7 @@ public class StorageHelper extends Storage {
 			File file = new File(filePath);
 			TypeReference<ConcurrentSkipListMap<Integer, Task>> typeRef = new TypeReference<ConcurrentSkipListMap<Integer, Task>>(){};
 			
+			objMapper.setDateFormat(dateFormat);
 			taskList = objMapper.readValue(file, typeRef);
 			
 		} catch (Exception e) {
@@ -120,7 +120,7 @@ public class StorageHelper extends Storage {
 		return taskList;
 	}
 	
-	public static boolean createJsonFile() {
+	public static boolean createJsonFile(String filePath) {
 		try {
 			ConcurrentSkipListMap<Integer, Task> taskList = new ConcurrentSkipListMap<Integer, Task>();
 			ObjectMapper objMapper = new ObjectMapper();

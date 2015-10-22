@@ -128,6 +128,8 @@ public class DateTimeTest {
 			givenCalendar.set(Calendar.YEAR, currentCalendar.get(Calendar.YEAR) + 1);
 		}
 		
+		System.out.println(givenCalendar.getTime().toString());
+		
 		return simpleFormat(givenCalendar.getTime());
 	}
 	

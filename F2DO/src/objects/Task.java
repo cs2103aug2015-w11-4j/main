@@ -1,6 +1,8 @@
 package objects;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import type.TaskType;
 import java.util.Comparator;
@@ -19,6 +21,8 @@ public class Task implements Serializable {
 	private int priority = -1;
 	private TaskType taskType = null;
 	private String cat[];
+	
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd MMM HH:mm:ss zzz yyyy");
 	
 	// ============ VARIABLES END ================ //
 	
@@ -91,9 +95,12 @@ public class Task implements Serializable {
 	public Task(int taskID, String taskName, Date startDate, Date endDate) {
 		super();
 		this.taskID = taskID;
-		this.startDate = startDate;
-		this.endDate = endDate;
+		//this.startDate = startDate;
+		//this.endDate = endDate;
 		this.taskName = taskName;
+		
+		setStartDate(startDate);
+		setEndDate(endDate);
 	}
 	
 	// Floating task

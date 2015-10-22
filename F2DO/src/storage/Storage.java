@@ -2,7 +2,6 @@ package storage;
 
 import static org.junit.Assert.*;
 
-import java.awt.List;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -12,13 +11,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.logging.*;
 
 import objects.Task;
 
-@SuppressWarnings("serial")
+//@SuppressWarnings("serial")
 public class Storage implements Serializable {
 	
 	private static final String DEFAULT_DIRECTORY = "F2DO";
@@ -40,7 +38,7 @@ public class Storage implements Serializable {
 		createSaveDir(DEFAULT_DIRECTORY);
 		createSaveFile();
 		//taskList = StorageHelper.readFromjsonFile();
-		_taskList = StorageHelper.readJsonFile();
+		_taskList = StorageHelper.readJsonFile(filePath);
 		//readFromFile();
 	}
 		
@@ -78,7 +76,7 @@ public class Storage implements Serializable {
 	private static void createSaveFile() {
 		File file = new File(filePath);
 		if (!file.exists()) {
-			StorageHelper.createJsonFile();
+			StorageHelper.createJsonFile(filePath);
 		}
 	}
 	
@@ -186,7 +184,7 @@ public class Storage implements Serializable {
 	
 	private static boolean saveToFile() {
 		try {
-			StorageHelper.writeJsonFile(_taskList);
+			StorageHelper.writeJsonFile(_taskList, filePath);
 		} catch (Exception e) {
 			return false;
 		}
@@ -255,7 +253,7 @@ public class Storage implements Serializable {
 		_taskList.clear();
 		
 		if (!(isEmptyFile())) {
-			StorageHelper.readJsonFile();
+			StorageHelper.readJsonFile(filePath);
 		}
 		
 		displayTaskList();
