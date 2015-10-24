@@ -27,7 +27,7 @@ public class CommandDelete implements ICommand {
 	 * Delete task.
 	 */
 	public Feedback execute() {
-		String message = FeedbackHelper.ERROR_DELETE;
+		String message = FeedbackHelper.ERROR_NO_INDEX;
 		int taskID = _result.getStorageID();
 		
 		if (_taskList.containsKey(taskID)) {

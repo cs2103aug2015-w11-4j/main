@@ -10,6 +10,7 @@ import object.Task;
 import parser.Parser;
 import parser.Result;
 import storage.Storage;
+import type.CommandType;
 
 public class LogicController {
 	private static ArrayList<Task> _displayList = 
@@ -23,6 +24,7 @@ public class LogicController {
 	static {
 		_taskList = Storage.readTasks();
 		_displayList = new ArrayList<Task>(_taskList.values());
+		_displayList = setDisplayList(false);
 	}
 	
 	/**
@@ -39,8 +41,29 @@ public class LogicController {
 		
 		_taskList = feedback.getUpdatedTaskList();
 		_displayList = feedback.getDisplayList();
+		_displayList = setDisplayList(result.getCmd() == CommandType.SHOW);
 		
 		return message;
+	}
+	
+	/**
+	 * Remove done task(s) for display purpose except for command "show".
+	 * @param isShowCommand - true if the command is "show"; false otherwise
+	 * @return display task list
+	 */
+	private static ArrayList<Task> setDisplayList(boolean isShowCommand) {
+		ArrayList<Task> displayList = new ArrayList<Task>();
+		if (isShowCommand) {
+			displayList = _displayList;
+		} else {
+			for (int i = 0; i < _displayList.size(); i++) {
+				Task task = _displayList.get(i);
+				if (!task.getCompleted()) {
+					displayList.add(task);
+				}
+			}
+		}
+		return displayList;
 	}
 	
 	/**

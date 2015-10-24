@@ -23,9 +23,7 @@ public class Task {
 	/**
 	 * Default constructor.
 	 */
-	public Task() {
-		
-	}
+	public Task() {	}
 	
 	/**
 	 * Constructor for floating task.

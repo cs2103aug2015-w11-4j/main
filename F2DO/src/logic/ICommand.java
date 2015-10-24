@@ -28,10 +28,10 @@ public interface ICommand {
 				return new CommandSearch(result, taskList);
 			case SHOW:
 				return new CommandShow(result, taskList);
-			case UNDONE:
-				return null;
 			case DONE:
-				return null;
+				return new CommandDoneUndone(result, taskList, true);
+			case UNDONE:
+				return new CommandDoneUndone(result, taskList, false);
 			case HELP:
 				return null;
 			case HOME:

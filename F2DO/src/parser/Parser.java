@@ -23,7 +23,10 @@ public class Parser {
 		
 		CommandType cmd = analyzeCmd(input);
 		
-		if (cmd == CommandType.DELETE || cmd == CommandType.EDIT) {
+		if (cmd == CommandType.DELETE || 
+				cmd == CommandType.EDIT ||
+				cmd == CommandType.DONE ||
+				cmd == CommandType.UNDONE) {
 			storageID = analyzeID(_removeCmdInput, taskList);
 		}
 		
