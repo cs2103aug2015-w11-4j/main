@@ -26,6 +26,8 @@ public interface ICommand {
 				return new CommandEdit(result, taskList);
 			case SEARCH:
 				return new CommandSearch(result, taskList);
+			case SHOW:
+				return new CommandShow(result, taskList);
 			case UNDONE:
 				return null;
 			case DONE:
