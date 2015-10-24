@@ -30,7 +30,7 @@ public class CommandAdd implements ICommand {
 		Task task;
 		TaskType type = _result.getType();
 		int taskID = -1;
-		String message = String.format(FeedbackHelper.ERROR_ADD, _result.getTitle());
+		String message = String.format(FeedbackHelper.ERROR_ADD, _result.getContent());
 		
 		if (_taskList.isEmpty()) {
 			taskID = 1;
@@ -42,20 +42,20 @@ public class CommandAdd implements ICommand {
 		switch (type) {
 			case FLOATING:
 				task = new Task(taskID, 
-						_result.getTitle(),
+						_result.getContent(),
 						_result.getType(),
 						_result.getPriority());
 				break;
 			case DEADLINE:
 				task = new Task(taskID,
-						_result.getTitle(),
+						_result.getContent(),
 						_result.getType(),
 						_result.getEndDate(),
 						_result.getPriority());
 				break;
 			case EVENT:
 				task = new Task(taskID,
-						_result.getTitle(),
+						_result.getContent(),
 						_result.getType(),
 						_result.getStartDate(),
 						_result.getEndDate(),
@@ -68,7 +68,7 @@ public class CommandAdd implements ICommand {
 		if (task != null) {
 			_taskList.put(taskID, task);
 			Storage.writeTasks(_taskList);
-			message = String.format(FeedbackHelper.MSG_ADD, _result.getTitle());
+			message = String.format(FeedbackHelper.MSG_ADD, _result.getContent());
 		}
 		
 		ArrayList<Task> displayList = 

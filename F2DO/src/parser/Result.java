@@ -11,7 +11,7 @@ public class Result {
 	private int _priority = -1;
 	private CommandType _cmd = null;
 	private TaskType _type = null;
-	private String _title = "";
+	private String _content = null;
 	private Date _startDate = null;
 	private Date _endDate = null;
 	
@@ -19,18 +19,18 @@ public class Result {
 		super();
 	}
 	
-	public Result(int displayID, int storageID, CommandType cmd, String title, TaskType type, Date startDate, Date endDate) {
+	public Result(int displayID, int storageID, CommandType cmd, String content, TaskType type, Date startDate, Date endDate) {
 		_displayID = displayID;
 		_storageID = storageID;
 		_cmd = cmd;
-		_title = title;
+		_content = content;
 		_type = type;
 		_startDate = startDate;
 		_endDate = endDate;
 	}
 	
-	public Result(String title, Date startDate, Date endDate) {
-		_title = title;
+	public Result(String content, Date startDate, Date endDate) {
+		_content = content;
 		_startDate = startDate;
 		_endDate = endDate;
 	}
@@ -68,8 +68,8 @@ public class Result {
 	 * Get title of the event, deadline or floating task.
 	 * @return title
 	 */
-	public String getTitle() {
-		return _title;
+	public String getContent() {
+		return _content;
 	}
 	
 	/**

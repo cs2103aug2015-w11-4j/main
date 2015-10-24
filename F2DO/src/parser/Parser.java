@@ -32,7 +32,7 @@ public class Parser {
 		
 		Result tempResult = analyzeDateTitle(_removeCmdInput);
 		
-		String title = tempResult.getTitle();
+		String title = tempResult.getContent();
 		Date startDate = tempResult.getStartDate();
 		Date endDate = tempResult.getEndDate();
 		TaskType type = analyzeTask(title, startDate, endDate);

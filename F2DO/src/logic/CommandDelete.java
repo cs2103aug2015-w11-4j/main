@@ -33,7 +33,7 @@ public class CommandDelete implements ICommand {
 		if (_taskList.containsKey(taskID)) {
 			_taskList.remove(taskID);
 			Storage.writeTasks(_taskList);
-			message = String.format(FeedbackHelper.MSG_DELETE, _result.getTitle());
+			message = String.format(FeedbackHelper.MSG_DELETE, _result.getContent());
 		}
 		
 		ArrayList<Task> displayList = 

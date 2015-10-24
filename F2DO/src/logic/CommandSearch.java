@@ -26,7 +26,7 @@ public class CommandSearch implements ICommand {
 	 * Search tasks that contain the search key.
 	 */
 	public Feedback execute() {
-		String searchKey = _result.getTitle();
+		String searchKey = _result.getContent();
 		ArrayList<Task> taskList = new ArrayList<Task>(_taskList.values());
 		ArrayList<Task> displayList = new ArrayList<Task>();
 		String message = FeedbackHelper.ERROR_SEARCH;
