@@ -20,10 +20,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
-
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import object.Task;
 import logic.LogicController;
 
@@ -34,11 +38,14 @@ import java.util.Date;
 
 public class UserInterface extends Application {
 	private static ArrayList<Task> _displayList = new ArrayList<Task>();
+	private static final BooleanProperty ctrlPressed = new SimpleBooleanProperty(false);
+	private static final BooleanProperty zPressed = new SimpleBooleanProperty(false);
+	private static final BooleanBinding ctrlAndZPressed = ctrlPressed.and(zPressed);
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
-
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		BorderPane root = new BorderPane();
@@ -52,7 +59,9 @@ public class UserInterface extends Application {
         Button category2 = new Button("Work");
         Button category3 = new Button("Personal");
         TableView<Integer> table = new TableView<>();
-		
+        
+        setCtrlZListener(root);
+        
 		setText(text);
 		setFeedback(feedback);
 		
@@ -99,6 +108,35 @@ public class UserInterface extends Application {
         primaryStage.setTitle("Welcome to F2DO, your personalised task manager (:");
         primaryStage.setScene(defaultScene);
         primaryStage.show();
+	}
+	
+	/**
+	 * Create CTRL+Z undo handler.
+	 * @param root
+	 */
+	private static void setCtrlZListener(BorderPane root) {
+        ctrlAndZPressed.addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				 System.out.println("Ctrl and Z pressed together");
+			}
+        });
+        
+        root.setOnKeyPressed((KeyEvent event) -> {
+        	if (event.getCode() == KeyCode.CONTROL) {
+        		ctrlPressed.set(true);
+            } else if (event.getCode() == KeyCode.Z) {
+            	zPressed.set(true);
+            }
+        });
+        
+        root.setOnKeyReleased((KeyEvent event) -> {
+        	if (event.getCode() == KeyCode.CONTROL) {
+        		ctrlPressed.set(false);
+            } else if (event.getCode() == KeyCode.Z) {
+            	zPressed.set(false);
+            }
+        });
 	}
 	
 	/**
