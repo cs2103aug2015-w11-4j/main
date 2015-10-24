@@ -6,7 +6,6 @@ import type.CommandType;
 import type.TaskType;
 
 public class Result {
-	private int _displayID = -1;	// remove display ID
 	private int _storageID = -1;
 	private int _priority = -1;
 	private CommandType _cmd = null;
@@ -19,33 +18,17 @@ public class Result {
 		super();
 	}
 	
-	public Result(int displayID, int storageID, CommandType cmd, String content, TaskType type, Date startDate, Date endDate) {
-		_displayID = displayID;
+	public Result(int storageID, CommandType cmd, String content, TaskType type, Date startDate, Date endDate) {
+		this(content, startDate, endDate);
 		_storageID = storageID;
 		_cmd = cmd;
-		_content = content;
 		_type = type;
-		_startDate = startDate;
-		_endDate = endDate;
 	}
 	
 	public Result(String content, Date startDate, Date endDate) {
 		_content = content;
 		_startDate = startDate;
 		_endDate = endDate;
-	}
-	
-	public Result(int displayID, int storageID) {
-		_displayID = displayID;
-		_storageID = storageID;
-	}
-	
-	/**
-	 * Get display ID.
-	 * @return display ID
-	 */
-	public int getDisplayID() {
-		return _displayID;
 	}
 	
 	/**

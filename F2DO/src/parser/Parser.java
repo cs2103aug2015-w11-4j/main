@@ -18,16 +18,13 @@ public class Parser {
 	 * @return the parsed result
 	 */
 	public static Result parse(String input, ArrayList<Task> taskList) {
-		int displayID = -1;
 		int storageID = -1;
 		_removeCmdInput = "";
 		
 		CommandType cmd = analyzeCmd(input);
 		
 		if (cmd == CommandType.DELETE || cmd == CommandType.EDIT) {
-			Result idResult = analyzeID(_removeCmdInput, taskList);
-			displayID = idResult.getDisplayID();
-			storageID = idResult.getStorageID();
+			storageID = analyzeID(_removeCmdInput, taskList);
 		}
 		
 		Result tempResult = analyzeDateTitle(_removeCmdInput);
@@ -37,7 +34,7 @@ public class Parser {
 		Date endDate = tempResult.getEndDate();
 		TaskType type = analyzeTask(title, startDate, endDate);
 		
-		Result result = new Result(displayID, storageID, cmd, title, type, startDate, endDate);
+		Result result = new Result(storageID, cmd, title, type, startDate, endDate);
 		return result;
 	}
 	
@@ -70,7 +67,7 @@ public class Parser {
 	 * @param taskList - task list displayed in UI
 	 * @return ID in storage if exists, otherwise -1
 	 */
-	private static Result analyzeID(String input, ArrayList<Task> taskList) {
+	private static int analyzeID(String input, ArrayList<Task> taskList) {
 		String[] splitWords = input.split(" ");
 		int storageID = -1;
 		
@@ -89,13 +86,12 @@ public class Parser {
 					}
 				}
 				
-				return new Result(displayID, storageID);
 			} catch (NumberFormatException e) {
-				return new Result(-1, storageID);
+				return -1;
 			}
 		}
 		
-		return new Result(-1, storageID);
+		return storageID;
 	}
 	
 	/**
