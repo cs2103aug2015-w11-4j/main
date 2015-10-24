@@ -5,8 +5,8 @@ public enum CommandType {
 	EDIT,
 	DELETE,
 	SEARCH,
-	COMPLETE,
-	INCOMPLETE,
+	DONE,
+	UNDONE,
 	HELP,
 	HOME,
 	INVALID;

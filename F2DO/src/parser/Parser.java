@@ -7,9 +7,7 @@ import java.lang.NumberFormatException;
 import type.CommandType;
 import type.TaskType;
 
-import objects.Task;
-//import storage.Storage;
-import storage.Storage;
+import object.Task;
 
 public class Parser {
 	private static String _removeCmdInput = "";
@@ -129,50 +127,5 @@ public class Parser {
 	private static Result analyzeDateTitle(String input) {
 		IKeyword function = IKeyword.parsedPreposition(input);
 		return function.analyze();
-	}
-	
-	public static void main(String[] args) {
-		String input = "edit 1 task one by 16/12/15";
-		Result result = Parser.parse(input, Storage.getTaskList());
-		
-		print("input", input);
-		print("display id", result.getDisplayID());
-		print("storage id", result.getStorageID());
-		print("cmd", result.getCmd());
-		print("title", result.getTitle());
-		print("type", result.getType());
-		print("startDate", result.getStartDate());
-		print("endDate", result.getEndDate());
-		System.out.println();
-		
-		String input2 = "add two on 4 Sep from 4pm to 6pm";
-		Result result2 = Parser.parse(input2, Storage.getTaskList());
-		
-		print("input", input2);
-		print("display id", result2.getDisplayID());
-		print("storage id", result2.getStorageID());
-		print("cmd", result2.getCmd());
-		print("title", result2.getTitle());
-		print("type", result2.getType());
-		print("startDate", result2.getStartDate());
-		print("endDate", result2.getEndDate());
-		System.out.println();
-		
-		String input3 = "add assignment in 3 days";
-		Result result3 = Parser.parse(input3, Storage.getTaskList());
-		
-		print("input", input3);
-		print("display id", result3.getDisplayID());
-		print("storage id", result3.getStorageID());
-		print("cmd", result3.getCmd());
-		print("title", result3.getTitle());
-		print("type", result3.getType());
-		print("startDate", result3.getStartDate());
-		print("endDate", result3.getEndDate());
-
-	}
-	
-	private static void print(String indicator, Object obj) {
-		System.out.println(indicator + ": " + obj);
 	}
 }

@@ -6,8 +6,9 @@ import type.CommandType;
 import type.TaskType;
 
 public class Result {
-	private int _displayID = -1;
+	private int _displayID = -1;	// remove display ID
 	private int _storageID = -1;
+	private int _priority = -1;
 	private CommandType _cmd = null;
 	private TaskType _type = null;
 	private String _title = "";
@@ -19,24 +20,24 @@ public class Result {
 	}
 	
 	public Result(int displayID, int storageID, CommandType cmd, String title, TaskType type, Date startDate, Date endDate) {
-		this._displayID = displayID;
-		this._storageID = storageID;
-		this._cmd = cmd;
-		this._title = title;
-		this._type = type;
-		this._startDate = startDate;
-		this._endDate = endDate;
+		_displayID = displayID;
+		_storageID = storageID;
+		_cmd = cmd;
+		_title = title;
+		_type = type;
+		_startDate = startDate;
+		_endDate = endDate;
 	}
 	
 	public Result(String title, Date startDate, Date endDate) {
-		this._title = title;
-		this._startDate = startDate;
-		this._endDate = endDate;
+		_title = title;
+		_startDate = startDate;
+		_endDate = endDate;
 	}
 	
 	public Result(int displayID, int storageID) {
-		this._displayID = displayID;
-		this._storageID = storageID;
+		_displayID = displayID;
+		_storageID = storageID;
 	}
 	
 	/**
@@ -96,17 +97,24 @@ public class Result {
 	}
 	
 	/**
-	 * set the start date and time of the event or deadline.
+	 * Set the start date and time of the event or deadline.
 	 */
 	public void setStartDate(Date startDate) {
-		this._startDate = startDate;
+		_startDate = startDate;
 	}
 	
 	/**
-	 * set the start date and time of the event or deadline.
+	 * Set the start date and time of the event or deadline.
 	 */
 	public void setEndDate(Date endDate) {
-		this._endDate = endDate;
+		_endDate = endDate;
 	}
 	
+	/**
+	 * Get priority of the task.
+	 * @return priority
+	 */
+	public int getPriority() {
+		return _priority;
+	}
 }

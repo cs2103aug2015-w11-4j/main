@@ -1,5 +1,5 @@
-package view;
-	
+package gui;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,7 +14,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import logic.LogicController;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -25,95 +24,63 @@ import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleStringProperty;
 
-import objects.Task;
-import objects.TaskDeadLine;
-import objects.TaskEvent;
-import objects.TaskFloating;
+import object.Task;
+import logic.LogicController;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-//import javax.security.auth.callback.Callback;
-
 public class UserInterface extends Application {
-	
-	private static ArrayList<Task> _taskList; // Please use it locally
-	private int[] _taskNum = new int[100000];
-
-	/*-----history of commands/input keyed in by user-----*/
-	private ArrayList<String> log; 
+	private static ArrayList<Task> _displayList = new ArrayList<Task>();
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
+
 	@Override
-	public void start(Stage primaryStage) {
-		
-		_taskList = LogicController.getTaskList();
-		log = new ArrayList<String>();
-		
-		/*-------testing------*/
-		if (_taskList.isEmpty()){
-			System.out.println("List is empty!");
-		}
-		
+	public void start(Stage primaryStage) throws Exception {
 		BorderPane root = new BorderPane();
 		Scene defaultScene = new Scene(root, 550, 480);
-		
+		TextField field = new TextField();
+		Label feedback = new Label();
 		Text text = new Text();
-		setText(text);
-		
-        TextField field = new TextField();
-        
-        Label feedback = new Label();
-        setFeedback(feedback);
-        
-        VBox vbox = new VBox();
-        setVbox(vbox);
-        vbox.getChildren().addAll(text, field, feedback);
-        
-        BorderPane.setMargin(vbox, new Insets(10, 15, 0, 15));
-        root.setTop(vbox);
-            
-        HBox hbox = new HBox();
-        Button category1 = new Button("All"); 
+		VBox vbox = new VBox();
+		HBox hbox = new HBox();
+		Button category1 = new Button("All"); 
         Button category2 = new Button("Work");
         Button category3 = new Button("Personal");
+        TableView<Integer> table = new TableView<>();
+		
+		setText(text);
+		setFeedback(feedback);
+		
+		// Set up vbox
+		setVbox(vbox);
+        vbox.getChildren().addAll(text, field, feedback);      
+        BorderPane.setMargin(vbox, new Insets(10, 15, 0, 15));
+        root.setTop(vbox);
+		
+        // Set up hbox
         hbox.getChildren().addAll(category1, category2, category3);
-        
         BorderPane.setMargin(hbox, new Insets(0, 25, 20, 25));
-        
         root.setBottom(hbox);
         hbox.setSpacing(10);
-		int index = 1;
-		
-		for (int i = 0; i < _taskNum.length; i++) {
-			_taskNum[i] = 0;
-		}
-		
-		for (int i = 0; i < _taskNum.length; i++) {
-			_taskNum[i] = index;
-			index++;
-		}
-		
-		TableView<Integer> table = new TableView<>();
-		setTable(table);
-       
         
+        // Set up table
+        setTable(table);
         BorderPane.setMargin(table, new Insets(2,25,20,25));
-       
         root.setCenter(table);
         
-        /* ----- Setting up the scene for different category ->  Work, Personal etc----- */
+        // Set up the scene for different category -> Work, Personal etc
         BorderPane work = new BorderPane();
         Scene workScene = new Scene(work, 550, 500);
         BorderPane personal = new BorderPane();
         Scene personalTaskScene = new Scene(personal, 550, 500);
         
-        /* ----- Event handler to switch between scenes -> check out the tasks under respective categories ----- */
+        // Event handler to switch between scenes -> check out the tasks 
+        // under respective categories
         HBox categories = new HBox();
         Button tab1 = new Button("All"); 
         Button tab2 = new Button("Work");
@@ -122,10 +89,10 @@ public class UserInterface extends Application {
         
         work.setBottom(categories);
         
-        /* ----- Event handler for input processing ----- */ 
-        setKeyPressed(field, feedback,/*lastAction,*/ table);
+        // Event handler for input processing
+        setKeyPressed(field, feedback, table);
         
-        /* ------ Event handler for scene switching ----- */
+        // Event handler for scene switching
         category2.setOnAction(e -> primaryStage.setScene(workScene)); 
         tab1.setOnAction(e -> primaryStage.setScene(defaultScene));
         
@@ -134,47 +101,52 @@ public class UserInterface extends Application {
         primaryStage.show();
 	}
 	
+	/**
+	 * Set the design of the text.
+	 * @param text
+	 */
 	private void setText(Text text) {
 		text.setText("Viewing All Tasks");
         text.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 18));
         text.setFill(Color.DARKTURQUOISE);
 	}
 	
-	/*------This function displays the last action by user by default-----*/
-	/*------After the table is updated, however, it displays a feedback to the user-----*/
+	/**
+	 * Set the design of feedback.
+	 * @param feedback
+	 */
 	private void setFeedback(Label feedback) {
-		int size;
-	
 		feedback.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 12));
         feedback.setTextFill(Color.GREY);
-        
-        size = log.size();
-		System.out.println(size);
-		
-        feedback.setText("No previous commands");
 	}
 	
+	/**
+	 * Set the design of vbox.
+	 * @param vbox
+	 */
 	private void setVbox (VBox vbox) {
 		vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(10,10,5,10));
         vbox.setSpacing(8);
 	}
 	
+	/**
+	 * Set the design of table.
+	 * @param table
+	 */
 	private void setTable(TableView<Integer> table) {
-		for (int i = 0; i < _taskList.size(); i++) {
-            table.getItems().add(i);
-        }
+		updateTable(table);
         
         TableColumn<Integer, Number> id = new TableColumn<>("ID");
         id.setCellValueFactory(cellData -> {
             Integer rowIndex = cellData.getValue();
-            return new ReadOnlyIntegerWrapper(_taskNum[rowIndex]);
+            return new ReadOnlyIntegerWrapper(rowIndex + 1);
         });
 
         TableColumn<Integer, String> taskName = new TableColumn<>("Task Description");
         taskName.setCellValueFactory(cellData -> {
             int rowIndex = cellData.getValue();
-            return new ReadOnlyStringWrapper(_taskList.get(rowIndex).getTaskName());
+            return new ReadOnlyStringWrapper(_displayList.get(rowIndex).getTaskName());
         });
 
         TableColumn<Integer, String> startDate = new TableColumn<>("Start Date");
@@ -183,7 +155,7 @@ public class UserInterface extends Application {
         	SimpleStringProperty property = new SimpleStringProperty();
         	DateFormat dateWithTime = new SimpleDateFormat("dd MMM HH:mm");
         	DateFormat dateWithoutTime = new SimpleDateFormat("dd MMM");
-			Date date = _taskList.get(rowIndex).getStartDate();
+			Date date = _displayList.get(rowIndex).getStartDate();
 			
 			if (date != null) {
 				String date_string = date.toString();
@@ -206,7 +178,7 @@ public class UserInterface extends Application {
         	SimpleStringProperty property = new SimpleStringProperty();
 			DateFormat dateWithTime = new SimpleDateFormat("dd MMM HH:mm");
 			DateFormat dateWithoutTime = new SimpleDateFormat("dd MMM");
-			Date date = _taskList.get(rowIndex).getEndDate();
+			Date date = _displayList.get(rowIndex).getEndDate();
 			
 			if (date != null) {
 				String date_string = date.toString();
@@ -229,22 +201,6 @@ public class UserInterface extends Application {
         endDate.setStyle( "-fx-alignment: CENTER;");
         
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-       
-        /*
-        id.prefWidthProperty().bind(table.widthProperty().divide(10)); 
-        taskName.prefWidthProperty().bind(table.widthProperty().divide(2)); 
-        startDate.prefWidthProperty().bind(table.widthProperty().divide(5)); 
-        endDate.prefWidthProperty().bind(table.widthProperty().divide(5)); 
-        */
-        
-        /*
-        table.setColumnResizePolicy(new Callback<TableView.ResizeFeatures<Integer>, Boolean>() {
-          @Override
-          public Boolean call(ResizeFeatures p) {
-             return true;
-          }
-        });
-        */
         
         table.getColumns().add(id);
         table.getColumns().add(taskName);
@@ -252,86 +208,38 @@ public class UserInterface extends Application {
         table.getColumns().add(endDate);
 	}
 	
+	/**
+	 * Set the event handler when the key is pressed.
+	 * @param field
+	 * @param feedback
+	 * @param table
+	 */
 	private void setKeyPressed(TextField field, Label feedback, TableView<Integer> table) {
 		field.setOnKeyPressed((KeyEvent event) -> {
-			
-			int size;
-
 			if (event.getCode() == KeyCode.ENTER) {
 
 				String userInput = field.getText();
 				field.clear();
 				
-				String feedbackMsg = LogicController.process(userInput);
-				size = log.size();
-				System.out.println("Size = " + size);
-				
-				log.add(userInput); 
+				String feedbackMsg = LogicController.process(userInput, _displayList);
 				feedback.setWrapText(true);
 				feedback.setTextAlignment(TextAlignment.CENTER);
-				
-				if (log.size() <= 1) {
-					feedback.setText(feedbackMsg);
-				} else {
-					feedback.setText(feedbackMsg + "\n" + "Previous command: " + log.get(size-1));
-				}
-
+				feedback.setText(feedbackMsg);
 				updateTable(table);
 			}
 		});
 	}
 	
+	/**
+	 * Update the table.
+	 * @param table
+	 */
 	private void updateTable(TableView<Integer> table) {
-		_taskList = LogicController.getTaskList();
+		_displayList = LogicController.getDisplayList();
 		table.getItems().clear();
 		
-		//System.out.println("updateTable taskList size: " + taskList.size());
-		
-		for (int i = 0; i < _taskList.size(); i++) {
+		for (int i = 0; i < _displayList.size(); i++) {
             table.getItems().add(i);
 		}
-		
-		//Result result = Parser.parse(input, _taskList);
-		
-		/* ------ update the dates provided based on each event type ----- */
-		/*
-		switch(result.getType()) { 
-			case DEADLINE: {
-		        
-			}
-			case EVENT: {
-				//provide either the starting date, or both start and end date.
-			}
-		    case FLOATING: {
-		    	
-		    	//no start or end date
-		    }
-		    case INVALID: {
-		    	
-		    }
-		    default: {
-		    	
-		    }
-		}
-		*/
-		
-		/*for (int i = 0; i < taskList.size(); i++) {
-			
-			Task task = taskList.get(i);
-			if (task instanceof TaskFloating){
-				System.out.println("TASK FLOATING DETECTED");
-			}else if (task instanceof TaskDeadLine){
-				System.out.println("TASK DEADLINE DETECTED");
-			}else if (task instanceof TaskEvent){
-				System.out.println("TASK EVENT DETECTED");
-			}
-			
-			//System.out.println("ID: " + task.getTaskID());
-			//System.out.println("Title: " + task.getTaskName());
-			//System.out.println("Is completed: " + task.getCompleted());
-			//System.out.println("Start Time: " + task.getStartDate());
-			//System.out.println("End Time: " + task.getEndDate());
-			//aSystem.out.println("Is floating task: " + task.getFloating());
-		}*/
 	}
 }
