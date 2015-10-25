@@ -50,7 +50,6 @@ public class UserInterface extends Application {
 	
 	private static int rowIndex;
 	private static int commandIndex;
-	private static String cheatSheet;
 	
 	private static final BooleanProperty ctrlPressed = new SimpleBooleanProperty(false);
 	private static final BooleanProperty zPressed = new SimpleBooleanProperty(false);
@@ -279,11 +278,14 @@ public class UserInterface extends Application {
 				
 				String feedbackMsg = LogicController.process(userInput, _displayList);
 				
-				// help section still has some bugs at the moment -- not linked with logic yet
+				// help section still has some bugs at the moment -- not linked with logic component yet
+				// if user types "Help", the scene changes - the two tables will be removed and the cheat sheet
+				// will be displayed in the existing feedback box or alternatively, inside a list.
+
 				if (feedbackMsg == "help") {
-					feedback.setPrefRowCount(20);
+					feedback.setPrefRowCount(50); 
 					try {
-						setCheatSheetContent(cheatSheet);
+						setCheatSheetContent();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -339,11 +341,11 @@ public class UserInterface extends Application {
 		});
 	}
 				
-	private void setCheatSheetContent(String cheatSheet) throws IOException  {
+	private void setCheatSheetContent() throws IOException  {
 		String text;
 		StringBuilder stringBuilder = new StringBuilder();
 		
-		FileReader in = new FileReader(cheatSheet);
+		FileReader in = new FileReader("cheatsheet.txt");
 	    BufferedReader br = new BufferedReader(in);
 
 	    while ((text = br.readLine()) != null) {
