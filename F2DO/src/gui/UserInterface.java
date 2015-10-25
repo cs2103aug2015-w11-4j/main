@@ -38,26 +38,27 @@ import java.util.Date;
 
 public class UserInterface extends Application {
 	
-	private static BorderPane root;
-	private static Scene defaultScene;
-	private static VBox vbox;
-	private static VBox tables;
+	private static BorderPane _root = new BorderPane();
+	private static Scene _defaultScene = new Scene(_root, 650, 480);
+	private static VBox _vbox = new VBox();
+	private static VBox _tables = new VBox();
 	
-	private static Button taskButton;
-	private static Button floatingButton;
-	private static TextField field;
-	private static TextArea feedBack;
+	private static Button _taskButton = new Button();
+	private static Button _floatingButton = new Button();
+	private static TextField _field = new TextField();
+	private static TextArea _feedBack = new TextArea();
 	
-	private static int rowIndex;
-	private static int commandIndex;
+	private static int _rowIndex;
+	//private static int commandIndex;
 	
-	private static final BooleanProperty ctrlPressed = new SimpleBooleanProperty(false);
-	private static final BooleanProperty zPressed = new SimpleBooleanProperty(false);
-	private static final BooleanBinding ctrlAndZPressed = ctrlPressed.and(zPressed);
+	private static final BooleanProperty _ctrlPressed = new SimpleBooleanProperty(false);
+	private static final BooleanProperty _zPressed = new SimpleBooleanProperty(false);
+	private static final BooleanBinding _ctrlAndZPressed = _ctrlPressed.and(_zPressed);
 	
-	private static TableView<Integer> tasks;
-	private static TableView<Integer> floating;
-	private static ArrayList<String> commandHistory = new ArrayList<String>();
+	private static TableView<Integer> _taskTable = new TableView<>();
+	private static TableView<Integer> _floatingTable = new TableView<>();
+	//private static ArrayList<String> commandHistory = new ArrayList<String>();
+	
 	private static ArrayList<Task> _displayList = new ArrayList<Task>();
 	
 	public static void main(String[] args) {
@@ -66,47 +67,34 @@ public class UserInterface extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		root = new BorderPane();
-		defaultScene = new Scene(root, 650, 480);
+		_taskButton.setText("Tasks & Events");
+		_floatingButton.setText("Floating Tasks");
 		
-		taskButton = new Button();
-		floatingButton = new Button();
-		field = new TextField();
-		feedBack = new TextArea();
+		_field.setPromptText("Enter your command..");
+		setFeedback(_feedBack);
 		
-		taskButton.setText("Tasks & Events");
-		floatingButton.setText("Floating Tasks");
-		
-		field.setPromptText("Enter your command..");
-		setFeedback(feedBack);
-		
-		vbox = new VBox();
-		vbox.setAlignment(Pos.CENTER);
-		vbox.setSpacing(2);
-        vbox.getChildren().addAll(feedBack, field);     
-        BorderPane.setMargin(vbox, new Insets(10, 20, 20, 20));
-        root.setBottom(vbox);
+		_vbox.setAlignment(Pos.CENTER);
+		_vbox.setSpacing(2);
+		_vbox.getChildren().addAll(_feedBack, _field);     
+        BorderPane.setMargin(_vbox, new Insets(10, 20, 20, 20));
+        _root.setBottom(_vbox);
         
-        tasks = new TableView<>();
-        floating = new TableView<>();
+        setTasksWithDates(_taskTable);
+        setFloatingTasks(_floatingTable);
+        BorderPane.setMargin(_tables, new Insets(10,20,0,20));
+        BorderPane.setAlignment(_tables, Pos.CENTER);
+        _tables.getChildren().addAll(_floatingButton, _floatingTable, _taskButton, _taskTable);
+        _tables.setSpacing(5);
+        _root.setCenter(_tables);
         
-        tables = new VBox();
-        setTasksWithDates(tasks);
-        setFloatingTasks(floating);
-        BorderPane.setMargin(tables, new Insets(10,20,0,20));
-        BorderPane.setAlignment(tables, Pos.CENTER);
-        tables.getChildren().addAll(floatingButton, floating, taskButton, tasks);
-        tables.setSpacing(5);
-        root.setCenter(tables);
-        
-        setCtrlZListener(root);
+        setCtrlZListener(_root);
         
         // Event handler for input processing
-        setKeyPressed(commandHistory, field, feedBack, tasks, primaryStage);
+        setKeyPressed(_field, _feedBack, _taskTable, primaryStage);
         
         String css = UserInterface.class.getResource("style.css").toExternalForm();
-        defaultScene.getStylesheets().add(css);
-        primaryStage.setScene(defaultScene);
+        _defaultScene.getStylesheets().add(css);
+        primaryStage.setScene(_defaultScene);
         primaryStage.show();
 	}
 	
@@ -127,7 +115,7 @@ public class UserInterface extends Application {
 	 * @param root
 	 */
 	private static void setCtrlZListener(BorderPane root) {
-        ctrlAndZPressed.addListener(new ChangeListener<Boolean>() {
+		_ctrlAndZPressed.addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				 System.out.println("Ctrl and Z pressed together");
@@ -136,17 +124,17 @@ public class UserInterface extends Application {
         
         root.setOnKeyPressed((KeyEvent event) -> {
         	if (event.getCode() == KeyCode.CONTROL) {
-        		ctrlPressed.set(true);
+        		_ctrlPressed.set(true);
             } else if (event.getCode() == KeyCode.Z) {
-            	zPressed.set(true);
+            	_zPressed.set(true);
             }
         });
         
         root.setOnKeyReleased((KeyEvent event) -> {
         	if (event.getCode() == KeyCode.CONTROL) {
-        		ctrlPressed.set(false);
+        		_ctrlPressed.set(false);
             } else if (event.getCode() == KeyCode.Z) {
-            	zPressed.set(false);
+            	_zPressed.set(false);
             }
         });
 	}
@@ -156,28 +144,27 @@ public class UserInterface extends Application {
 	 * @param table
 	 */
 	private void setTasksWithDates(TableView<Integer>table) {
-		
 		updateTable(table);
         
         TableColumn<Integer, Number> id = new TableColumn<>("Task#");
         id.setCellValueFactory(cellData -> {
-            rowIndex = cellData.getValue();
-            return new ReadOnlyIntegerWrapper(rowIndex + 1);
+        	_rowIndex = cellData.getValue();
+            return new ReadOnlyIntegerWrapper(_rowIndex + 1);
         });
 
         TableColumn<Integer, String> taskName = new TableColumn<>("Task Description");
         taskName.setCellValueFactory(cellData -> {
-            rowIndex = cellData.getValue();
-            return new ReadOnlyStringWrapper(_displayList.get(rowIndex).getTaskName());
+        	_rowIndex = cellData.getValue();
+            return new ReadOnlyStringWrapper(_displayList.get(_rowIndex).getTaskName());
         });
 
         TableColumn<Integer, String> startDate = new TableColumn<>("Start Date");
         startDate.setCellValueFactory(cellData -> {
-        	rowIndex = cellData.getValue();
+        	_rowIndex = cellData.getValue();
         	SimpleStringProperty property = new SimpleStringProperty();
         	DateFormat dateWithTime = new SimpleDateFormat("dd MMM HH:mm");
         	DateFormat dateWithoutTime = new SimpleDateFormat("dd MMM");
-			Date date = _displayList.get(rowIndex).getStartDate();
+			Date date = _displayList.get(_rowIndex).getStartDate();
 			
 			if (date != null) {
 				String date_string = date.toString();
@@ -196,11 +183,11 @@ public class UserInterface extends Application {
         
         TableColumn<Integer, String> endDate = new TableColumn<>("End Date");
         endDate.setCellValueFactory(cellData -> {
-        	rowIndex = cellData.getValue();
+        	_rowIndex = cellData.getValue();
         	SimpleStringProperty property = new SimpleStringProperty();
 			DateFormat dateWithTime = new SimpleDateFormat("dd MMM HH:mm");
 			DateFormat dateWithoutTime = new SimpleDateFormat("dd MMM");
-			Date date = _displayList.get(rowIndex).getEndDate();
+			Date date = _displayList.get(_rowIndex).getEndDate();
 			
 			if (date != null) {
 				String date_string = date.toString();
@@ -235,19 +222,18 @@ public class UserInterface extends Application {
 	 * @param table
 	 */
 	private void setFloatingTasks(TableView<Integer>table) {
-		
 		updateTable(table);
         
         TableColumn<Integer, Number> id = new TableColumn<>("Task#");
         id.setCellValueFactory(cellData -> {
-            rowIndex = cellData.getValue();
-            return new ReadOnlyIntegerWrapper(rowIndex + 1);
+        	_rowIndex = cellData.getValue();
+            return new ReadOnlyIntegerWrapper(_rowIndex + 1);
         });
 
         TableColumn<Integer, String> taskName = new TableColumn<>("Task Description");
         taskName.setCellValueFactory(cellData -> {
-            rowIndex = cellData.getValue();
-            return new ReadOnlyStringWrapper(_displayList.get(rowIndex).getTaskName());
+        	_rowIndex = cellData.getValue();
+            return new ReadOnlyStringWrapper(_displayList.get(_rowIndex).getTaskName());
         });
         
         id.setStyle( "-fx-alignment: CENTER;");
@@ -265,14 +251,14 @@ public class UserInterface extends Application {
 	 * @param feedback
 	 * @param table
 	 */
-	private void setKeyPressed(ArrayList<String> commandHistory, TextField field, TextArea feedback, TableView<Integer> table, Stage primaryStage) {
+	private void setKeyPressed(TextField field, TextArea feedback, TableView<Integer> table, Stage primaryStage) {
 		field.setOnKeyPressed((KeyEvent event) -> {
 			if (event.getCode() == KeyCode.ENTER) {
 				
 				String userInput = field.getText();
 			
-				commandHistory.add(userInput);
-				commandIndex = commandHistory.size() - 1;
+				//commandHistory.add(userInput);
+				//commandIndex = commandHistory.size() - 1;
 				
 				field.clear();
 				
@@ -296,11 +282,11 @@ public class UserInterface extends Application {
 				feedback.setText(feedbackMsg);
 				updateTable(table);
 			}
-			else if (event.getCode() == KeyCode.UP) {
+			/*else if (event.getCode() == KeyCode.UP) {
 				
-				if (!commandHistory.isEmpty()) {
-					field.setText(commandHistory.get(commandIndex));
-					int length = commandHistory.get(commandIndex).length();
+				//if (!commandHistory.isEmpty()) {
+				//	field.setText(commandHistory.get(commandIndex));
+				//	int length = commandHistory.get(commandIndex).length();
 					commandIndex--;
 					
 					Platform.runLater( new Runnable() {
@@ -333,7 +319,7 @@ public class UserInterface extends Application {
 						commandIndex = 0;
 					}
 				}
-			}
+			}*/
 			/* ---Unsuccessful at the moment ---*/
 			else if (event.getCode() == KeyCode.TAB) {
 				exit(primaryStage);
@@ -371,35 +357,3 @@ public class UserInterface extends Application {
 		primaryStage.close();
 	}
 }
-
-/*
-HBox hbox = new HBox();
-Button category1 = new Button("All"); 
-Button category2 = new Button("Work");
-Button category3 = new Button("Personal");
-*/
-
-/*
-hbox.getChildren().addAll(category1, category2, category3);
-BorderPane.setMargin(hbox, new Insets(0, 25, 20, 25));
-root.setBottom(hbox);
-hbox.setSpacing(10);
-*/
-
-//Event handler to switch between scenes -> check out the tasks 
-// under respective categories
-/*
-HBox categories = new HBox();
-Button tab1 = new Button("All"); 
-Button tab2 = new Button("Work");
-Button tab3 = new Button("Personal");
-categories.getChildren().addAll(tab1, tab2, tab3);
-
-work.setBottom(categories);
-*/
-
-//Event handler for scene switching
-/*
-category2.setOnAction(e -> primaryStage.setScene(workScene)); 
-tab1.setOnAction(e -> primaryStage.setScene(defaultScene));
-*/
