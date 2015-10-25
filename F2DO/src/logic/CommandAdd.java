@@ -15,7 +15,7 @@ import type.TaskType;
  */
 public class CommandAdd implements ICommand {
 	private Result _result = null;
-	private static ConcurrentSkipListMap<Integer, Task> _taskList =
+	private ConcurrentSkipListMap<Integer, Task> _taskList =
 			new ConcurrentSkipListMap<Integer, Task>();
 	
 	public CommandAdd(Result result, ConcurrentSkipListMap<Integer, Task> taskList) {
@@ -30,6 +30,7 @@ public class CommandAdd implements ICommand {
 		Task task;
 		TaskType type = _result.getType();
 		int taskID = -1;
+		boolean isSuccessful = false;
 		String message = String.format(FeedbackHelper.ERROR_ADD, _result.getContent());
 		
 		if (_taskList.isEmpty()) {
@@ -69,11 +70,12 @@ public class CommandAdd implements ICommand {
 			_taskList.put(taskID, task);
 			Storage.writeTasks(_taskList);
 			message = String.format(FeedbackHelper.MSG_ADD, _result.getContent());
+			isSuccessful = true;
 		}
 		
 		ArrayList<Task> displayList = 
 				new ArrayList<Task>(_taskList.values());
 		
-		return new Feedback(message, displayList, _taskList);
+		return new Feedback(message, displayList, _taskList, isSuccessful);
 	}
 }

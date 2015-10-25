@@ -9,7 +9,7 @@ import storage.Storage;
 
 public class CommandDoneUndone implements ICommand {
 	private Result _result = null;
-	private static ConcurrentSkipListMap<Integer, Task> _taskList =
+	private ConcurrentSkipListMap<Integer, Task> _taskList =
 			new ConcurrentSkipListMap<Integer, Task>();
 	private boolean _isDone = false;
 	
@@ -23,6 +23,7 @@ public class CommandDoneUndone implements ICommand {
 
 	public Feedback execute() {
 		int taskID = _result.getStorageID();
+		boolean isSuccessful = false;
 		String message = FeedbackHelper.ERROR_NO_INDEX;
 		
 		if (_taskList.containsKey(taskID)) {
@@ -31,9 +32,11 @@ public class CommandDoneUndone implements ICommand {
 			if (_isDone) {
 				task.setCompleted(true);
 				message = String.format(FeedbackHelper.MSG_DONE, task.getTaskName());
+				isSuccessful = true;
 			} else {
 				task.setCompleted(false);
 				message = String.format(FeedbackHelper.MSG_UNDONE, task.getTaskName());
+				isSuccessful = true;
 			}
 			
 			_taskList.put(taskID, task);
@@ -42,6 +45,6 @@ public class CommandDoneUndone implements ICommand {
 		
 		ArrayList<Task> displayList = new ArrayList<Task>(_taskList.values());
 		
-		return new Feedback(message, displayList, _taskList);
+		return new Feedback(message, displayList, _taskList, isSuccessful);
 	}
 }

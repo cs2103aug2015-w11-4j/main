@@ -8,7 +8,7 @@ import object.Task;
 
 public class CommandShow implements ICommand {
 	private Result _result = null;
-	private static ConcurrentSkipListMap<Integer, Task> _taskList =
+	private ConcurrentSkipListMap<Integer, Task> _taskList =
 			new ConcurrentSkipListMap<Integer, Task>();
 	
 	private enum ShowType {
@@ -33,11 +33,12 @@ public class CommandShow implements ICommand {
 	}
 	
 	public Feedback execute() {
+		int size = 0;
 		String requestType = _result.getContent();
 		ShowType type = ShowType.toType(requestType.toUpperCase());
 		ArrayList<Task> displayList = new ArrayList<Task>();
+		boolean isSuccessful = false;
 		String message = FeedbackHelper.ERROR_SHOW_NO_ALL;
-		int size = 0;
 		
 		switch (type) {
 			case ALL:
@@ -45,6 +46,7 @@ public class CommandShow implements ICommand {
 				size = displayList.size();
 				
 				if (size > 0) {
+					isSuccessful = true;
 					if (size > 1) {
 						message = String.format(FeedbackHelper.MSG_SHOW_ALL, "s");
 					} else {
@@ -57,6 +59,7 @@ public class CommandShow implements ICommand {
 				size = displayList.size();
 				
 				if (size > 0) {
+					isSuccessful = true;
 					if (size > 1) {
 						message = String.format(FeedbackHelper.MSG_SHOW_DONE, size, "s");
 					} else {
@@ -72,6 +75,7 @@ public class CommandShow implements ICommand {
 				size = displayList.size();
 				
 				if (size > 0) {
+					isSuccessful = true;
 					if (size > 1) {
 						message = String.format(FeedbackHelper.MSG_SHOW_UNDONE, size, "s");
 					} else {
@@ -86,7 +90,7 @@ public class CommandShow implements ICommand {
 				// DO NOTHING
 		}
 		
-		return new Feedback(message, displayList, _taskList);
+		return new Feedback(message, displayList, _taskList, isSuccessful);
 	}
 	
 	private ArrayList<Task> searchTasks(boolean isCompleted) {

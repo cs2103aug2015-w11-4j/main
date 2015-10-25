@@ -14,7 +14,7 @@ import storage.Storage;
  */
 public class CommandDelete implements ICommand {
 	private Result _result = null;
-	private static ConcurrentSkipListMap<Integer, Task> _taskList =
+	private ConcurrentSkipListMap<Integer, Task> _taskList =
 			new ConcurrentSkipListMap<Integer, Task>();
 	
 	public CommandDelete(Result result,
@@ -27,18 +27,20 @@ public class CommandDelete implements ICommand {
 	 * Delete task.
 	 */
 	public Feedback execute() {
-		String message = FeedbackHelper.ERROR_NO_INDEX;
 		int taskID = _result.getStorageID();
+		boolean isSuccessful = false;
+		String message = FeedbackHelper.ERROR_NO_INDEX;
 		
 		if (_taskList.containsKey(taskID)) {
 			_taskList.remove(taskID);
 			Storage.writeTasks(_taskList);
 			message = String.format(FeedbackHelper.MSG_DELETE, _result.getContent());
+			isSuccessful = true;
 		}
 		
 		ArrayList<Task> displayList = 
 				new ArrayList<Task>(_taskList.values());
 		
-		return new Feedback(message, displayList, _taskList);
+		return new Feedback(message, displayList, _taskList, isSuccessful);
 	}
 }

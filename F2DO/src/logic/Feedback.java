@@ -13,6 +13,7 @@ import object.Task;
  */
 public class Feedback {
 	private String _message = null;
+	private boolean _isSuccessful = false;
 	private static ArrayList<Task> _displayList = 
 			new ArrayList<Task>();
 	private static ConcurrentSkipListMap<Integer, Task> _taskList =
@@ -20,10 +21,12 @@ public class Feedback {
 	
 	public Feedback(String message, 
 			ArrayList<Task> displayList,
-			ConcurrentSkipListMap<Integer, Task> updatedList) {
+			ConcurrentSkipListMap<Integer, Task> updatedList,
+			boolean isSuccessful) {
 		_message = message;
 		_displayList = displayList;
 		_taskList = updatedList;
+		_isSuccessful = isSuccessful;
 	}
 	
 	public String getMessage() {
@@ -36,5 +39,9 @@ public class Feedback {
 	
 	public ConcurrentSkipListMap<Integer, Task> getUpdatedTaskList() {
 		return _taskList;
+	}
+	
+	public boolean isSuccessful() {
+		return _isSuccessful;
 	}
 }

@@ -13,7 +13,7 @@ import object.Task;
  */
 public class CommandSearch implements ICommand {
 	private Result _result = null;
-	private static ConcurrentSkipListMap<Integer, Task> _taskList =
+	private ConcurrentSkipListMap<Integer, Task> _taskList =
 			new ConcurrentSkipListMap<Integer, Task>();
 	
 	public CommandSearch(Result result,
@@ -29,6 +29,7 @@ public class CommandSearch implements ICommand {
 		String searchKey = _result.getContent();
 		ArrayList<Task> taskList = new ArrayList<Task>(_taskList.values());
 		ArrayList<Task> displayList = new ArrayList<Task>();
+		boolean isSuccessful = false;
 		String message = FeedbackHelper.ERROR_SEARCH;
 		
 		if (!searchKey.equals("")) {
@@ -44,8 +45,9 @@ public class CommandSearch implements ICommand {
 		
 		if (!displayList.isEmpty()) {
 			message = FeedbackHelper.MSG_SEARCH;
+			isSuccessful = true;
 		}
 		
-		return new Feedback(message, displayList, _taskList);
+		return new Feedback(message, displayList, _taskList, isSuccessful);
 	}
 }
