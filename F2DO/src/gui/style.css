@@ -1,0 +1,43 @@
+.root {
+	-fx-background-color:snow;
+	-fx-focus-color:transparent;
+	-fx-font-size:13.5;
+}
+
+.button {
+	-fx-background-color:lavender;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: -fx-table-cell-border-color, -fx-control-inner-background;
+    -fx-background-insets: 0, 0 0 1 0;
+}
+
+
+.table-row-cell:focused:odd {
+    -fx-background-color: -fx-focus-color, -fx-cell-focus-inner-border, -fx-control-inner-background;
+    -fx-background-insets: 0, 1, 2;
+}
+
+.table-view {
+  -fx-table-cell-border-color: transparent;
+}
+
+.table-view .column-header{
+    -fx-font-size: 13;
+}
+
+.table-cell {
+    -fx-font-size: 13.5px;
+    -fx-text-fill:black; 
+}
+
+.table-row-cell:filled:selected {
+  -fx-background: -fx-control-inner-background ;
+  -fx-background-color: -fx-table-cell-border-color, -fx-background ;
+  -fx-background-insets: 0, 0 0 1 0 ;
+  -fx-table-cell-border-color: derive(-fx-color, 5%);
+}
+.table-row-cell:odd:filled:selected {
+  -fx-background: -fx-control-inner-background-alt ;
+}
