@@ -11,6 +11,7 @@ import object.Task;
 import parser.Parser;
 import storage.Storage;
 import type.CommandType;
+import type.TaskType;
 
 public class LogicController {
 	private static final String ERROR_NO_UNDO = "Feedback: No undo operation!";
@@ -159,6 +160,40 @@ public class LogicController {
 	public static ArrayList<Task> getDisplayList() {
 		Collections.sort(_displayList, taskComparator);
 		return _displayList;
+	}
+	
+	/**
+	 * Get the floating task list for display.
+	 * @return display floating task list
+	 */
+	public static ArrayList<Task> getFloatingList() {
+		ArrayList<Task> floatingList = new ArrayList<Task>();
+		
+		for (int i = 0; i < _displayList.size(); i++) {
+			Task task = _displayList.get(i);
+			if (task.getTaskType() == TaskType.FLOATING) {
+				floatingList.add(task);
+			}
+		}
+		Collections.sort(floatingList, taskComparator);
+		return floatingList;
+	}
+	
+	/**
+	 * Get the non-floating task list for display.
+	 * @return display non-floating task list
+	 */
+	public static ArrayList<Task> getNonFloatingList() {
+		ArrayList<Task> nonFloatingList = new ArrayList<Task>();
+		
+		for (int i = 0; i < _displayList.size(); i++) {
+			Task task = _displayList.get(i);
+			if (task.getTaskType() != TaskType.FLOATING) {
+				nonFloatingList.add(task);
+			}
+		}
+		Collections.sort(nonFloatingList, taskComparator);
+		return nonFloatingList;
 	}
 	
 	private static Comparator<Task> taskComparator = new Comparator<Task>() {
