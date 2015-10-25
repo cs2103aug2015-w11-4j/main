@@ -2,6 +2,9 @@ package parser;
 
 import java.util.Map;
 import java.util.Map.Entry;
+
+import object.Result;
+
 import java.util.Set;
 import java.util.TreeMap;
 

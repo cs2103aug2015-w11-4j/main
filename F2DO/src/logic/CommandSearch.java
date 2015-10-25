@@ -3,8 +3,8 @@ package logic;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentSkipListMap;
 
+import object.Result;
 import object.Task;
-import parser.Result;
 
 /**
  * CommandSearch class executes search function.

@@ -3,6 +3,8 @@ package parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import object.Result;
+
 public class KeywordFromTo implements IKeyword{
 	private static String _input = null;
 	

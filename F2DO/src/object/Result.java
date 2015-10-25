@@ -1,4 +1,4 @@
-package parser;
+package object;
 
 import java.util.Date;
 
@@ -18,7 +18,8 @@ public class Result {
 		super();
 	}
 	
-	public Result(int storageID, CommandType cmd, String content, TaskType type, Date startDate, Date endDate) {
+	public Result(int storageID, CommandType cmd, String content, 
+			TaskType type, Date startDate, Date endDate) {
 		this(content, startDate, endDate);
 		_storageID = storageID;
 		_cmd = cmd;
@@ -29,6 +30,12 @@ public class Result {
 		_content = content;
 		_startDate = startDate;
 		_endDate = endDate;
+	}
+	
+	public Result(CommandType cmd, Task task) {
+		this(task.getTaskID(), cmd, task.getTaskName(),
+				task.getTaskType(), task.getStartDate(), task.getEndDate());
+		_priority = task.getPriority();
 	}
 	
 	/**

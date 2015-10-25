@@ -2,8 +2,8 @@ package logic;
 
 import java.util.concurrent.ConcurrentSkipListMap;
 
+import object.Result;
 import object.Task;
-import parser.Result;
 import type.CommandType;
 
 public interface ICommand {
