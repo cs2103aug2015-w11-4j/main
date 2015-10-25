@@ -1,0 +1,15 @@
+Cheat Sheet :D 
+
+1. Add 
+
+To add an event with a start and end date, type [add event from start date to end date]
+An example: add orientation camp from 15 Jan to 19 Jan
+
+To include the start and/or end time, type [add event from start date start time to end date end time]
+An example: add orientation camp from 15 Jan 10am to 19 Jan 7pm
+
+To add a task with a deadline, type [add deadlineTask by end date]
+An example: add Report by 21 Jan 
+
+To include the start and/or end time, type [add event by end date end time]
+An example: add Report by 21 Jan 23:59
