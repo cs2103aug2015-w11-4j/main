@@ -24,14 +24,14 @@ public interface ICommand {
 				return new CommandDelete(result, taskList);
 			case EDIT:
 				return new CommandEdit(result, taskList);
-			case SEARCH:
-				return new CommandSearch(result, taskList);
-			case SHOW:
-				return new CommandShow(result, taskList);
 			case DONE:
 				return new CommandDoneUndone(result, taskList, true);
 			case UNDONE:
 				return new CommandDoneUndone(result, taskList, false);
+			case SEARCH:
+				return new CommandSearch(result, taskList);
+			case SHOW:
+				return new CommandShow(result, taskList);
 			case HELP:
 				return null;
 			case HOME:

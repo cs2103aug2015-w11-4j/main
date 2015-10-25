@@ -67,6 +67,15 @@ public class Task {
 	}
 	
 	/**
+	 * Constructor for result from parser.
+	 * @param result
+	 */
+	public Task(Result result) {
+		this (result.getStorageID(), result.getContent(), result.getType(),
+				result.getStartDate(), result.getEndDate(), result.getPriority());
+	}
+	
+	/**
 	 * Get task ID.
 	 * @return task ID
 	 */

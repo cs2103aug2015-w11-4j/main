@@ -14,8 +14,8 @@ public class Result {
 	private Date _startDate = null;
 	private Date _endDate = null;
 	
-	public Result(){
-		super();
+	public Result() {
+		
 	}
 	
 	public Result(int storageID, CommandType cmd, String content, 
@@ -39,7 +39,7 @@ public class Result {
 	}
 	
 	/**
-	 * Set storage ID.
+	 * Get storage ID.
 	 * @return storage ID
 	 */
 	public int getStorageID() {
@@ -55,11 +55,27 @@ public class Result {
 	}
 	
 	/**
-	 * Get title of the event, deadline or floating task.
+	 * Set command.
+	 * @param cmd
+	 */
+	public void setCommand(CommandType cmd) {
+		_cmd = cmd;
+	}
+	
+	/**
+	 * Get content.
 	 * @return title
 	 */
 	public String getContent() {
 		return _content;
+	}
+	
+	/**
+	 * Set content. 
+	 * @param content
+	 */
+	public void setContent(String content) {
+		_content = content;
 	}
 	
 	/**

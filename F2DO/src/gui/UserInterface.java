@@ -51,9 +51,14 @@ public class UserInterface extends Application {
 	private static int _rowIndex;
 	//private static int commandIndex;
 	
+	private static int _ctrlZCount = 0;
+	private static int _ctrlYCount = 0;
+	
 	private static final BooleanProperty _ctrlPressed = new SimpleBooleanProperty(false);
 	private static final BooleanProperty _zPressed = new SimpleBooleanProperty(false);
+	private static final BooleanProperty _yPressed = new SimpleBooleanProperty(false);
 	private static final BooleanBinding _ctrlAndZPressed = _ctrlPressed.and(_zPressed);
+	private static final BooleanBinding _ctrlAndYPressed = _ctrlPressed.and(_yPressed);
 	
 	private static TableView<Integer> _taskTable = new TableView<>();
 	private static TableView<Integer> _floatingTable = new TableView<>();
@@ -87,7 +92,7 @@ public class UserInterface extends Application {
         _tables.setSpacing(5);
         _root.setCenter(_tables);
         
-        setCtrlZListener(_root);
+        setUndoRedoListener();
         
         // Event handler for input processing
         setKeyPressed(_field, _feedBack, _taskTable, primaryStage);
@@ -111,30 +116,54 @@ public class UserInterface extends Application {
 	}
 	
 	/**
-	 * Create CTRL+Z undo handler.
-	 * @param root
+	 * Create CTRL+Z undo handler and CTRL+Y redo handler.
 	 */
-	private static void setCtrlZListener(BorderPane root) {
+	private void setUndoRedoListener() {
 		_ctrlAndZPressed.addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				 System.out.println("Ctrl and Z pressed together");
+				 _ctrlZCount += 1;
+				 
+				 if ((_ctrlZCount % 2) == 0) {
+					 _ctrlZCount = 0;
+					 String feedbackMsg = LogicController.undo();
+					 _feedBack.setText(feedbackMsg);
+					 updateTable(_taskTable);
+				 }
+			}
+        });
+		
+		_ctrlAndYPressed.addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				 _ctrlYCount += 1;
+				 
+				 if ((_ctrlYCount % 2) == 0) {
+					 _ctrlYCount = 0;
+					 String feedbackMsg = LogicController.redo();
+					 _feedBack.setText(feedbackMsg);
+					 updateTable(_taskTable);
+				 }
 			}
         });
         
-        root.setOnKeyPressed((KeyEvent event) -> {
+        _root.setOnKeyPressed((KeyEvent event) -> {
         	if (event.getCode() == KeyCode.CONTROL) {
         		_ctrlPressed.set(true);
             } else if (event.getCode() == KeyCode.Z) {
             	_zPressed.set(true);
+            } else if (event.getCode() == KeyCode.Y) {
+            	_yPressed.set(true);
             }
         });
         
-        root.setOnKeyReleased((KeyEvent event) -> {
+        _root.setOnKeyReleased((KeyEvent event) -> {
         	if (event.getCode() == KeyCode.CONTROL) {
         		_ctrlPressed.set(false);
             } else if (event.getCode() == KeyCode.Z) {
             	_zPressed.set(false);
+            } else if (event.getCode() == KeyCode.Y) {
+            	_yPressed.set(false);
             }
         });
 	}

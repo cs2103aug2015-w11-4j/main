@@ -13,6 +13,9 @@ import storage.Storage;
 import type.CommandType;
 
 public class LogicController {
+	private static final String ERROR_NO_UNDO = "Feedback: No undo operation!";
+	private static final String ERROR_NO_REDO = "Feedback: No redo operation!";
+	
 	private static ArrayList<Task> _displayList = 
 			new ArrayList<Task>();
 	private static ConcurrentSkipListMap<Integer, Task> _taskList =
@@ -34,16 +37,91 @@ public class LogicController {
 	 * @return feedback message
 	 */
 	public static String process(String input, ArrayList<Task> displayList) {
+		// Set up the parsing result
 		Result result = Parser.parse(input, displayList);
+		CommandType cmd = result.getCmd();
+		Task befExeTask = null;
+		int resultStorageID = result.getStorageID();
+		
+		if (result.getStorageID() != -1) {
+			befExeTask = _taskList.get(resultStorageID);
+		}
+		
+		// Execute parsing result
+		Feedback feedback = execute(result);
+		String message = feedback.getMessage();
+		
+		// Store successful execution
+		if (feedback.isSuccessful()) {
+			Task aftExeTask = _taskList.get(resultStorageID);
+			recordExecution(cmd, result.getContent(), befExeTask, aftExeTask);
+		}
+		
+		return message;
+	}
+	
+	/**
+	 * Execute the input according to the parsing result.
+	 * @param result - parsing result
+	 * @return feedback
+	 */
+	private static Feedback execute(Result result) {
 		ICommand command = ICommand.getCommand(result, _taskList);
 		Feedback feedback = command.execute();
-		String message = feedback.getMessage();
 		
 		_taskList = feedback.getUpdatedTaskList();
 		_displayList = feedback.getDisplayList();
 		_displayList = setDisplayList(result.getCmd() == CommandType.SHOW);
-		
-		return message;
+		return feedback;
+	}
+
+	/**
+	 * Record the execution for undo and redo purposes
+	 * @param cmd - command type
+	 * @param content - content of the input
+	 * @param befExeTask - task before execution
+	 * @param aftExeTask - task after execution
+	 */
+	private static void recordExecution(CommandType cmd, String content,
+			Task befExeTask, Task aftExeTask) {
+		switch(cmd) {
+			case ADD:
+				int index = _taskList.lastKey();
+				Task newTask = _taskList.get(index);
+				History.push(cmd, newTask);
+				break;
+			case DELETE:
+				History.push(cmd, befExeTask);
+				break;
+			case EDIT:
+				History.push(cmd, befExeTask, aftExeTask);
+				break;
+			case DONE: case UNDONE:
+				History.push(cmd, aftExeTask);
+				break;
+			default:
+				History.push(cmd, content);
+		}
+	}
+	
+	public static String undo() {
+		Result result = History.undo();
+		if (result != null) {
+			Feedback feedback = execute(result);
+			return feedback.getMessage();
+		} else {
+			return ERROR_NO_UNDO;
+		}
+	}
+	
+	public static String redo() {
+		Result result = History.redo();
+		if (result != null) {
+			Feedback feedback = execute(result);
+			return feedback.getMessage();
+		} else {
+			return ERROR_NO_REDO;
+		}
 	}
 	
 	/**

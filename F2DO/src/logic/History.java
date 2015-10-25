@@ -4,32 +4,92 @@ import java.util.Stack;
 
 import object.Result;
 import object.Task;
+import object.ExecutionPair;
 import type.CommandType;
 
 public class History {
-	private static Stack<Result> _undoStack = new Stack<Result>();
-	private static Stack<Result> _redoStack = new Stack<Result>();
+	private static Stack<ExecutionPair> _undoStack = new Stack<ExecutionPair>();
+	private static Stack<ExecutionPair> _redoStack = new Stack<ExecutionPair>();
 	
-	public static boolean push(Result result, Task task) {
+	/**
+	 * Push for ADD, DELETE, DONE and UNDONE functions.
+	 * @param cmd - command type
+	 * @param task - saved task
+	 * @return true if it is pushed successful; false otherwise
+	 */
+	public static boolean push(CommandType cmd, Task task) {
 		try {
-			//_undoStack.push(item)
+			ExecutionPair pair = new ExecutionPair(cmd, task, task);
+			_undoStack.push(pair);
+			_redoStack.clear();
 		} catch (Exception e) {
 			return false;
 		}
 		return true;
 	}
 	
-	public static CommandType getOppositeCmd(CommandType cmd) {
-		if (cmd == CommandType.ADD) {
-			return CommandType.DELETE;
-		} else if (cmd == CommandType.DELETE) {
-			return CommandType.ADD;
-		} else if (cmd == CommandType.DONE) {
-			return CommandType.UNDONE;
-		} else if (cmd == CommandType.UNDONE) {
-			return CommandType.DONE;
+	/**
+	 * Push for EDIT function.
+	 * @param cmd - command type
+	 * @param oldTask - saved old task
+	 * @param newTask - saved new task
+	 * @return true if it is pushed successful; false otherwise
+	 */
+	public static boolean push(CommandType cmd, Task oldTask, Task newTask) {
+		try {
+			ExecutionPair pair = new ExecutionPair(cmd, oldTask, newTask);
+			_undoStack.push(pair);
+			_redoStack.clear();
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Push non-editable functions.
+	 * @param cmd - command type
+	 * @param content - content of the input
+	 * @return true if it is pushed successful; false otherwise
+	 */
+	public static boolean push(CommandType cmd, String content) {
+		try {
+			ExecutionPair pair = new ExecutionPair(cmd, content);
+			_undoStack.push(pair);
+			_redoStack.clear();
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Get parsing result for undo.
+	 * Return null if there is no more undo operation.
+	 * @return undo result
+	 */
+	public static Result undo() {
+		if (_undoStack.isEmpty()) {
+			return null;
 		} else {
-			return cmd;
+			ExecutionPair pair = _undoStack.pop();
+			_redoStack.push(pair);
+			return pair.getUndo();
+		}
+	}
+	
+	/**
+	 * Get parsing result for redo.
+	 * Return null if there is no more redo operation.
+	 * @return redo result
+	 */
+	public static Result redo() {
+		if (_redoStack.isEmpty()) {
+			return null;
+		} else {
+			ExecutionPair pair = _redoStack.pop();
+			_undoStack.push(pair);
+			return pair.getRedo();
 		}
 	}
 }

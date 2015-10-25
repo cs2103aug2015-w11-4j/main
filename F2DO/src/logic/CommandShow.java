@@ -5,26 +5,12 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 import object.Result;
 import object.Task;
+import type.ShowType;
 
 public class CommandShow implements ICommand {
 	private Result _result = null;
 	private ConcurrentSkipListMap<Integer, Task> _taskList =
 			new ConcurrentSkipListMap<Integer, Task>();
-	
-	private enum ShowType {
-		ALL,
-		DONE,
-		UNDONE,
-		INVALID;
-		
-		private static ShowType toType(String word) {
-			try {
-				return valueOf(word); 
-			} catch (Exception e) {
-				return INVALID; 
-			}
-		}
-	}
 	
 	public CommandShow(Result result,
 			ConcurrentSkipListMap<Integer, Task> taskList) {
