@@ -31,13 +31,13 @@ public class History {
 	/**
 	 * Push for EDIT function.
 	 * @param cmd - command type
-	 * @param oldTask - saved old task
-	 * @param newTask - saved new task
+	 * @param oldTask - task before execution
+	 * @param newTask - task after execution
 	 * @return true if it is pushed successful; false otherwise
 	 */
-	public static boolean push(CommandType cmd, Task oldTask, Task newTask) {
+	public static boolean push(CommandType cmd, Task befExeTask, Task aftExeTask) {
 		try {
-			ExecutionPair pair = new ExecutionPair(cmd, oldTask, newTask);
+			ExecutionPair pair = new ExecutionPair(cmd, befExeTask, aftExeTask);
 			_undoStack.push(pair);
 			_redoStack.clear();
 		} catch (Exception e) {
