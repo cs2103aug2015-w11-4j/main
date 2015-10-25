@@ -61,6 +61,34 @@ public class LogicController {
 	}
 	
 	/**
+	 * Undo the previous operations.
+	 * @return feedback message
+	 */
+	public static String undo() {
+		Result result = History.undo();
+		if (result != null) {
+			Feedback feedback = execute(result);
+			return feedback.getMessage();
+		} else {
+			return ERROR_NO_UNDO;
+		}
+	}
+	
+	/**
+	 * Redo the operations.
+	 * @return feedback message
+	 */
+	public static String redo() {
+		Result result = History.redo();
+		if (result != null) {
+			Feedback feedback = execute(result);
+			return feedback.getMessage();
+		} else {
+			return ERROR_NO_REDO;
+		}
+	}
+	
+	/**
 	 * Execute the input according to the parsing result.
 	 * @param result - parsing result
 	 * @return feedback
@@ -101,26 +129,6 @@ public class LogicController {
 				break;
 			default:
 				History.push(cmd, content);
-		}
-	}
-	
-	public static String undo() {
-		Result result = History.undo();
-		if (result != null) {
-			Feedback feedback = execute(result);
-			return feedback.getMessage();
-		} else {
-			return ERROR_NO_UNDO;
-		}
-	}
-	
-	public static String redo() {
-		Result result = History.redo();
-		if (result != null) {
-			Feedback feedback = execute(result);
-			return feedback.getMessage();
-		} else {
-			return ERROR_NO_REDO;
 		}
 	}
 	
