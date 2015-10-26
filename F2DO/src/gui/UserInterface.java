@@ -57,8 +57,10 @@ public class UserInterface extends Application {
 	private static final BooleanProperty _ctrlPressed = new SimpleBooleanProperty(false);
 	private static final BooleanProperty _zPressed = new SimpleBooleanProperty(false);
 	private static final BooleanProperty _yPressed = new SimpleBooleanProperty(false);
+	private static final BooleanProperty _ePressed = new SimpleBooleanProperty(false);
 	private static final BooleanBinding _ctrlAndZPressed = _ctrlPressed.and(_zPressed);
 	private static final BooleanBinding _ctrlAndYPressed = _ctrlPressed.and(_yPressed);
+	private static final BooleanBinding _ctrlAndEPressed = _ctrlPressed.and(_ePressed);
 	
 	private static TableView<Integer> _taskTable = new TableView<>();
 	private static TableView<Integer> _floatingTable = new TableView<>();
@@ -92,7 +94,7 @@ public class UserInterface extends Application {
         _tables.setSpacing(5);
         _root.setCenter(_tables);
         
-        setUndoRedoListener();
+        setKeyCombinationListener();
         
         // Event handler for input processing
         setKeyPressed(_field, _feedBack, _taskTable, primaryStage);
@@ -118,7 +120,7 @@ public class UserInterface extends Application {
 	/**
 	 * Create CTRL+Z undo handler and CTRL+Y redo handler.
 	 */
-	private void setUndoRedoListener() {
+	private void setKeyCombinationListener() {
 		_ctrlAndZPressed.addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -146,6 +148,13 @@ public class UserInterface extends Application {
 				 }
 			}
         });
+		
+		_ctrlAndEPressed.addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				System.exit(1);
+			}
+        });
         
         _root.setOnKeyPressed((KeyEvent event) -> {
         	if (event.getCode() == KeyCode.CONTROL) {
@@ -154,6 +163,8 @@ public class UserInterface extends Application {
             	_zPressed.set(true);
             } else if (event.getCode() == KeyCode.Y) {
             	_yPressed.set(true);
+            } else if (event.getCode() == KeyCode.E) {
+            	_ePressed.set(true);
             }
         });
         
@@ -164,6 +175,8 @@ public class UserInterface extends Application {
             	_zPressed.set(false);
             } else if (event.getCode() == KeyCode.Y) {
             	_yPressed.set(false);
+            } else if (event.getCode() == KeyCode.E) {
+            	_ePressed.set(false);
             }
         });
 	}
