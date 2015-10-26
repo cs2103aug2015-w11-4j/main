@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentSkipListMap;
 
+import history.History;
 import object.Result;
 import object.Task;
 import parser.Parser;
