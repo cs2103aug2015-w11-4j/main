@@ -15,8 +15,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
@@ -37,6 +35,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class UserInterface extends Application {
+	private static final String MSG_WELCOME = "Welcome to F2DO, your personalised task manager(:\n"
+			+ "Type " + "\"Help\"" + " for a list of commands to get started.";
 	
 	private static BorderPane _root = new BorderPane();
 	private static Scene _defaultScene = new Scene(_root, 650, 480);
@@ -46,7 +46,7 @@ public class UserInterface extends Application {
 	private static Button _taskButton = new Button();
 	private static Button _floatingButton = new Button();
 	private static TextField _field = new TextField();
-	private static TextArea _feedBack = new TextArea();
+	private static UITextArea _feedBack = new UITextArea(MSG_WELCOME);
 	
 	private static int _rowIndex;
 	//private static int commandIndex;
@@ -78,7 +78,6 @@ public class UserInterface extends Application {
 		_floatingButton.setText("Floating Tasks");
 		
 		_field.setPromptText("Enter your command..");
-		setFeedback(_feedBack);
 		
 		_vbox.setAlignment(Pos.CENTER);
 		_vbox.setSpacing(2);
@@ -103,18 +102,6 @@ public class UserInterface extends Application {
         _defaultScene.getStylesheets().add(css);
         primaryStage.setScene(_defaultScene);
         primaryStage.show();
-	}
-	
-	/**
-	 * Set the design of feedback.
-	 * @param feedback
-	 */
-	private void setFeedback(TextArea feedBack) {
-		feedBack.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 12));
-		feedBack.setPrefRowCount(3);
-		feedBack.setText("Welcome to F2DO, your personalised task manager(:\n"
-				+ "Type " + "\"Help\"" + " for a list of commands to get started.");
-		feedBack.setMouseTransparent(true);
 	}
 	
 	/**
