@@ -1,5 +1,6 @@
 package history;
 
+import java.util.EmptyStackException;
 import java.util.Stack;
 
 import object.Result;
@@ -69,12 +70,21 @@ public class History {
 	 * @return undo result
 	 */
 	public static Result undo() {
-		if (_undoStack.isEmpty()) {
-			return null;
-		} else {
+		try {
 			ExecutionPair pair = _undoStack.pop();
+			Result result = pair.getUndo();
 			_redoStack.push(pair);
-			return pair.getUndo();
+			
+			// Get undo again if the command type is not editable
+			if (!isEditableType(result.getCmd())) {
+				pair = _undoStack.pop();
+				result = pair.getUndo();
+				_redoStack.push(pair);
+			}
+			
+			return result;
+		} catch (EmptyStackException e) {
+			return null;
 		}
 	}
 	
@@ -84,12 +94,25 @@ public class History {
 	 * @return redo result
 	 */
 	public static Result redo() {
-		if (_redoStack.isEmpty()) {
-			return null;
-		} else {
+		try {
 			ExecutionPair pair = _redoStack.pop();
 			_undoStack.push(pair);
 			return pair.getRedo();
+		} catch (EmptyStackException e) {
+			return null;
 		}
+	}
+	
+	/**
+	 * Determine if the command type is editable.
+	 * @param cmd - command type
+	 * @return true if command is editable type; false otherwise
+	 */
+	private static boolean isEditableType(CommandType cmd) {
+		return cmd == CommandType.ADD ||
+				cmd == CommandType.DELETE ||
+				cmd == CommandType.EDIT ||
+				cmd == CommandType.DONE ||
+				cmd == CommandType.UNDONE;
 	}
 }
