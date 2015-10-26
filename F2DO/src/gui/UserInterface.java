@@ -118,9 +118,13 @@ public class UserInterface extends Application {
 	}
 	
 	/**
-	 * Create CTRL+Z undo handler and CTRL+Y redo handler.
+	 * Create key combination handler.
+	 * CTRL+Z: undo listener.
+	 * CTRL+Y: redo listener.
+	 * CTRL+E: exit listener.
 	 */
 	private void setKeyCombinationListener() {
+		// Undo listener
 		_ctrlAndZPressed.addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -135,6 +139,7 @@ public class UserInterface extends Application {
 			}
         });
 		
+		// Redo listener
 		_ctrlAndYPressed.addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -149,6 +154,7 @@ public class UserInterface extends Application {
 			}
         });
 		
+		// Exit listener
 		_ctrlAndEPressed.addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
