@@ -4,8 +4,8 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -37,8 +37,8 @@ public class UserInterface extends Application {
 	private static UIButton _taskButton = new UIButton("Tasks & Events");
 	private static UIButton _floatingButton = new UIButton("Floating Tasks");
 	private static TextField _field = new TextField();
-	private static TextArea _feedBack = new TextArea();
-	//private static int commandIndex;
+	private static Label _feedBack = new Label();
+	private static int commandIndex;
 	
 	private static UITable _taskTable = new UITable(false);
 	private static UITable _floatingTable = new UITable(true);
@@ -53,8 +53,8 @@ public class UserInterface extends Application {
 	private static final BooleanBinding _ctrlAndUPressed = _ctrlPressed.and(_uPressed);
 	private static final BooleanBinding _ctrlAndRPressed = _ctrlPressed.and(_rPressed);
 	private static final BooleanBinding _ctrlAndEPressed = _ctrlPressed.and(_ePressed);
-	//private static ArrayList<String> commandHistory = new ArrayList<String>();
-	
+
+	private static ArrayList<String> commandHistory = new ArrayList<String>();
 	private static ArrayList<Task> _displayList = new ArrayList<Task>();
 	
 	public static void main(String[] args) {
@@ -67,15 +67,16 @@ public class UserInterface extends Application {
 		setFeedback(_feedBack);
 		
 		_vbox.setAlignment(Pos.CENTER);
-		_vbox.setSpacing(2);
-		_vbox.getChildren().addAll(_feedBack, _field);     
-        BorderPane.setMargin(_vbox, new Insets(10, 20, 20, 20));
-        _root.setBottom(_vbox);
+		_vbox.setSpacing(5);
+		_vbox.getChildren().addAll(_field, _feedBack);     
+        BorderPane.setMargin(_vbox, new Insets(15, 20, 0, 20));
+        _root.setTop(_vbox);
         
         updateTables();
-        BorderPane.setMargin(_tables, new Insets(10,20,0,20));
+        BorderPane.setMargin(_tables, new Insets(8, 20, 25, 20));
         BorderPane.setAlignment(_tables, Pos.CENTER);
-        _tables.getChildren().addAll(_floatingButton, _floatingTable, _taskButton, _taskTable);
+        _tables.setAlignment(Pos.CENTER);
+        _tables.getChildren().addAll(_taskButton, _taskTable, _floatingButton, _floatingTable);
         _tables.setSpacing(5);
         _root.setCenter(_tables);
         
@@ -109,9 +110,9 @@ public class UserInterface extends Application {
 	 * Set the design of feedback.
 	 * @param feedback
 	 */
-	private void setFeedback(TextArea feedBack) {
-		feedBack.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 12));
-		feedBack.setPrefRowCount(3);
+	private void setFeedback(Label feedBack) {
+		feedBack.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 12.5));
+		//feedBack.setPrefRowCount(3);
 		feedBack.setText("Welcome to F2DO, your personalised task manager(:\n"
 				+ "Type " + "\"Help\"" + " for a list of commands to get started.");
 		feedBack.setMouseTransparent(true);
@@ -193,14 +194,14 @@ public class UserInterface extends Application {
 	 * @param feedback
 	 * @param table
 	 */
-	private void setKeyPressed(TextField field, TextArea feedback, TableView<Integer> table, Stage primaryStage) {
+	private void setKeyPressed(TextField field, Label feedback, TableView<Integer> table, Stage primaryStage) {
 		field.setOnKeyPressed((KeyEvent event) -> {
 			if (event.getCode() == KeyCode.ENTER) {
 				
 				String userInput = field.getText();
 			
-				//commandHistory.add(userInput);
-				//commandIndex = commandHistory.size() - 1;
+				commandHistory.add(userInput);
+				commandIndex = commandHistory.size() - 1;
 				
 				field.clear();
 				
@@ -211,7 +212,7 @@ public class UserInterface extends Application {
 				// will be displayed in the existing feedback box or alternatively, inside a list.
 
 				if (feedbackMsg == "help") {
-					feedback.setPrefRowCount(50); 
+					//feedback.setPrefRowCount(50); 
 					try {
 						setCheatSheetContent();
 					} catch (Exception e) {
@@ -228,11 +229,11 @@ public class UserInterface extends Application {
 				//updateTable(_taskTable, false);
 				//updateTable(_floatingTable, true);
 			}
-			/*else if (event.getCode() == KeyCode.UP) {
+			else if (event.getCode() == KeyCode.TAB) {
 				
-				//if (!commandHistory.isEmpty()) {
-				//	field.setText(commandHistory.get(commandIndex));
-				//	int length = commandHistory.get(commandIndex).length();
+				if (!commandHistory.isEmpty()) {
+					field.setText(commandHistory.get(commandIndex));
+					int length = commandHistory.get(commandIndex).length();
 					commandIndex--;
 					
 					Platform.runLater( new Runnable() {
@@ -247,7 +248,8 @@ public class UserInterface extends Application {
 					}
 				}
 			}
-			else if (event.getCode() == KeyCode.DOWN) {
+			/*
+			else if (event.getCode() == KeyCode.TAB + SHIFT) {
 				
 				if (!commandHistory.isEmpty()) {
 					field.setText(commandHistory.get(commandIndex + 1));
@@ -265,10 +267,11 @@ public class UserInterface extends Application {
 						commandIndex = 0;
 					}
 				}
-			}*/
-			/* ---Unsuccessful at the moment ---*/
-			else if (event.getCode() == KeyCode.TAB) {
-				exit(primaryStage);
+			}
+			*/
+			
+			else if (event.getCode() == KeyCode.ESCAPE) {
+				exit();
 			}
 		});
 	}
@@ -286,7 +289,7 @@ public class UserInterface extends Application {
 	    br.close();
 	}
 	
-	private void exit(Stage primaryStage) {
-		primaryStage.close();
+	private void exit() {
+		Platform.exit();
 	}
 }
