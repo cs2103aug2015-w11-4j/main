@@ -155,6 +155,14 @@ public class LogicController {
 	}
 	
 	/**
+	 * Get the task list in ConcurrentSkipListMap<Integer, Task> form.
+	 * @return tasklist
+	 */
+	public static ConcurrentSkipListMap<Integer, Task> getTaskList() {
+		return _taskList;
+	}
+	
+	/**
 	 * Get the task list for display.
 	 * @return display task list
 	 */
@@ -209,16 +217,16 @@ public class LogicController {
 		public int compare(Task t1, Task t2) {
 
 			if (t1.getEndDate() != null && t2.getEndDate() != null) {
-				return t1.getEndDate().compareTo(t2.getEndDate());
+				return t2.getEndDate().compareTo(t1.getEndDate());
 			} else if ((t1.getStartDate() == null && 
 					t1.getEndDate() != null && t2.getStartDate() != null)
 					|| (t1.getEndDate() != null && t2.getEndDate() == null && t2.getStartDate() != null)) {
-				return t1.getEndDate().compareTo(t2.getStartDate());
+				return t2.getStartDate().compareTo(t1.getEndDate());
 			} else if ((t1.getStartDate() != null && t2.getStartDate() == null && t2.getEndDate() != null)
 					|| (t1.getEndDate() == null && t1.getStartDate() != null && t2.getEndDate() != null)) {
-				return t1.getStartDate().compareTo(t2.getEndDate());
+				return t2.getEndDate().compareTo(t1.getStartDate());
 			} else if (t1.getStartDate() != null && t2.getStartDate() != null) {
-				return t1.getStartDate().compareTo(t2.getStartDate());
+				return t2.getStartDate().compareTo(t1.getStartDate());
 			} else if (t1.getStartDate() == null && t1.getEndDate() == null && t2.getStartDate() != null
 					|| t2.getEndDate() != null) {
 				return 1;

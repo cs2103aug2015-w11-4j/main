@@ -17,10 +17,10 @@ import org.junit.Test;
 public class DateTimeTest {
 	
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    FileHandler fileTxt = null;
 
 	@Before
 	public void loggerSetup() {
-	    FileHandler fileTxt = null;
 	
 	    try {
 			fileTxt = new FileHandler("ParserLogging.txt");
@@ -36,7 +36,8 @@ public class DateTimeTest {
 	
 	@Test
 	public void testSlashNumericDMY() {
-	    logger.info("Starting SlashNumericDMY test");
+		
+		logger.info("Starting SlashNumericDMY test");
 
 		assertEquals(getResult(2015, 12, 16, 12, 0), simpleFormat(DateTime.parse("16/12/2015")));
 		assertEquals(getResult(2015, 12, 17, 12, 0), simpleFormat(DateTime.parse("17/12/15")));
@@ -45,11 +46,15 @@ public class DateTimeTest {
 		assertEquals(getResult(2015, 2, 16, 12, 0), simpleFormat(DateTime.parse("16/2/2015")));
 		assertEquals(getResult(2015, 2, 17, 12, 0), simpleFormat(DateTime.parse("17/02/2015")));
 
-		logger.info("End of SlashNumericDMY test");
+		logger.info("Successful end of SlashNumericDMY test");
+		
+//		fileTxt.close();
+	
 	}
 	
 	@Test 
 	public void testHyphenNumericDMY() {
+	    
 	    logger.info("Starting HyphenNumericDMY test");
 
 		assertEquals(getResult(2015, 12, 16, 12, 0), simpleFormat(DateTime.parse("16-12-2015")));
@@ -59,12 +64,16 @@ public class DateTimeTest {
 		assertEquals(getResult(2015, 2, 16, 12, 0), simpleFormat(DateTime.parse("16-2-2015")));
 		assertEquals(getResult(2015, 2, 16, 12, 0), simpleFormat(DateTime.parse("16-02-2015")));
 
-	    logger.info("End of HyphenNumericDMY test");
+	    logger.info("Successful end of HyphenNumericDMY test");
+
+//	    fileTxt.close();
+	    
 	}
 	
 	@Test 
 	public void testShortDMY() {
-	    logger.info("Starting ShortDMY test");
+	    
+		logger.info("Starting ShortDMY test");
 
 		assertEquals(getResult(2015, 12, 16, 12, 0), simpleFormat(DateTime.parse("16 Dec 2015")));
 		assertEquals(getResult(2015, 12, 16, 12, 0), simpleFormat(DateTime.parse("16 Dec 15")));
@@ -72,12 +81,16 @@ public class DateTimeTest {
 		assertEquals(getResult(2015, 12, 6, 12, 0), simpleFormat(DateTime.parse("06 Dec 2015")));
 		assertEquals(getResult(2015, 2, 8, 12, 0), simpleFormat(DateTime.parse("08 Feb 15")));
 
-	    logger.info("End of ShortDMY test");
+	    logger.info("Successful end of ShortDMY test");
+
+//	    fileTxt.close();
+	    
 	}
 	
 	@Test
 	public void testSlashNumbericDM() {
-	    logger.info("Starting SlashNumbericDM test");
+	    
+		logger.info("Starting SlashNumbericDM test");
 
 	    assertEquals(getResult(0, 12, 16, 12, 0), simpleFormat(DateTime.parse("16/12")));
 		assertEquals(getResult(0, 12, 6, 12, 0), simpleFormat(DateTime.parse("6/12")));
@@ -85,12 +98,16 @@ public class DateTimeTest {
 		assertEquals(getResult(0, 2, 16, 12, 0), simpleFormat(DateTime.parse("16/2")));
 		assertEquals(getResult(0, 2, 16, 12, 0), simpleFormat(DateTime.parse("16/02")));
 	
-	    logger.info("End of SlashNumbericDM test");
+	    logger.info("Successful end of SlashNumbericDM test");
+
+//	    fileTxt.close();
+	    
 	}
 	
 	@Test
 	public void testHyphenNumbericDM() {
-	    logger.info("Starting HyphenNumbericDM test");
+	    
+		logger.info("Starting HyphenNumbericDM test");
 
 	    assertEquals(getResult(0, 12, 16, 12, 0), simpleFormat(DateTime.parse("16-12")));
 		assertEquals(getResult(0, 12, 6, 12, 0), simpleFormat(DateTime.parse("6-12")));
@@ -98,48 +115,64 @@ public class DateTimeTest {
 		assertEquals(getResult(0, 2, 16, 12, 0), simpleFormat(DateTime.parse("16-2")));
 		assertEquals(getResult(0, 2, 16, 12, 0), simpleFormat(DateTime.parse("16-02")));
 
-		logger.info("End of HyphenNumbericDM test");
+		logger.info("Successful end of HyphenNumbericDM test");
+
+//	    fileTxt.close();
+	
 	}
 	
 	@Test 
 	public void testShortDM() {
-	    logger.info("Starting ShortDM test");
+	    
+		logger.info("Starting ShortDM test");
 
 	    assertEquals(getResult(0, 12, 16, 12, 0), simpleFormat(DateTime.parse("16 Dec")));
 		assertEquals(getResult(0, 12, 6, 12, 0), simpleFormat(DateTime.parse("6 Dec")));
 		assertEquals(getResult(0, 12, 6, 12, 0), simpleFormat(DateTime.parse("06 Dec")));
 		assertEquals(getResult(0, 2, 16, 12, 0), simpleFormat(DateTime.parse("16 Feb")));
 		
-		logger.info("End of ShortDM test");
+		logger.info("Successful end of ShortDM test");
+
+//	    fileTxt.close();
+	    
 	}
 	
 	@Test 
 	public void testShortMD() {
-	    logger.info("Starting ShortMD test");
+	    
+		logger.info("Starting ShortMD test");
 
 	    assertEquals(getResult(0, 12, 16, 12, 0), simpleFormat(DateTime.parse("Dec 16")));
 		assertEquals(getResult(0, 12, 6, 12, 0), simpleFormat(DateTime.parse("Dec 6")));
 		assertEquals(getResult(0, 12, 6, 12, 0), simpleFormat(DateTime.parse("Dec 06")));
 		assertEquals(getResult(0, 2, 16, 12, 0), simpleFormat(DateTime.parse("Feb 16")));
 
-		logger.info("End of ShortMD test");
+		logger.info("Successful end of ShortMD test");
+
+//	    fileTxt.close();
+	    
 	}
 	
 	@Test 
 	public void testTime() {
-	    logger.info("Starting Time test");
+	    
+		logger.info("Starting Time test");
 
 	    assertEquals(getResult(0, 0, 0, 15, 0), simpleFormat(DateTime.parse("3pm")));
 		assertEquals(getResult(0, 0, 0, 8, 0), simpleFormat(DateTime.parse("8am")));
 		assertEquals(getResult(0, 0, 0, 17, 30), simpleFormat(DateTime.parse("17:30")));
 		assertEquals(getResult(0, 0, 0, 17, 30), simpleFormat(DateTime.parse("17.30")));
 	
-		logger.info("End of Time test");
+		logger.info("Successful end of Time test");
+	    
+//		fileTxt.close();
+	    
 	}
 	
 	@Test
 	public void testMixture() {
-	    logger.info("Starting Mixture test");
+	    
+		logger.info("Starting Mixture test");
 
 	    assertEquals(getResult(0, 11, 4, 16, 0), simpleFormat(DateTime.parse("Nov 4 4pm")));
 		assertEquals(getResult(0, 2, 16, 7, 0), simpleFormat(DateTime.parse("16 Feb 7am")));
@@ -149,7 +182,10 @@ public class DateTimeTest {
 		assertEquals(getResult(0, 2, 16, 22, 10), simpleFormat(DateTime.parse("16 Feb 22:10")));
 		assertEquals(getResult(2015, 2, 17, 22, 10), simpleFormat(DateTime.parse("17 Feb 2015 22:10")));
 	
-	    logger.info("End of Mixture test");
+	    logger.info("Successful end of Mixture test");
+
+//	    fileTxt.close();
+	    
 	}
 	
 	private String getResult(int year, int month, int date, int hour, int min) {

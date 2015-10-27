@@ -1,4 +1,12 @@
-Oct 27, 2015 12:09:20 PM storage.StorageTest test
-INFO: Starting tests
-Oct 27, 2015 12:09:20 PM storage.StorageTest test
-INFO: End of tests
+Oct 27, 2015 6:13:17 PM storage.StorageTest testReadFromFile
+INFO: Starting read from file test
+Oct 27, 2015 6:13:17 PM storage.StorageTest testReadFromFile
+INFO: Ending read from file test successfully
+Oct 27, 2015 6:13:17 PM storage.StorageTest testWriteToFile
+INFO: Starting write to file test
+Oct 27, 2015 6:13:17 PM storage.StorageTest testWriteToFile
+INFO: Ending write to file test successfully
+Oct 27, 2015 6:13:17 PM storage.StorageTest testSetFolder
+INFO: Starting set folder test
+Oct 27, 2015 6:13:17 PM storage.StorageTest testSetFolder
+INFO: End of set folder test successfully
