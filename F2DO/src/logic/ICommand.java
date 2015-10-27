@@ -33,11 +33,11 @@ public interface ICommand {
 			case SHOW:
 				return new CommandShow(result, taskList);
 			case HELP:
-				return null;
+				return new CommandHelp(taskList);
 			case HOME:
 				return null;
 			case INVALID: default:
-				return null;
+				return new CommandDefault(taskList);
 		}
 	}
 	

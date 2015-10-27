@@ -10,6 +10,7 @@ public class FeedbackHelper {
 	public static final String MSG_SHOW_UNDONE = "Feedback: Show %1$s incomplete task%2$s!";
 	public static final String MSG_DONE = "Feedback: %1$s has been marked as completed!";
 	public static final String MSG_UNDONE = "Feedback: %1$s has been marked as imcomplete!";
+	public static final String MSG_HELP = "Feedback: Show HELP!";
 	
 	public static final String ERROR_ADD = "Feedback: %1$s cannot be added!";
 	public static final String ERROR_NO_INDEX = "Feedback: The entered number does not exist!";
@@ -19,4 +20,5 @@ public class FeedbackHelper {
 	public static final String ERROR_SHOW_NO_DONE = "Feedback: No complete task!";
 	public static final String ERROR_SHOW_NO_UNDONE = "Feedback: No incomplete task!";
 	public static final String ERROR_NO_ACTION = "Feedback: No action is done!";
+	public static final String ERROR_INVALID_COMMAND = "Feedback: The command entered does not exist!";
 }
