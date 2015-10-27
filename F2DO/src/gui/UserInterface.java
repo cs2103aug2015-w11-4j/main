@@ -119,8 +119,8 @@ public class UserInterface extends Application {
 	
 	/**
 	 * Create key combination handler.
-	 * CTRL+Z: undo listener.
-	 * CTRL+Y: redo listener.
+	 * CTRL+U: undo listener.
+	 * CTRL+R: redo listener.
 	 * CTRL+E: exit listener.
 	 */
 	private void setKeyCombinationListener() {
