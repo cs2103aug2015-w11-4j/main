@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 public class UserInterface extends Application {
 	private static BorderPane _root = new BorderPane();
-	private static Scene _defaultScene = new Scene(_root, 650, 480);
+	private static Scene _defaultScene = new Scene(_root, 600, 480);
 	private static VBox _vbox = new VBox();
 	private static VBox _tables = new VBox();
 	
