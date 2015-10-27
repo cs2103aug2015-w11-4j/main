@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -35,8 +34,8 @@ public class UserInterface extends Application {
 	private static VBox _vbox = new VBox();
 	private static VBox _tables = new VBox();
 	
-	private static Button _taskButton = new Button();
-	private static Button _floatingButton = new Button();
+	private static UIButton _taskButton = new UIButton("Tasks & Events");
+	private static UIButton _floatingButton = new UIButton("Floating Tasks");
 	private static TextField _field = new TextField();
 	private static TextArea _feedBack = new TextArea();
 	//private static int commandIndex;
@@ -63,10 +62,7 @@ public class UserInterface extends Application {
 	}
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
-		_taskButton.setText("Tasks & Events");
-		_floatingButton.setText("Floating Tasks");
-		
+	public void start(Stage primaryStage) throws Exception {		
 		_field.setPromptText("Enter your command..");
 		setFeedback(_feedBack);
 		
