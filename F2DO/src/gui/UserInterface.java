@@ -51,8 +51,8 @@ public class UserInterface extends Application {
 	private static int _rowIndex;
 	//private static int commandIndex;
 	
-	private static int _ctrlZCount = 0;
-	private static int _ctrlYCount = 0;
+	private static int _ctrlUCount = 0;
+	private static int _ctrlRCount = 0;
 	
 	private static final BooleanProperty _ctrlPressed = new SimpleBooleanProperty(false);
 	private static final BooleanProperty _uPressed = new SimpleBooleanProperty(false);
@@ -128,10 +128,10 @@ public class UserInterface extends Application {
 		_ctrlAndUPressed.addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				 _ctrlZCount += 1;
+				_ctrlUCount += 1;
 				 
-				 if ((_ctrlZCount % 2) == 0) {
-					 _ctrlZCount = 0;
+				 if ((_ctrlUCount % 2) == 0) {
+					 _ctrlUCount = 0;
 					 String feedbackMsg = LogicController.undo();
 					 _feedBack.setText(feedbackMsg);
 					 updateTable(_taskTable);
@@ -143,10 +143,10 @@ public class UserInterface extends Application {
 		_ctrlAndRPressed.addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				 _ctrlYCount += 1;
+				_ctrlRCount += 1;
 				 
-				 if ((_ctrlYCount % 2) == 0) {
-					 _ctrlYCount = 0;
+				 if ((_ctrlRCount % 2) == 0) {
+					 _ctrlRCount = 0;
 					 String feedbackMsg = LogicController.redo();
 					 _feedBack.setText(feedbackMsg);
 					 updateTable(_taskTable);
