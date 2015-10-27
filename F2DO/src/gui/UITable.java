@@ -18,6 +18,10 @@ public class UITable extends TableView<Integer> {
 	private int _displayIndex = 0;
 	private boolean _isFloating;
 	
+	/**
+	 * Constructor of UITable.
+	 * @param isFloating - true if this table is for displaying floating tasks; false otherwise
+	 */
 	public UITable(boolean isFloating) {
 		_isFloating = isFloating;
 		
@@ -28,6 +32,11 @@ public class UITable extends TableView<Integer> {
 		}
 	}
 	
+	/**
+	 * Update the table.
+	 * @param nonFloatingList - non-floating task list
+	 * @param floatingList - floating task list
+	 */
 	public void updateTable(ArrayList<Task> nonFloatingList, ArrayList<Task> floatingList) {
 		this.getItems().clear();
 		
@@ -50,6 +59,9 @@ public class UITable extends TableView<Integer> {
 		}
 	}
 	
+	/**
+	 * Set non-floating table.
+	 */
 	private void setNonFloatingTable() {
 		TableColumn<Integer, Number> id = new TableColumn<>("Task#");
         id.setCellValueFactory(cellData -> {
@@ -122,6 +134,9 @@ public class UITable extends TableView<Integer> {
         this.getColumns().add(endDate);
 	}
 	
+	/**
+	 * Set floating table.
+	 */
 	private void setFloatingTable() {
 		TableColumn<Integer, Number> id = new TableColumn<>("Task#");
         id.setCellValueFactory(cellData -> {
