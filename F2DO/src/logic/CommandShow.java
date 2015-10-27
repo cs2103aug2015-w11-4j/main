@@ -27,19 +27,6 @@ public class CommandShow implements ICommand {
 		String message = FeedbackHelper.ERROR_SHOW_NO_ALL;
 		
 		switch (type) {
-			case ALL:
-				displayList = new ArrayList<Task>(_taskList.values());
-				size = displayList.size();
-				
-				if (size > 0) {
-					isSuccessful = true;
-					if (size > 1) {
-						message = String.format(FeedbackHelper.MSG_SHOW_ALL, "s");
-					} else {
-						message = String.format(FeedbackHelper.MSG_SHOW_ALL, "");;
-					}
-				}
-				break;
 			case DONE:
 				displayList = searchTasks(true);
 				size = displayList.size();
@@ -72,8 +59,18 @@ public class CommandShow implements ICommand {
 				}
 				
 				break;
-			case INVALID: default:
-				// DO NOTHING
+			case ALL: case INVALID: default:
+				displayList = new ArrayList<Task>(_taskList.values());
+				size = displayList.size();
+				
+				if (size > 0) {
+					isSuccessful = true;
+					if (size > 1) {
+						message = String.format(FeedbackHelper.MSG_SHOW_ALL, "s");
+					} else {
+						message = String.format(FeedbackHelper.MSG_SHOW_ALL, "");;
+					}
+				}
 		}
 		
 		return new Feedback(message, displayList, _taskList, isSuccessful);
@@ -93,5 +90,7 @@ public class CommandShow implements ICommand {
 		}
 		return searchTasks;
 	}
+	
+	
 
 }
