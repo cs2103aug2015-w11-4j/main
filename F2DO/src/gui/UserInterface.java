@@ -68,6 +68,10 @@ public class UserInterface extends Application {
 	
 	private static ArrayList<Task> _displayList = new ArrayList<Task>();
 	
+	private static int _displayIndex = 0;
+	private static ArrayList<Task> _floatingList = new ArrayList<Task>();
+	private static ArrayList<Task> _nonFloatingList = new ArrayList<Task>();
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -134,7 +138,8 @@ public class UserInterface extends Application {
 					 _ctrlUCount = 0;
 					 String feedbackMsg = LogicController.undo();
 					 _feedBack.setText(feedbackMsg);
-					 updateTable(_taskTable);
+					 updateTable(_taskTable, false);
+					 updateTable(_floatingTable, true);
 				 }
 			}
         });
@@ -149,7 +154,8 @@ public class UserInterface extends Application {
 					 _ctrlRCount = 0;
 					 String feedbackMsg = LogicController.redo();
 					 _feedBack.setText(feedbackMsg);
-					 updateTable(_taskTable);
+					 updateTable(_taskTable, false);
+					 updateTable(_floatingTable, true);
 				 }
 			}
         });
@@ -192,7 +198,8 @@ public class UserInterface extends Application {
 	 * @param table
 	 */
 	private void setTasksWithDates(TableView<Integer>table) {
-		updateTable(table);
+		updateTable(_taskTable, false);
+		updateTable(_floatingTable, true);
         
         TableColumn<Integer, Number> id = new TableColumn<>("Task#");
         id.setCellValueFactory(cellData -> {
@@ -270,7 +277,8 @@ public class UserInterface extends Application {
 	 * @param table
 	 */
 	private void setFloatingTasks(TableView<Integer>table) {
-		updateTable(table);
+		updateTable(_taskTable, false);
+		updateTable(_floatingTable, true);
         
         TableColumn<Integer, Number> id = new TableColumn<>("Task#");
         id.setCellValueFactory(cellData -> {
@@ -325,10 +333,12 @@ public class UserInterface extends Application {
 					}
 				} else {
 					feedback.setText(feedbackMsg);
-					updateTable(table);
+					updateTable(_taskTable, false);
+					updateTable(_floatingTable, true);
 				}			
 				feedback.setText(feedbackMsg);
-				updateTable(table);
+				updateTable(_taskTable, false);
+				updateTable(_floatingTable, true);
 			}
 			/*else if (event.getCode() == KeyCode.UP) {
 				
@@ -392,12 +402,25 @@ public class UserInterface extends Application {
 	 * Update the table.
 	 * @param table
 	 */
-	private void updateTable(TableView<Integer> table) {
-		_displayList = LogicController.getDisplayList();
+	private void updateTable(TableView<Integer> table, boolean isFloating) {
 		table.getItems().clear();
+		_nonFloatingList = LogicController.getNonFloatingList();
+		_floatingList = LogicController.getFloatingList();
 		
-		for (int i = 0; i < _displayList.size(); i++) {
-            table.getItems().add(i);
+		_displayList.clear();
+		_displayList.addAll(_nonFloatingList);
+		_displayList.addAll(_floatingList);
+		
+		if (!isFloating) {
+			for (_displayIndex = 0; _displayIndex < _nonFloatingList.size(); _displayIndex++) {
+				table.getItems().add(_displayIndex);
+			}
+		} else {
+			int nonFloatingMaxSize = _nonFloatingList.size() + _floatingList.size();
+			
+			for (; _displayIndex < nonFloatingMaxSize; _displayIndex++) {
+				table.getItems().add(_displayIndex);
+			}
 		}
 	}
 	
