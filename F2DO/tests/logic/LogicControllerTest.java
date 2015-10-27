@@ -22,12 +22,11 @@ public class LogicControllerTest {
 	//	Code Segment removes the console output for logger
 	/*	Logger rootLogger = Logger.getLogger("");
 	   	Handler[] handlers = rootLogger.getHandlers();
-	   	
-	  	if (handlers[0] instanceof ConsoleHandler) {
+	   	if (handlers[0] instanceof ConsoleHandler) {
 	     	rootLogger.removeHandler(handlers[0]);
 	   	}
-	 	*/ 
-	    FileHandler fileTxt = null;
+	 	*/	
+	   	FileHandler fileTxt = null;
 		
 	    try {
 			fileTxt = new FileHandler("LogicLogging.txt");

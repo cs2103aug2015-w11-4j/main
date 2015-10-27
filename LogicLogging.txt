@@ -1,18 +1,18 @@
-Oct 27, 2015 5:47:21 PM logic.LogicControllerTest testProcess
+Oct 27, 2015 7:30:24 PM logic.LogicControllerTest testProcess
 INFO: Starting tests
-Oct 27, 2015 5:47:22 PM logic.LogicControllerTest testProcess
+Oct 27, 2015 7:30:25 PM logic.LogicControllerTest testProcess
 INFO: Adding task with from-to works.
-Oct 27, 2015 5:47:22 PM logic.LogicControllerTest testProcess
+Oct 27, 2015 7:30:25 PM logic.LogicControllerTest testProcess
 INFO: Deleting task works
-Oct 27, 2015 5:47:22 PM logic.LogicControllerTest testProcess
+Oct 27, 2015 7:30:25 PM logic.LogicControllerTest testProcess
 INFO: Adding task with by works
-Oct 27, 2015 5:47:22 PM logic.LogicControllerTest testProcess
+Oct 27, 2015 7:30:25 PM logic.LogicControllerTest testProcess
 INFO: Marking task as done works.
-Oct 27, 2015 5:47:22 PM logic.LogicControllerTest testProcess
+Oct 27, 2015 7:30:25 PM logic.LogicControllerTest testProcess
 INFO: Showing completed tasks works
-Oct 27, 2015 5:47:22 PM logic.LogicControllerTest testProcess
+Oct 27, 2015 7:30:25 PM logic.LogicControllerTest testProcess
 INFO: Deleting task works.
-Oct 27, 2015 5:47:22 PM logic.LogicControllerTest testProcess
+Oct 27, 2015 7:30:25 PM logic.LogicControllerTest testProcess
 INFO: Showing undone works (if there's no task)
-Oct 27, 2015 5:47:22 PM logic.LogicControllerTest testProcess
+Oct 27, 2015 7:30:25 PM logic.LogicControllerTest testProcess
 INFO: End of tests
