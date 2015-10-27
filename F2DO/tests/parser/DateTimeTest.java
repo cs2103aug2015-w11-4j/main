@@ -13,29 +13,34 @@ import java.util.logging.Handler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class DateTimeTest {
 	
-	Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	Logger rootLogger = Logger.getLogger("");
-    Handler[] handlers = rootLogger.getHandlers();
-    
-    if (handlers[0] instanceof ConsoleHandler) {
-      rootLogger.removeHandler(handlers[0]);
-    }
-    
-    FileHandler fileTxt = null;
-	
-    try {
-		fileTxt = new FileHandler("DateTimeLogging.txt");
-	} catch (SecurityException | IOException e) {
-		e.printStackTrace();
-	}
+	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    logger.addHandler(fileTxt);
-    SimpleFormatter formatterTxt = new SimpleFormatter();
-    fileTxt.setFormatter(formatterTxt);
+	@Before
+	public void loggerSetup() {
+		Logger rootLogger = Logger.getLogger("");
+	    Handler[] handlers = rootLogger.getHandlers();
+	    
+	    if (handlers[0] instanceof ConsoleHandler) {
+	      rootLogger.removeHandler(handlers[0]);
+	    }
+	    
+	    FileHandler fileTxt = null;
+		
+	    try {
+			fileTxt = new FileHandler("ParserLogging.txt");
+		} catch (SecurityException | IOException e) {
+			e.printStackTrace();
+		}
+
+	    logger.addHandler(fileTxt);
+	    SimpleFormatter formatterTxt = new SimpleFormatter();
+	    fileTxt.setFormatter(formatterTxt);
+	}
 	
 	@Test
 	public void testSlashNumericDMY() {

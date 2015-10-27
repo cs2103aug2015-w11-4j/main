@@ -10,13 +10,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class LogicControllerTest {
-		
-	@Test
-	public final void testProcess() {
-	    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	
+	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+	@Before
+	public void loggerSetup() {
 		Logger rootLogger = Logger.getLogger("");
 	    Handler[] handlers = rootLogger.getHandlers();
 	    
@@ -35,7 +37,12 @@ public class LogicControllerTest {
 	    logger.addHandler(fileTxt);
 	    SimpleFormatter formatterTxt = new SimpleFormatter();
 	    fileTxt.setFormatter(formatterTxt);
-	    logger.info("Starting tests");
+	}
+	
+	@Test
+	public final void testProcess() {
+	    
+		logger.info("Starting tests");
 	    
 	    assertEquals("Feedback: testtask has been successfully added!", 
 					(LogicController.process("add testtask from friday to saturday", LogicController.getDisplayList())));

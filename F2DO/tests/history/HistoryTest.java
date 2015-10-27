@@ -9,13 +9,15 @@ import java.util.logging.Handler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class HistoryTest {
+	
+	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	@Test
-	public void test() {
-		Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	@Before
+	public void loggerSetup() {
 		Logger rootLogger = Logger.getLogger("");
 	    Handler[] handlers = rootLogger.getHandlers();
 	    
@@ -35,5 +37,9 @@ public class HistoryTest {
 	    SimpleFormatter formatterTxt = new SimpleFormatter();
 	    fileTxt.setFormatter(formatterTxt);
 	}
+	
+	@Test
+	public void test() {
+			}
 
 }
