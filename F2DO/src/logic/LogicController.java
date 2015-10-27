@@ -155,6 +155,14 @@ public class LogicController {
 	}
 	
 	/**
+	 * Get the task list in ConcurrentSkipListMap<Integer, Task> form.
+	 * @return tasklist
+	 */
+	public static ConcurrentSkipListMap<Integer, Task> getTaskList() {
+		return _taskList;
+	}
+	
+	/**
 	 * Get the task list for display.
 	 * @return display task list
 	 */

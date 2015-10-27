@@ -10,6 +10,8 @@ import java.util.logging.SimpleFormatter;
 import org.junit.Before;
 import org.junit.Test;
 
+import logic.LogicController;
+
 public class StorageTest {
 
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -30,10 +32,24 @@ public class StorageTest {
 	}
 	
 	@Test
-	public void test() {
-		logger.info("Starting tests");
-	    logger.info("End of tests");
-
+	public void testSetFolder() {
+		logger.info("Starting set folder test");
+		assertTrue(Storage.setFolder("randomfile"));
+	    logger.info("End of set folder test successfully");
+	}
+	
+	@Test
+	public void testWriteToFile() {
+		logger.info("Starting write to file test");
+		assertTrue(Storage.writeTasks(LogicController.getTaskList()));
+		logger.info("Ending write to file test successfully");
+	}
+	
+	@Test
+	public void testReadFromFile() {
+		logger.info("Starting read from file test");
+		Storage.readTasks();
+		logger.info("Ending read from file test successfully");
 	}
 
 }
