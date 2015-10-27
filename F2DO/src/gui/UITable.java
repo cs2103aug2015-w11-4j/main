@@ -49,10 +49,10 @@ public class UITable extends TableView<Integer> {
 				this.getItems().add(_displayIndex);
 			}
 		} else {
-			int nonFloatingMaxSize = nonFloatingList.size() + floatingList.size();
+			int floatingMaxSize = nonFloatingList.size() + floatingList.size();
 			
 			for (_displayIndex = nonFloatingList.size(); 
-					_displayIndex < nonFloatingMaxSize; 
+					_displayIndex < floatingMaxSize; 
 					_displayIndex++) {
 				this.getItems().add(_displayIndex);
 			}

@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class UserInterface extends Application {
-	
 	private static BorderPane _root = new BorderPane();
 	private static Scene _defaultScene = new Scene(_root, 650, 480);
 	private static VBox _vbox = new VBox();
@@ -42,6 +41,9 @@ public class UserInterface extends Application {
 	private static TextArea _feedBack = new TextArea();
 	//private static int commandIndex;
 	
+	private static UITable _taskTable = new UITable(false);
+	private static UITable _floatingTable = new UITable(true);
+	
 	private static int _ctrlUCount = 0;
 	private static int _ctrlRCount = 0;
 	
@@ -52,9 +54,6 @@ public class UserInterface extends Application {
 	private static final BooleanBinding _ctrlAndUPressed = _ctrlPressed.and(_uPressed);
 	private static final BooleanBinding _ctrlAndRPressed = _ctrlPressed.and(_rPressed);
 	private static final BooleanBinding _ctrlAndEPressed = _ctrlPressed.and(_ePressed);
-	
-	private static UITable _taskTable = new UITable(false);
-	private static UITable _floatingTable = new UITable(true);
 	//private static ArrayList<String> commandHistory = new ArrayList<String>();
 	
 	private static ArrayList<Task> _displayList = new ArrayList<Task>();
@@ -95,6 +94,9 @@ public class UserInterface extends Application {
         primaryStage.show();
 	}
 	
+	/**
+	 * Update tables.
+	 */
 	private static void updateTables() {
 		ArrayList<Task> nonFloatingList = LogicController.getNonFloatingList();
 		ArrayList<Task> floatingList = LogicController.getFloatingList();
@@ -136,8 +138,6 @@ public class UserInterface extends Application {
 					 _ctrlUCount = 0;
 					 String feedbackMsg = LogicController.undo();
 					 _feedBack.setText(feedbackMsg);
-					 //updateTable(_taskTable, false);
-					 //updateTable(_floatingTable, true);
 					 updateTables();
 				 }
 			}
@@ -153,8 +153,6 @@ public class UserInterface extends Application {
 					 _ctrlRCount = 0;
 					 String feedbackMsg = LogicController.redo();
 					 _feedBack.setText(feedbackMsg);
-					 //updateTable(_taskTable, false);
-					 //updateTable(_floatingTable, true);
 					 updateTables();
 				 }
 			}
