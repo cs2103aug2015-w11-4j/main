@@ -3,6 +3,7 @@ package logic;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -11,6 +12,8 @@ import java.util.logging.SimpleFormatter;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import object.Task;
 
 public class LogicControllerTest {
 	
@@ -42,16 +45,37 @@ public class LogicControllerTest {
 	@Test
 	public final void testProcess() {
 	    
+		ArrayList<Task> testDisplayList = new ArrayList<Task>();
+		Task sampleTaskOne = new Task();
+		sampleTaskOne.setTaskID(1);
+		sampleTaskOne.setTaskName("Task One");
+		sampleTaskOne.setStartDate(null);
+		sampleTaskOne.setEndDate(null);
+		testDisplayList.add(sampleTaskOne);
+		
+		
 		//Starting the logger
 		logger.info("Starting tests");
 	    
+		//Testing floating tasks
+		assertEquals("Feedback: Task One has been successfully added!",
+					(LogicController.process("add Task One", LogicController.getDisplayList())));
+		
+		//Checking if the adding works fine
+		assertNotEquals(testDisplayList.get(0), LogicController.getDisplayList().get(0));
+		assertEquals(LogicController.getDisplayList().size(), testDisplayList.size());
+		
+		//Testing "del" shortform
+		assertEquals("Feedback: Task One has been deleted!",
+					(LogicController.process("del 1", LogicController.getDisplayList())));
+		
 		//Testing if task can be added with "from-to" keywords
 	    assertEquals("Feedback: testtask has been successfully added!", 
 					(LogicController.process("add testtask from friday to saturday", LogicController.getDisplayList())));
 	    logger.info("Adding task with from-to works.");
 	    
 	    //Testing delete function
-		assertEquals("Feedback: 1 has been deleted!",
+		assertEquals("Feedback: testtask has been deleted!",
 					(LogicController.process("delete 1", LogicController.getDisplayList())));
 	    logger.info("Deleting task works");
 	    
@@ -71,7 +95,7 @@ public class LogicControllerTest {
 	    logger.info("Showing completed tasks works");
 
 	    //Clearing list for next test
-		assertEquals("Feedback: 1 has been deleted!",
+		assertEquals("Feedback: testtask2 has been deleted!",
 					(LogicController.process("delete 1", LogicController.getDisplayList())));
 	    logger.info("Deleting task works.");
 
