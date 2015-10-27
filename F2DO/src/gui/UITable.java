@@ -8,7 +8,6 @@ import java.util.Date;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import object.Task;
 
@@ -63,19 +62,19 @@ public class UITable extends TableView<Integer> {
 	 * Set non-floating table.
 	 */
 	private void setNonFloatingTable() {
-		TableColumn<Integer, Number> id = new TableColumn<>("Task#");
+		UITableColumn<Integer, Number> id = new UITableColumn<>("Task#");
         id.setCellValueFactory(cellData -> {
         	_rowIndex = cellData.getValue();
             return new ReadOnlyIntegerWrapper(_rowIndex + 1);
         });
 
-        TableColumn<Integer, String> taskName = new TableColumn<>("Task Description");
+        UITableColumn<Integer, String> taskName = new UITableColumn<>("Task Description");
         taskName.setCellValueFactory(cellData -> {
         	_rowIndex = cellData.getValue();
             return new ReadOnlyStringWrapper(_displayList.get(_rowIndex).getTaskName());
         });
 
-        TableColumn<Integer, String> startDate = new TableColumn<>("Start Date");
+        UITableColumn<Integer, String> startDate = new UITableColumn<>("Start Date");
         startDate.setCellValueFactory(cellData -> {
         	_rowIndex = cellData.getValue();
         	SimpleStringProperty property = new SimpleStringProperty();
@@ -98,7 +97,7 @@ public class UITable extends TableView<Integer> {
 			return property;
         });
         
-        TableColumn<Integer, String> endDate = new TableColumn<>("End Date");
+        UITableColumn<Integer, String> endDate = new UITableColumn<>("End Date");
         endDate.setCellValueFactory(cellData -> {
         	_rowIndex = cellData.getValue();
         	SimpleStringProperty property = new SimpleStringProperty();
@@ -122,11 +121,19 @@ public class UITable extends TableView<Integer> {
         });
         
         id.setStyle( "-fx-alignment: CENTER;");
-        taskName.setStyle( "-fx-alignment: CENTER;");
+        taskName.setStyle( "-fx-alignment: CENTER-LEFT;");
         startDate.setStyle( "-fx-alignment: CENTER;");
         endDate.setStyle( "-fx-alignment: CENTER;");
         
-        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        // Percentage width must sum up to 1
+        try {
+        	id.setPercentageWidth(0.1);
+        	taskName.setPercentageWidth(0.5);
+        	startDate.setPercentageWidth(0.2);
+        	endDate.setPercentageWidth(0.2);
+        } catch (Exception e) {
+        	this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        }
         
         this.getColumns().add(id);
         this.getColumns().add(taskName);
@@ -138,22 +145,28 @@ public class UITable extends TableView<Integer> {
 	 * Set floating table.
 	 */
 	private void setFloatingTable() {
-		TableColumn<Integer, Number> id = new TableColumn<>("Task#");
+		UITableColumn<Integer, Number> id = new UITableColumn<>("Task#");
         id.setCellValueFactory(cellData -> {
         	_rowIndex = cellData.getValue();
             return new ReadOnlyIntegerWrapper(_rowIndex + 1);
         });
 
-        TableColumn<Integer, String> taskName = new TableColumn<>("Task Description");
+        UITableColumn<Integer, String> taskName = new UITableColumn<>("Task Description");
         taskName.setCellValueFactory(cellData -> {
         	_rowIndex = cellData.getValue();
             return new ReadOnlyStringWrapper(_displayList.get(_rowIndex).getTaskName());
         });
         
         id.setStyle( "-fx-alignment: CENTER;");
-        taskName.setStyle( "-fx-alignment: CENTER;");
+        taskName.setStyle( "-fx-alignment: CENTER-LEFT;");
         
-        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        // Percentage width must sum up to 1
+        try {
+        	id.setPercentageWidth(0.1);
+        	taskName.setPercentageWidth(0.9);
+        } catch (Exception e) {
+        	this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        }
         
         this.getColumns().add(id);
         this.getColumns().add(taskName);
