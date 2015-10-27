@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
@@ -19,13 +18,15 @@ public class LogicControllerTest {
 
 	@Before
 	public void loggerSetup() {
-		Logger rootLogger = Logger.getLogger("");
-	    Handler[] handlers = rootLogger.getHandlers();
-	    
-	    if (handlers[0] instanceof ConsoleHandler) {
-	      rootLogger.removeHandler(handlers[0]);
-	    }
-	    
+	
+	//	Code Segment removes the console output for logger
+	/*	Logger rootLogger = Logger.getLogger("");
+	   	Handler[] handlers = rootLogger.getHandlers();
+	   	
+	  	if (handlers[0] instanceof ConsoleHandler) {
+	     	rootLogger.removeHandler(handlers[0]);
+	   	}
+	 	*/ 
 	    FileHandler fileTxt = null;
 		
 	    try {
@@ -72,7 +73,7 @@ public class LogicControllerTest {
 					(LogicController.process("show undone", LogicController.getDisplayList())));
 	    logger.info("Showing undone works (if there's no task)");
 	    
-	    logger.info("End of LogicControllerTests");
+	    logger.info("End of tests");
 
 		//assertEquals("")
 		

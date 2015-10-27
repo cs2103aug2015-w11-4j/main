@@ -1,0 +1,4 @@
+Oct 27, 2015 12:09:25 PM history.HistoryTest test
+INFO: Starting tests
+Oct 27, 2015 12:09:25 PM history.HistoryTest test
+INFO: End of tests
