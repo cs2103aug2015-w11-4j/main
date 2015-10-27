@@ -1,0 +1,4 @@
+Oct 27, 2015 12:09:20 PM storage.StorageTest test
+INFO: Starting tests
+Oct 27, 2015 12:09:20 PM storage.StorageTest test
+INFO: End of tests

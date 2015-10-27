@@ -3,9 +3,7 @@ package history;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
@@ -18,14 +16,7 @@ public class HistoryTest {
 
 	@Before
 	public void loggerSetup() {
-		Logger rootLogger = Logger.getLogger("");
-	    Handler[] handlers = rootLogger.getHandlers();
-	    
-	    if (handlers[0] instanceof ConsoleHandler) {
-	      rootLogger.removeHandler(handlers[0]);
-	    }
-	    
-	    FileHandler fileTxt = null;
+		FileHandler fileTxt = null;
 		
 	    try {
 			fileTxt = new FileHandler("HistoryLogging.txt");
@@ -40,6 +31,7 @@ public class HistoryTest {
 	
 	@Test
 	public void test() {
-			}
-
+		logger.info("Starting tests");
+	    logger.info("End of tests");
+	}
 }
