@@ -1,32 +1,32 @@
-Oct 27, 2015 5:50:29 PM parser.DateTimeTest testHyphenNumericDMY
+Oct 27, 2015 6:11:27 PM parser.DateTimeTest testHyphenNumericDMY
 INFO: Starting HyphenNumericDMY test
-Oct 27, 2015 5:50:30 PM parser.DateTimeTest testHyphenNumericDMY
+Oct 27, 2015 6:11:28 PM parser.DateTimeTest testHyphenNumericDMY
 INFO: Successful end of HyphenNumericDMY test
-Oct 27, 2015 5:50:30 PM parser.DateTimeTest testTime
+Oct 27, 2015 6:11:28 PM parser.DateTimeTest testTime
 INFO: Starting Time test
-Oct 27, 2015 5:50:30 PM parser.DateTimeTest testHyphenNumbericDM
+Oct 27, 2015 6:11:28 PM parser.DateTimeTest testHyphenNumbericDM
 INFO: Starting HyphenNumbericDM test
-Oct 27, 2015 5:50:30 PM parser.DateTimeTest testHyphenNumbericDM
+Oct 27, 2015 6:11:28 PM parser.DateTimeTest testHyphenNumbericDM
 INFO: Successful end of HyphenNumbericDM test
-Oct 27, 2015 5:50:30 PM parser.DateTimeTest testSlashNumericDMY
+Oct 27, 2015 6:11:28 PM parser.DateTimeTest testSlashNumericDMY
 INFO: Starting SlashNumericDMY test
-Oct 27, 2015 5:50:30 PM parser.DateTimeTest testSlashNumericDMY
+Oct 27, 2015 6:11:28 PM parser.DateTimeTest testSlashNumericDMY
 INFO: Successful end of SlashNumericDMY test
-Oct 27, 2015 5:50:30 PM parser.DateTimeTest testShortDMY
+Oct 27, 2015 6:11:28 PM parser.DateTimeTest testShortDMY
 INFO: Starting ShortDMY test
-Oct 27, 2015 5:50:30 PM parser.DateTimeTest testShortDMY
+Oct 27, 2015 6:11:28 PM parser.DateTimeTest testShortDMY
 INFO: Successful end of ShortDMY test
-Oct 27, 2015 5:50:30 PM parser.DateTimeTest testMixture
+Oct 27, 2015 6:11:28 PM parser.DateTimeTest testMixture
 INFO: Starting Mixture test
-Oct 27, 2015 5:50:30 PM parser.DateTimeTest testSlashNumbericDM
+Oct 27, 2015 6:11:28 PM parser.DateTimeTest testSlashNumbericDM
 INFO: Starting SlashNumbericDM test
-Oct 27, 2015 5:50:30 PM parser.DateTimeTest testSlashNumbericDM
+Oct 27, 2015 6:11:28 PM parser.DateTimeTest testSlashNumbericDM
 INFO: Successful end of SlashNumbericDM test
-Oct 27, 2015 5:50:30 PM parser.DateTimeTest testShortDM
+Oct 27, 2015 6:11:28 PM parser.DateTimeTest testShortDM
 INFO: Starting ShortDM test
-Oct 27, 2015 5:50:30 PM parser.DateTimeTest testShortDM
+Oct 27, 2015 6:11:28 PM parser.DateTimeTest testShortDM
 INFO: Successful end of ShortDM test
-Oct 27, 2015 5:50:30 PM parser.DateTimeTest testShortMD
+Oct 27, 2015 6:11:28 PM parser.DateTimeTest testShortMD
 INFO: Starting ShortMD test
-Oct 27, 2015 5:50:30 PM parser.DateTimeTest testShortMD
+Oct 27, 2015 6:11:28 PM parser.DateTimeTest testShortMD
 INFO: Successful end of ShortMD test

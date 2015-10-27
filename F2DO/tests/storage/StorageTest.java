@@ -35,6 +35,7 @@ public class StorageTest {
 	public void testSetFolder() {
 		logger.info("Starting set folder test");
 		assertTrue(Storage.setFolder("randomfile"));
+		assertFalse(Storage.setFolder("*"));
 	    logger.info("End of set folder test successfully");
 	}
 	
