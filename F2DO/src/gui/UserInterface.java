@@ -5,7 +5,6 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -19,10 +18,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ReadOnlyIntegerWrapper;
-import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import object.Task;
@@ -31,10 +27,7 @@ import logic.LogicController;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class UserInterface extends Application {
 	
@@ -47,8 +40,6 @@ public class UserInterface extends Application {
 	private static Button _floatingButton = new Button();
 	private static TextField _field = new TextField();
 	private static TextArea _feedBack = new TextArea();
-	
-	private static int _rowIndex;
 	//private static int commandIndex;
 	
 	private static int _ctrlUCount = 0;
@@ -62,15 +53,11 @@ public class UserInterface extends Application {
 	private static final BooleanBinding _ctrlAndRPressed = _ctrlPressed.and(_rPressed);
 	private static final BooleanBinding _ctrlAndEPressed = _ctrlPressed.and(_ePressed);
 	
-	private static TableView<Integer> _taskTable = new TableView<>();
-	private static TableView<Integer> _floatingTable = new TableView<>();
+	private static UITable _taskTable = new UITable(false);
+	private static UITable _floatingTable = new UITable(true);
 	//private static ArrayList<String> commandHistory = new ArrayList<String>();
 	
 	private static ArrayList<Task> _displayList = new ArrayList<Task>();
-	
-	private static int _displayIndex = 0;
-	private static ArrayList<Task> _floatingList = new ArrayList<Task>();
-	private static ArrayList<Task> _nonFloatingList = new ArrayList<Task>();
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -90,8 +77,7 @@ public class UserInterface extends Application {
         BorderPane.setMargin(_vbox, new Insets(10, 20, 20, 20));
         _root.setBottom(_vbox);
         
-        setTasksWithDates(_taskTable);
-        setFloatingTasks(_floatingTable);
+        updateTables();
         BorderPane.setMargin(_tables, new Insets(10,20,0,20));
         BorderPane.setAlignment(_tables, Pos.CENTER);
         _tables.getChildren().addAll(_floatingButton, _floatingTable, _taskButton, _taskTable);
@@ -107,6 +93,18 @@ public class UserInterface extends Application {
         _defaultScene.getStylesheets().add(css);
         primaryStage.setScene(_defaultScene);
         primaryStage.show();
+	}
+	
+	private static void updateTables() {
+		ArrayList<Task> nonFloatingList = LogicController.getNonFloatingList();
+		ArrayList<Task> floatingList = LogicController.getFloatingList();
+		
+		_displayList.clear();
+		_displayList.addAll(nonFloatingList);
+		_displayList.addAll(floatingList);
+		
+		_taskTable.updateTable(nonFloatingList, floatingList);
+		_floatingTable.updateTable(nonFloatingList, floatingList);
 	}
 	
 	/**
@@ -138,8 +136,9 @@ public class UserInterface extends Application {
 					 _ctrlUCount = 0;
 					 String feedbackMsg = LogicController.undo();
 					 _feedBack.setText(feedbackMsg);
-					 updateTable(_taskTable, false);
-					 updateTable(_floatingTable, true);
+					 //updateTable(_taskTable, false);
+					 //updateTable(_floatingTable, true);
+					 updateTables();
 				 }
 			}
         });
@@ -154,8 +153,9 @@ public class UserInterface extends Application {
 					 _ctrlRCount = 0;
 					 String feedbackMsg = LogicController.redo();
 					 _feedBack.setText(feedbackMsg);
-					 updateTable(_taskTable, false);
-					 updateTable(_floatingTable, true);
+					 //updateTable(_taskTable, false);
+					 //updateTable(_floatingTable, true);
+					 updateTables();
 				 }
 			}
         });
@@ -194,114 +194,6 @@ public class UserInterface extends Application {
 	}
 	
 	/**
-	 * Set the design of table.
-	 * @param table
-	 */
-	private void setTasksWithDates(TableView<Integer>table) {
-		updateTable(_taskTable, false);
-		updateTable(_floatingTable, true);
-        
-        TableColumn<Integer, Number> id = new TableColumn<>("Task#");
-        id.setCellValueFactory(cellData -> {
-        	_rowIndex = cellData.getValue();
-            return new ReadOnlyIntegerWrapper(_rowIndex + 1);
-        });
-
-        TableColumn<Integer, String> taskName = new TableColumn<>("Task Description");
-        taskName.setCellValueFactory(cellData -> {
-        	_rowIndex = cellData.getValue();
-            return new ReadOnlyStringWrapper(_displayList.get(_rowIndex).getTaskName());
-        });
-
-        TableColumn<Integer, String> startDate = new TableColumn<>("Start Date");
-        startDate.setCellValueFactory(cellData -> {
-        	_rowIndex = cellData.getValue();
-        	SimpleStringProperty property = new SimpleStringProperty();
-        	DateFormat dateWithTime = new SimpleDateFormat("dd MMM HH:mm");
-        	DateFormat dateWithoutTime = new SimpleDateFormat("dd MMM");
-			Date date = _displayList.get(_rowIndex).getStartDate();
-			
-			if (date != null) {
-				String date_string = date.toString();
-				//- to be edited : would not work if user inputs 12:00am/pm as the time
-				if (date_string.contains("12:00")) {
-					property.setValue(dateWithoutTime.format(date));
-				} else {
-					property.setValue(dateWithTime.format(date));
-				}		
-			} else {
-				property.setValue("?");
-			} 
-	
-			return property;
-        });
-        
-        TableColumn<Integer, String> endDate = new TableColumn<>("End Date");
-        endDate.setCellValueFactory(cellData -> {
-        	_rowIndex = cellData.getValue();
-        	SimpleStringProperty property = new SimpleStringProperty();
-			DateFormat dateWithTime = new SimpleDateFormat("dd MMM HH:mm");
-			DateFormat dateWithoutTime = new SimpleDateFormat("dd MMM");
-			Date date = _displayList.get(_rowIndex).getEndDate();
-			
-			if (date != null) {
-				String date_string = date.toString();
-				//- to be edited : would not work if user inputs 12:00am/pm as the time
-				if (date_string.contains("12:00")) {
-					property.setValue(dateWithoutTime.format(date));
-				} else {
-					property.setValue(dateWithTime.format(date));
-				}		
-			} else {
-				property.setValue("?");
-			} 
-			
-			return property;
-        });
-        
-        id.setStyle( "-fx-alignment: CENTER;");
-        taskName.setStyle( "-fx-alignment: CENTER;");
-        startDate.setStyle( "-fx-alignment: CENTER;");
-        endDate.setStyle( "-fx-alignment: CENTER;");
-        
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        
-        table.getColumns().add(id);
-        table.getColumns().add(taskName);
-        table.getColumns().add(startDate);
-        table.getColumns().add(endDate);
-	}
-	
-	/**
-	 * Set the design of table.
-	 * @param table
-	 */
-	private void setFloatingTasks(TableView<Integer>table) {
-		updateTable(_taskTable, false);
-		updateTable(_floatingTable, true);
-        
-        TableColumn<Integer, Number> id = new TableColumn<>("Task#");
-        id.setCellValueFactory(cellData -> {
-        	_rowIndex = cellData.getValue();
-            return new ReadOnlyIntegerWrapper(_rowIndex + 1);
-        });
-
-        TableColumn<Integer, String> taskName = new TableColumn<>("Task Description");
-        taskName.setCellValueFactory(cellData -> {
-        	_rowIndex = cellData.getValue();
-            return new ReadOnlyStringWrapper(_displayList.get(_rowIndex).getTaskName());
-        });
-        
-        id.setStyle( "-fx-alignment: CENTER;");
-        taskName.setStyle( "-fx-alignment: CENTER;");
-        
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        
-        table.getColumns().add(id);
-        table.getColumns().add(taskName);
-	}
-	
-	/**
 	 * Set the event handler when the key is pressed.
 	 * @param field
 	 * @param feedback
@@ -333,12 +225,14 @@ public class UserInterface extends Application {
 					}
 				} else {
 					feedback.setText(feedbackMsg);
-					updateTable(_taskTable, false);
-					updateTable(_floatingTable, true);
+					updateTables();
+					//updateTable(_taskTable, false);
+					//updateTable(_floatingTable, true);
 				}			
 				feedback.setText(feedbackMsg);
-				updateTable(_taskTable, false);
-				updateTable(_floatingTable, true);
+				updateTables();
+				//updateTable(_taskTable, false);
+				//updateTable(_floatingTable, true);
 			}
 			/*else if (event.getCode() == KeyCode.UP) {
 				
@@ -396,32 +290,6 @@ public class UserInterface extends Application {
 	    	stringBuilder.append(text).append("\n");
 	    }
 	    br.close();
-	}
-	
-	/**
-	 * Update the table.
-	 * @param table
-	 */
-	private void updateTable(TableView<Integer> table, boolean isFloating) {
-		table.getItems().clear();
-		_nonFloatingList = LogicController.getNonFloatingList();
-		_floatingList = LogicController.getFloatingList();
-		
-		_displayList.clear();
-		_displayList.addAll(_nonFloatingList);
-		_displayList.addAll(_floatingList);
-		
-		if (!isFloating) {
-			for (_displayIndex = 0; _displayIndex < _nonFloatingList.size(); _displayIndex++) {
-				table.getItems().add(_displayIndex);
-			}
-		} else {
-			int nonFloatingMaxSize = _nonFloatingList.size() + _floatingList.size();
-			
-			for (; _displayIndex < nonFloatingMaxSize; _displayIndex++) {
-				table.getItems().add(_displayIndex);
-			}
-		}
 	}
 	
 	private void exit(Stage primaryStage) {
