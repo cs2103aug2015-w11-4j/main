@@ -19,4 +19,5 @@ public class FeedbackHelper {
 	public static final String ERROR_SHOW_NO_DONE = "Feedback: No complete task!";
 	public static final String ERROR_SHOW_NO_UNDONE = "Feedback: No incomplete task!";
 	public static final String ERROR_NO_ACTION = "Feedback: No action is done!";
+	public static final String ERROR_INVALID_COMMAND = "Feedback: The command entered does not exist!";
 }
