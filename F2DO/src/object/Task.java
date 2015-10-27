@@ -191,7 +191,7 @@ public class Task {
 	 * Get categories.
 	 * @return categories
 	 */
-	public ArrayList<String> getCat() {
+	public ArrayList<String> getCategory() {
 		return _categories;
 	}
 	
@@ -199,7 +199,7 @@ public class Task {
 	 * Set categories
 	 * @param categories
 	 */
-	public void setCat(ArrayList<String> categories) {
+	public void setCategory(ArrayList<String> categories) {
 		_categories = categories;
 	}
 }

@@ -55,11 +55,11 @@ public class UserInterface extends Application {
 	private static int _ctrlYCount = 0;
 	
 	private static final BooleanProperty _ctrlPressed = new SimpleBooleanProperty(false);
-	private static final BooleanProperty _zPressed = new SimpleBooleanProperty(false);
-	private static final BooleanProperty _yPressed = new SimpleBooleanProperty(false);
+	private static final BooleanProperty _uPressed = new SimpleBooleanProperty(false);
+	private static final BooleanProperty _rPressed = new SimpleBooleanProperty(false);
 	private static final BooleanProperty _ePressed = new SimpleBooleanProperty(false);
-	private static final BooleanBinding _ctrlAndZPressed = _ctrlPressed.and(_zPressed);
-	private static final BooleanBinding _ctrlAndYPressed = _ctrlPressed.and(_yPressed);
+	private static final BooleanBinding _ctrlAndUPressed = _ctrlPressed.and(_uPressed);
+	private static final BooleanBinding _ctrlAndRPressed = _ctrlPressed.and(_rPressed);
 	private static final BooleanBinding _ctrlAndEPressed = _ctrlPressed.and(_ePressed);
 	
 	private static TableView<Integer> _taskTable = new TableView<>();
@@ -125,7 +125,7 @@ public class UserInterface extends Application {
 	 */
 	private void setKeyCombinationListener() {
 		// Undo listener
-		_ctrlAndZPressed.addListener(new ChangeListener<Boolean>() {
+		_ctrlAndUPressed.addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				 _ctrlZCount += 1;
@@ -140,7 +140,7 @@ public class UserInterface extends Application {
         });
 		
 		// Redo listener
-		_ctrlAndYPressed.addListener(new ChangeListener<Boolean>() {
+		_ctrlAndRPressed.addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				 _ctrlYCount += 1;
@@ -165,10 +165,10 @@ public class UserInterface extends Application {
         _root.setOnKeyPressed((KeyEvent event) -> {
         	if (event.getCode() == KeyCode.CONTROL) {
         		_ctrlPressed.set(true);
-            } else if (event.getCode() == KeyCode.Z) {
-            	_zPressed.set(true);
-            } else if (event.getCode() == KeyCode.Y) {
-            	_yPressed.set(true);
+            } else if (event.getCode() == KeyCode.U) {
+            	_uPressed.set(true);
+            } else if (event.getCode() == KeyCode.R) {
+            	_rPressed.set(true);
             } else if (event.getCode() == KeyCode.E) {
             	_ePressed.set(true);
             }
@@ -177,10 +177,10 @@ public class UserInterface extends Application {
         _root.setOnKeyReleased((KeyEvent event) -> {
         	if (event.getCode() == KeyCode.CONTROL) {
         		_ctrlPressed.set(false);
-            } else if (event.getCode() == KeyCode.Z) {
-            	_zPressed.set(false);
-            } else if (event.getCode() == KeyCode.Y) {
-            	_yPressed.set(false);
+            } else if (event.getCode() == KeyCode.U) {
+            	_uPressed.set(false);
+            } else if (event.getCode() == KeyCode.R) {
+            	_rPressed.set(false);
             } else if (event.getCode() == KeyCode.E) {
             	_ePressed.set(false);
             }
