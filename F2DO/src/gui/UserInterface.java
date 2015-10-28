@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -21,14 +22,17 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import object.Task;
+import logic.FeedbackHelper;
 import logic.LogicController;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class UserInterface extends Application {
+	
 	private static BorderPane _root = new BorderPane();
 	private static Scene _defaultScene = new Scene(_root, 600, 480);
 	private static VBox _vbox = new VBox();
@@ -37,6 +41,7 @@ public class UserInterface extends Application {
 	private static UIButton _taskButton = new UIButton("Tasks & Events");
 	private static UIButton _floatingButton = new UIButton("Floating Tasks");
 	private static TextField _field = new TextField();
+	private static TextArea _cheatSheet = new TextArea();
 	private static Label _feedBack = new Label();
 	private static int commandIndex;
 	
@@ -211,9 +216,9 @@ public class UserInterface extends Application {
 				// if user types "Help", the scene changes - the two tables will be removed and the cheat sheet
 				// will be displayed in the existing feedback box or alternatively, inside a list.
 
-				if (feedbackMsg == "help") {
-					//feedback.setPrefRowCount(50); 
+				if (feedbackMsg == 	FeedbackHelper.MSG_HELP) {
 					try {
+						initialiseScene();
 						setCheatSheetContent();
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -275,17 +280,28 @@ public class UserInterface extends Application {
 			}
 		});
 	}
-				
+	
+	private void initialiseScene() {
+		_root.setCenter(null);
+		_root.setCenter(_cheatSheet);
+		_cheatSheet.setEditable(false);
+		BorderPane.setMargin(_cheatSheet, new Insets(8, 20, 25, 20));
+	}
+	
 	private void setCheatSheetContent() throws IOException  {
 		String text;
-		StringBuilder stringBuilder = new StringBuilder();
+		StringBuilder content = new StringBuilder();
 		
-		FileReader in = new FileReader("cheatsheet.txt");
+		URL url = UserInterface.class.getClassLoader().getResource("./gui/cheatsheet.txt");
+		System.out.println(url.getPath());
+		
+		FileReader in = new FileReader(url.getPath());
 	    BufferedReader br = new BufferedReader(in);
 
 	    while ((text = br.readLine()) != null) {
-	    	stringBuilder.append(text).append("\n");
+	    	content.append(text).append("\n");
 	    }
+	    _cheatSheet.appendText(content.toString());
 	    br.close();
 	}
 	
