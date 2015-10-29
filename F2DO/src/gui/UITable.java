@@ -90,8 +90,6 @@ public class UITable extends TableView<Integer> {
 				} else {
 					property.setValue(dateWithTime.format(date));
 				}		
-			} else {
-				property.setValue("?");
 			} 
 	
 			return property;
@@ -113,8 +111,6 @@ public class UITable extends TableView<Integer> {
 				} else {
 					property.setValue(dateWithTime.format(date));
 				}		
-			} else {
-				property.setValue("?");
 			} 
 			
 			return property;
