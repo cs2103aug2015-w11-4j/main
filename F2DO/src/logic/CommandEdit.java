@@ -142,7 +142,7 @@ public class CommandEdit implements ICommand {
 			_taskList.remove(taskID);
 			_taskList.put(taskID, task);
 			Storage.writeTasks(_taskList);
-			message = String.format(FeedbackHelper.MSG_DELETE, _result.getContent());
+			message = String.format(FeedbackHelper.MSG_EDIT, _result.getContent());
 			isSuccessful = true;
 		}
 		
