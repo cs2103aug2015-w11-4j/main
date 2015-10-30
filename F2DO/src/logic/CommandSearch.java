@@ -32,7 +32,7 @@ public class CommandSearch implements ICommand {
 		boolean isSuccessful = false;
 		String message = FeedbackHelper.ERROR_SEARCH;
 		
-		if (!searchKey.equals("")) {
+		if (!searchKey.equals(null) && !searchKey.equals("")) {
 			for (int i = 0; i < taskList.size(); i++) {
 				Task task = taskList.get(i);
 				String taskName = task.getTaskName();
