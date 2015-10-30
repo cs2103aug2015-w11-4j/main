@@ -11,6 +11,7 @@ public class FeedbackHelper {
 	public static final String MSG_DONE = "Feedback: %1$s has been marked as completed!";
 	public static final String MSG_UNDONE = "Feedback: %1$s has been marked as imcomplete!";
 	public static final String MSG_HELP = "Feedback: Show HELP!";
+	public static final String MSG_HOME = "Feedback: Show home page!";
 	
 	public static final String ERROR_ADD = "Feedback: %1$s cannot be added!";
 	public static final String ERROR_NO_INDEX = "Feedback: The entered number does not exist!";

@@ -35,7 +35,7 @@ public interface ICommand {
 			case HELP:
 				return new CommandHelp(taskList);
 			case HOME:
-				return null;
+				return new CommandHome(taskList);
 			case INVALID: default:
 				return new CommandDefault(taskList);
 		}
