@@ -67,7 +67,27 @@ public class UserInterface extends Application {
 	}
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {		
+	public void start(Stage primaryStage) throws Exception {	
+		
+		setCommandPrompt(); 
+        updateTables();
+        setUpTables();
+        
+        setKeyCombinationListener();
+        
+        setKeyPressed(_field, _feedBack, _taskTable, primaryStage);
+        
+        String css = UserInterface.class.getResource("style.css").toExternalForm();
+        _defaultScene.getStylesheets().add(css);
+        
+        primaryStage.setScene(_defaultScene);
+        primaryStage.show();
+	}
+	
+	/** 
+	 * Set up command prompt and feedback
+	 */
+	private void setCommandPrompt() {
 		_field.setPromptText("Enter your command..");
 		setFeedback(_feedBack);
 		
@@ -75,10 +95,18 @@ public class UserInterface extends Application {
 		_vbox.setSpacing(5);
 		_vbox.getChildren().addAll(_field, _feedBack);     
         BorderPane.setMargin(_vbox, new Insets(15, 20, 0, 20));
-        _root.setTop(_vbox);
         
-        updateTables();
-        BorderPane.setMargin(_tables, new Insets(8, 20, 25, 20));
+        _root.setTop(_vbox);
+	}
+	
+	/** 
+	 * Set up labels and tables 
+	 */
+	private void setUpTables() {
+		
+		updateTables();
+		
+		BorderPane.setMargin(_tables, new Insets(8, 20, 25, 20));
         BorderPane.setAlignment(_tables, Pos.CENTER);
         
         _taskButton.setMaxWidth(Double.MAX_VALUE);
@@ -87,17 +115,8 @@ public class UserInterface extends Application {
         _tables.setAlignment(Pos.CENTER);
         _tables.getChildren().addAll(_taskButton, _taskTable, _floatingButton, _floatingTable);
         _tables.setSpacing(7);
+        
         _root.setCenter(_tables);
-        
-        setKeyCombinationListener();
-        
-        // Event handler for input processing
-        setKeyPressed(_field, _feedBack, _taskTable, primaryStage);
-        
-        String css = UserInterface.class.getResource("style.css").toExternalForm();
-        _defaultScene.getStylesheets().add(css);
-        primaryStage.setScene(_defaultScene);
-        primaryStage.show();
 	}
 	
 	/**
@@ -215,14 +234,11 @@ public class UserInterface extends Application {
 				field.clear();
 				
 				String feedbackMsg = LogicController.process(userInput, _displayList);
-				
-				// help section still has some bugs at the moment -- not linked with logic component yet
-				// if user types "Help", the scene changes - the two tables will be removed and the cheat sheet
-				// will be displayed in the existing feedback box or alternatively, inside a list.
 
 				if (feedbackMsg == 	FeedbackHelper.MSG_HELP) {
 					try {
 						initialiseScene();
+						setCommandPrompt();
 						setCheatSheetContent();
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -230,13 +246,13 @@ public class UserInterface extends Application {
 				} else {
 					feedback.setText(feedbackMsg);
 					updateTables();
-					//updateTable(_taskTable, false);
-					//updateTable(_floatingTable, true);
 				}			
-				feedback.setText(feedbackMsg);
-				updateTables();
-				//updateTable(_taskTable, false);
-				//updateTable(_floatingTable, true);
+				
+				if (feedbackMsg == FeedbackHelper.MSG_HOME) {
+					initialiseScene();
+					setCommandPrompt();
+					setUpTables();
+				}
 			}
 			else if (event.getCode() == KeyCode.F1) {
 				
@@ -282,7 +298,8 @@ public class UserInterface extends Application {
 			else if (event.getCode() == KeyCode.TAB) {
 				try {
 					initialiseScene();
-					start(primaryStage);
+					setCommandPrompt();
+					setUpTables();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -296,14 +313,15 @@ public class UserInterface extends Application {
 	}
 	
 	private void initialiseScene() {
-		_root.setCenter(null);
+		_vbox.getChildren().clear();
+		_tables.getChildren().clear();
+		_root.getChildren().clear();
 	}
 	
 	private void setCheatSheetContent() throws IOException  {
 		String text;
 		StringBuilder content = new StringBuilder();
-		
-		_root.setCenter(_cheatSheet);
+
 		_cheatSheet.setEditable(false);
 		
 		BorderPane.setMargin(_cheatSheet, new Insets(8, 20, 25, 20));
@@ -318,6 +336,9 @@ public class UserInterface extends Application {
 	    	content.append(text).append("\n");
 	    }
 	    _cheatSheet.appendText(content.toString());
+	    
+	    _root.setCenter(_cheatSheet);
+	    
 	    br.close();
 	}
 	
