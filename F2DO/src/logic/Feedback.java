@@ -28,7 +28,7 @@ public class Feedback {
 		_taskList = updatedList;
 		_isSuccessful = isSuccessful;
 	}
-	
+
 	public String getMessage() {
 		return _message;
 	}

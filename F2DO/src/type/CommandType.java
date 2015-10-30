@@ -10,7 +10,8 @@ public enum CommandType {
 	UNDONE,
 	HELP,
 	HOME,
-	INVALID;
+	INVALID, 
+	CAT;
 	
 	public static CommandType toCmd(String word) {
 		try {

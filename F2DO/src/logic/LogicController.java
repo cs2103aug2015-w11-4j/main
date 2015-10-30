@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 import history.History;
+import object.Category;
 import object.Result;
 import object.Task;
 import parser.Parser;
@@ -22,7 +23,8 @@ public class LogicController {
 			new ArrayList<Task>();
 	private static ConcurrentSkipListMap<Integer, Task> _taskList =
 			new ConcurrentSkipListMap<Integer, Task>();
-	
+	private static ArrayList<Category> _categoryList =
+			new ArrayList<Category>();
 	/**
 	 * Initialize logic class.
 	 */
@@ -96,7 +98,7 @@ public class LogicController {
 	 * @return feedback
 	 */
 	private static Feedback execute(Result result) {
-		ICommand command = ICommand.getCommand(result, _taskList);
+		ICommand command = ICommand.getCommand(result, _taskList,_categoryList);
 		Feedback feedback = command.execute();
 		
 		_taskList = feedback.getUpdatedTaskList();

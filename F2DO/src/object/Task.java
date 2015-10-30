@@ -18,7 +18,7 @@ public class Task {
 	private TaskType _taskType = null;
 	private boolean _isCompleted = false;
 	private int _priority = -1;
-	private ArrayList<String> _categories;
+	private ArrayList<Category> _categories;
 	
 	/**
 	 * Default constructor.
@@ -191,7 +191,7 @@ public class Task {
 	 * Get categories.
 	 * @return categories
 	 */
-	public ArrayList<String> getCategory() {
+	public ArrayList<Category> getCategory() {
 		return _categories;
 	}
 	
@@ -199,7 +199,7 @@ public class Task {
 	 * Set categories
 	 * @param categories
 	 */
-	public void setCategory(ArrayList<String> categories) {
+	public void setCategory(ArrayList<Category> categories) {
 		_categories = categories;
 	}
 }
