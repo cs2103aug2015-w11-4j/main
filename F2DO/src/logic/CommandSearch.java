@@ -37,7 +37,7 @@ public class CommandSearch implements ICommand {
 				Task task = taskList.get(i);
 				String taskName = task.getTaskName();
 
-				if (taskName.contains(searchKey)) {
+				if (taskName.toLowerCase().contains(searchKey.toLowerCase())) {
 					displayList.add(task);
 				}
 			}
