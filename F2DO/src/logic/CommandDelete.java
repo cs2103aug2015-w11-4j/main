@@ -28,11 +28,11 @@ public class CommandDelete implements ICommand {
 	 */
 	public Feedback execute() {
 		int taskID = _result.getStorageID();
-		String taskName = _taskList.get(taskID).getTaskName();
 		boolean isSuccessful = false;
 		String message = FeedbackHelper.ERROR_NO_INDEX;
 		
 		if (_taskList.containsKey(taskID)) {
+			String taskName = _taskList.get(taskID).getTaskName();
 			_taskList.remove(taskID);
 			Storage.writeTasks(_taskList);
 			message = String.format(FeedbackHelper.MSG_DELETE, taskName);
