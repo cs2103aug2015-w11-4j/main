@@ -34,7 +34,7 @@ import java.util.ArrayList;
 public class UserInterface extends Application {
 	
 	private static BorderPane _root = new BorderPane();
-	private static Scene _defaultScene = new Scene(_root, 600, 480);
+	private static Scene _defaultScene = new Scene(_root, 650, 500);
 	private static VBox _vbox = new VBox();
 	private static VBox _tables = new VBox();
 	
@@ -80,9 +80,13 @@ public class UserInterface extends Application {
         updateTables();
         BorderPane.setMargin(_tables, new Insets(8, 20, 25, 20));
         BorderPane.setAlignment(_tables, Pos.CENTER);
+        
+        _taskButton.setMaxWidth(Double.MAX_VALUE);
+        _floatingButton.setMaxWidth(Double.MAX_VALUE);
+        
         _tables.setAlignment(Pos.CENTER);
         _tables.getChildren().addAll(_taskButton, _taskTable, _floatingButton, _floatingTable);
-        _tables.setSpacing(5);
+        _tables.setSpacing(7);
         _root.setCenter(_tables);
         
         setKeyCombinationListener();
@@ -116,7 +120,7 @@ public class UserInterface extends Application {
 	 * @param feedback
 	 */
 	private void setFeedback(Label feedBack) {
-		feedBack.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 12.5));
+		feedBack.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 13));
 		//feedBack.setPrefRowCount(3);
 		feedBack.setText("Welcome to F2DO, your personalised task manager(:\n"
 				+ "Type " + "\"Help\"" + " for a list of commands to get started.");
@@ -234,7 +238,7 @@ public class UserInterface extends Application {
 				//updateTable(_taskTable, false);
 				//updateTable(_floatingTable, true);
 			}
-			else if (event.getCode() == KeyCode.TAB) {
+			else if (event.getCode() == KeyCode.F1) {
 				
 				if (!commandHistory.isEmpty()) {
 					field.setText(commandHistory.get(commandIndex));
@@ -275,6 +279,16 @@ public class UserInterface extends Application {
 			}
 			*/
 			
+			else if (event.getCode() == KeyCode.TAB) {
+				try {
+					initialiseScene();
+					start(primaryStage);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 			else if (event.getCode() == KeyCode.ESCAPE) {
 				exit();
 			}
@@ -283,14 +297,16 @@ public class UserInterface extends Application {
 	
 	private void initialiseScene() {
 		_root.setCenter(null);
-		_root.setCenter(_cheatSheet);
-		_cheatSheet.setEditable(false);
-		BorderPane.setMargin(_cheatSheet, new Insets(8, 20, 25, 20));
 	}
 	
 	private void setCheatSheetContent() throws IOException  {
 		String text;
 		StringBuilder content = new StringBuilder();
+		
+		_root.setCenter(_cheatSheet);
+		_cheatSheet.setEditable(false);
+		
+		BorderPane.setMargin(_cheatSheet, new Insets(8, 20, 25, 20));
 		
 		URL url = UserInterface.class.getClassLoader().getResource("./gui/cheatsheet.txt");
 		System.out.println(url.getPath());
