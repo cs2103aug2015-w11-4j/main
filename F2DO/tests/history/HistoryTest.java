@@ -17,21 +17,6 @@ public class HistoryTest {
 	
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	@Before
-	public void loggerSetup() {
-		FileHandler fileTxt = null;
-		
-	    try {
-			fileTxt = new FileHandler("HistoryLogging.txt");
-		} catch (SecurityException | IOException e) {
-			e.printStackTrace();
-		}
-
-	    logger.addHandler(fileTxt);
-	    SimpleFormatter formatterTxt = new SimpleFormatter();
-	    fileTxt.setFormatter(formatterTxt);
-	}
-	
 	@Test
 	public void test() {
 		Task task1 = new Task();

@@ -19,29 +19,6 @@ public class LogicControllerTest {
 	
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	@Before
-	public void loggerSetup() {
-	
-	//	Code Segment removes the console output for logger
-	/*	Logger rootLogger = Logger.getLogger("");
-	   	Handler[] handlers = rootLogger.getHandlers();
-	   	if (handlers[0] instanceof ConsoleHandler) {
-	     	rootLogger.removeHandler(handlers[0]);
-	   	}
-	 	*/	
-	   	FileHandler fileTxt = null;
-		
-	    try {
-			fileTxt = new FileHandler("LogicLogging.txt");
-		} catch (SecurityException | IOException e) {
-			e.printStackTrace();
-		}
-
-	    logger.addHandler(fileTxt);
-	    SimpleFormatter formatterTxt = new SimpleFormatter();
-	    fileTxt.setFormatter(formatterTxt);
-	}
-	
 	@Test
 	public final void testProcess() {
 	    

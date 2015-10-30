@@ -16,21 +16,6 @@ public class StorageTest {
 
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	@Before
-	public void loggerSetup() {
-		FileHandler fileTxt = null;
-		
-	    try {
-			fileTxt = new FileHandler("StorageLogging.txt");
-		} catch (SecurityException | IOException e) {
-			e.printStackTrace();
-		}
-
-	    logger.addHandler(fileTxt);
-	    SimpleFormatter formatterTxt = new SimpleFormatter();
-	    fileTxt.setFormatter(formatterTxt);
-	}
-	
 	@Test
 	public void testSetFolder() {
 		logger.info("Starting set folder test");
