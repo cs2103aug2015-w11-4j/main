@@ -23,10 +23,33 @@ edit <task no> <task to be modified> <start date> <start time> <end date> <end t
 del <task no>
 delete <task no>
 
-4. Display
+4. Undo 
 
-show all 									
+<Ctr + U>
 
-5. Exit 
+5. Redo 
+
+<Ctr + R>
+
+6. Mark a task as done or undone
+
+done <task no>
+undone <task no>
+
+7. Display
+
+show all 			
+show done 		
+
+8. Revert from Cheat Sheet Page to default UI view
+
+<TAB>				
+
+9. Exit 
 
 <Ctr + E> or <Escape key>		
+
+
+
+
+
