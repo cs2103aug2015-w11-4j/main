@@ -105,7 +105,7 @@ public class Parser {
 	 * @return task type
 	 */
 	private static TaskType analyzeTask(String title, Date startDate, Date endDate) {
-		if (title == null) {
+		if (title == null && startDate == null && endDate == null) {
 			return TaskType.INVALID;
 		}
 		
