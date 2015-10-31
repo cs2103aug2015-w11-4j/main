@@ -44,13 +44,6 @@ public class KeywordHelper {
 		functions.put(KeywordType.TOMORROW, new KeywordDay(input));
 		functions.put(KeywordType.YESTERDAY, new KeywordDay(input));
 		
-		/*ON,
-		FROM,
-		IN,
-		BY,
-		UNTIL,
-		TOMORROW,
-		YESTERDAY*/
 		return functions;
 	}
 	

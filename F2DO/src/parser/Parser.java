@@ -1,10 +1,12 @@
 package parser;
 
 import java.util.Date;
+import java.util.TreeMap;
 import java.util.ArrayList;
 import java.lang.NumberFormatException;
 
 import type.CommandType;
+import type.KeywordType;
 import type.TaskType;
 import object.Result;
 import object.Task;
@@ -128,7 +130,29 @@ public class Parser {
 	 * @return title, start date and end date
 	 */
 	private static Result analyzeDateTitle(String input) {
-		IKeyword function = IKeyword.parsedPreposition(input);
+		TreeMap<Integer, KeywordType> keywordIndex = KeywordHelper.getKeywordIndex(input);
+		ArrayList<KeywordType> keywordList = new ArrayList<KeywordType>(keywordIndex.values());
+		
+		// If the input contains keyword
+		for (int i = 0; i < keywordList.size(); i++) {
+			KeywordType keywordType = keywordList.get(i);
+			IKeyword function = IKeyword.parseKeyword(keywordType, input);
+			Result result = function.analyze();
+			
+			if (isDateFound(result.getStartDate(), result.getEndDate())) {
+				return result;
+			}
+		}
+		
+		// If the input does not contain keyword
+		IKeyword function = IKeyword.parseKeyword(null, input);
 		return function.analyze();
+	}
+	
+	private static boolean isDateFound(Date startDate, Date endDate) {
+		if (startDate == null && endDate == null) {
+			return false;
+		}
+		return true;
 	}
 }
