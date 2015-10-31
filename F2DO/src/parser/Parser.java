@@ -165,6 +165,12 @@ public class Parser {
 		return function.analyze();
 	}
 	
+	/**
+	 * Check if any of start date or end date is found.
+	 * @param startDate - start date
+	 * @param endDate - end date
+	 * @return true if any date is found; false otherwise
+	 */
 	private static boolean isDateFound(Date startDate, Date endDate) {
 		if (startDate == null && endDate == null) {
 			return false;
