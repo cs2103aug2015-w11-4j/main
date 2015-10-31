@@ -7,6 +7,7 @@ import object.Result;
 
 public class KeywordByDue implements IKeyword {
 	private static String _input = null;
+	private final int _flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
 	
 	public KeywordByDue(String input) {
 		_input = input;
@@ -25,7 +26,7 @@ public class KeywordByDue implements IKeyword {
 		String regexOnlyDueOn = "due on (.*?)";
 		
 		String[] regex1 = {regexBy, regexDue, regexDueOn};
-		String[] regex2= { regexOnlyBy, regexOnlyDue, regexOnlyDueOn};
+		String[] regex2 = {regexOnlyBy, regexOnlyDue, regexOnlyDueOn};
 		
 		for (int i = 0; i < regex1.length; i++) {
 			Result regexResult = getMatcher(regex1[i]);
@@ -47,7 +48,7 @@ public class KeywordByDue implements IKeyword {
 	}
 	
 	private Result getMatcher(String regex) {
-		Pattern pattern = Pattern.compile(regex);
+		Pattern pattern = Pattern.compile(regex, _flags);
 		Matcher matcher = pattern.matcher(_input);
 		
 		if (matcher.matches()) {
@@ -61,7 +62,7 @@ public class KeywordByDue implements IKeyword {
 	}
 	
 	private Result getMatcher2(String regex) {
-		Pattern pattern = Pattern.compile(regex);
+		Pattern pattern = Pattern.compile(regex, _flags);
 		Matcher matcher = pattern.matcher(_input);
 		
 		if (matcher.matches()) {

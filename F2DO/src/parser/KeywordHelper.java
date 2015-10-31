@@ -16,6 +16,10 @@ public class KeywordHelper {
 		TreeMap<Integer, KeywordType> keywordIndex = new TreeMap<Integer, KeywordType>();
 		List<String> splitWords = Arrays.asList(input.split(" "));
 		
+		for (int i = 0; i < splitWords.size(); i++) {
+			splitWords.set(i, splitWords.get(i).toLowerCase());
+		}
+		
 		for (KeywordType type: KeywordType.values()) {
 			String keyword = type.toString().toLowerCase();
 			int index = splitWords.indexOf(keyword);

@@ -20,7 +20,9 @@ public class KeywordFromTo implements IKeyword{
 		String regexFromToOn = "(.*?) from (.*?) to (.*) on (.*?)";
 		String regexFromTo = "(.*?) from (.*?) to (.*)";
 		
-		Pattern pattern = Pattern.compile(regexFromToOn);
+		final int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
+		
+		Pattern pattern = Pattern.compile(regexFromToOn, flags);
 		Matcher matcher = pattern.matcher(_input);
 		
 		if (matcher.matches()) {
@@ -31,7 +33,7 @@ public class KeywordFromTo implements IKeyword{
 			return result;
 		}
 		
-		pattern = Pattern.compile(regexFromTo);
+		pattern = Pattern.compile(regexFromTo, flags);
 		matcher = pattern.matcher(_input);
 		
 		if (matcher.matches()) {

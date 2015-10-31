@@ -132,11 +132,19 @@ public class Parser {
 	private static Result analyzeDateTitle(String input) {
 		TreeMap<Integer, KeywordType> keywordIndex = KeywordHelper.getKeywordIndex(input);
 		ArrayList<KeywordType> keywordList = new ArrayList<KeywordType>(keywordIndex.values());
+		int listSize = keywordList.size();
 		
 		// If the input contains keyword
-		for (int i = 0; i < keywordList.size(); i++) {
-			KeywordType keywordType = keywordList.get(i);
-			IKeyword function = IKeyword.parseKeyword(keywordType, input);
+		for (int i = 0; i < listSize; i++) {
+			KeywordType keyword = keywordList.get(i);
+			String parseInput = input;
+			
+			if (i < (listSize - 1)) {
+				KeywordType nextKeyword = keywordList.get(i+1);
+				String nextKeywordStr = nextKeyword.toString();
+			} 
+			
+			IKeyword function = IKeyword.parseKeyword(keyword, parseInput);
 			Result result = function.analyze();
 			
 			if (isDateFound(result.getStartDate(), result.getEndDate())) {

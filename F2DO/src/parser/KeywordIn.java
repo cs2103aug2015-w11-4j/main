@@ -19,7 +19,9 @@ public class KeywordIn implements IKeyword {
 	public Result analyze() {
 		String regexIn = "(.*?) in (.*?)";
 		
-		Pattern pattern = Pattern.compile(regexIn);
+		final int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
+		
+		Pattern pattern = Pattern.compile(regexIn, flags);
 		Matcher matcher = pattern.matcher(_input);
 		
 		if (matcher.matches()) {

@@ -20,7 +20,9 @@ public class KeywordAt implements IKeyword {
 		String regexAtOn = "(.*?) at (.*?) on (.*)";
 		String regexAt = "(.*?) at (.*?)";
 		
-		Pattern pattern = Pattern.compile(regexAtOn);
+		final int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
+		
+		Pattern pattern = Pattern.compile(regexAtOn, flags);
 		Matcher matcher = pattern.matcher(_input);
 		
 		if (matcher.matches()) {
@@ -31,7 +33,7 @@ public class KeywordAt implements IKeyword {
 			return result;
 		}
 		
-		pattern = Pattern.compile(regexAt);
+		pattern = Pattern.compile(regexAt, flags);
 		matcher = pattern.matcher(_input);
 		
 		if (matcher.matches()) {

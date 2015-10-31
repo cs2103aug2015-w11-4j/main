@@ -22,7 +22,9 @@ public class KeywordOn implements IKeyword {
 		String regexOn = "(.*?) on (.*?)";
 		String regexOnlyOn = "on (.*?)";
 		
-		Pattern pattern = Pattern.compile(regexOnFromTo);
+		final int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
+		
+		Pattern pattern = Pattern.compile(regexOnFromTo, flags);
 		Matcher matcher = pattern.matcher(_input);
 		
 		if (matcher.matches()) {
@@ -33,7 +35,7 @@ public class KeywordOn implements IKeyword {
 			return result;
 		}
 		
-		pattern = Pattern.compile(regexOn);
+		pattern = Pattern.compile(regexOn, flags);
 		matcher = pattern.matcher(_input);
 		
 		if (matcher.matches()) {
@@ -43,7 +45,7 @@ public class KeywordOn implements IKeyword {
 			return result;
 		}
 		
-		pattern = Pattern.compile(regexOnlyOn);
+		pattern = Pattern.compile(regexOnlyOn, flags);
 		matcher = pattern.matcher(_input);
 		
 		if (matcher.matches()) {
