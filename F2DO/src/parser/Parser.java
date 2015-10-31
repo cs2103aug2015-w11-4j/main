@@ -104,11 +104,12 @@ public class Parser {
 	 * @param endDate - end date and time
 	 * @return task type
 	 */
-	private static TaskType analyzeTask(CommandType ct,String title, Date startDate, Date endDate) {
+	private static TaskType analyzeTask(CommandType type, String title, Date startDate, Date endDate) {
 		if (title == null && startDate == null && endDate == null) {
 			return TaskType.INVALID;
 		}
-		if (ct.equals(CommandType.ADD) && (title == null || title.equals("") || title.isEmpty())){
+		
+		if (type.equals(CommandType.ADD) && (title == null || title.equals("") || title.isEmpty())) {
 			return TaskType.INVALID;
 		}
 		

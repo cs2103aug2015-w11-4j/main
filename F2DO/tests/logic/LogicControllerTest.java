@@ -2,17 +2,10 @@ package logic;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
-import org.junit.Before;
 import org.junit.Test;
-
 import object.Task;
 
 public class LogicControllerTest {

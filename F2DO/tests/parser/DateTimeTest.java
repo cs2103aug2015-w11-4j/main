@@ -2,16 +2,12 @@ package parser;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.logging.FileHandler;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
-import org.junit.Before;
 import org.junit.Test;
 
 public class DateTimeTest {
