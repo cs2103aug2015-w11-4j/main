@@ -15,7 +15,7 @@ public enum CommandType {
 	
 	public static CommandType toCmd(String word) {
 		try {
-			
+			word = word.toUpperCase();
 			if (word.equals("DEL")) {
 				return DELETE;
 			}

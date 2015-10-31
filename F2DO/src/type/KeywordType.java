@@ -9,5 +9,15 @@ public enum KeywordType {
 	DUE,
 	UNTIL,
 	TOMORROW,
-	YESTERDAY
+	YESTERDAY,
+	INVALID;
+	
+	public static KeywordType toType(String word) {
+		try {
+			word = word.toUpperCase();
+			return valueOf(word); 
+		} catch (Exception e) {
+			return INVALID; 
+		}
+	}
 }

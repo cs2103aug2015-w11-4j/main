@@ -3,6 +3,7 @@ package parser;
 import java.util.Date;
 import java.util.TreeMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.lang.NumberFormatException;
 
 import type.CommandType;
@@ -54,7 +55,7 @@ public class Parser {
 		
 		for (int i = 0; i < splitWords.length; i++) {
 			if (cmd == CommandType.INVALID) {
-				cmd = CommandType.toCmd(splitWords[i].toUpperCase());
+				cmd = CommandType.toCmd(splitWords[i]);
 				
 				if (cmd != CommandType.INVALID) {
 					continue;
@@ -130,19 +131,26 @@ public class Parser {
 	 * @return title, start date and end date
 	 */
 	private static Result analyzeDateTitle(String input) {
-		TreeMap<Integer, KeywordType> keywordIndex = KeywordHelper.getKeywordIndex(input);
-		ArrayList<KeywordType> keywordList = new ArrayList<KeywordType>(keywordIndex.values());
-		int listSize = keywordList.size();
+		ArrayList<String> splitWords = new ArrayList<String>(Arrays.asList(input.split(" ")));
+		TreeMap<Integer, KeywordType> keywordIndices = KeywordHelper.getKeywordIndex(splitWords);
+		ArrayList<Integer> indexList = new ArrayList<Integer>(keywordIndices.keySet());
+		int listSize = indexList.size();
 		
 		// If the input contains keyword
 		for (int i = 0; i < listSize; i++) {
-			KeywordType keyword = keywordList.get(i);
-			String parseInput = input;
+			int index = indexList.get(i);
+			KeywordType keyword = keywordIndices.get(index);
+			String parseInput = "";
 			
 			if (i < (listSize - 1)) {
-				KeywordType nextKeyword = keywordList.get(i+1);
-				String nextKeywordStr = nextKeyword.toString();
-			} 
+				int nextIndex = indexList.get(i + 1);
+				
+				for (int j = 0; j < nextIndex; j++) {
+					parseInput += splitWords.get(j) + " ";
+				}
+			} else {
+				parseInput = input;
+			}
 			
 			IKeyword function = IKeyword.parseKeyword(keyword, parseInput);
 			Result result = function.analyze();

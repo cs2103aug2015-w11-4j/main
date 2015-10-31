@@ -1,9 +1,8 @@
 package parser;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.TreeMap;
 
 import object.Result;
@@ -12,26 +11,17 @@ import type.KeywordType;
 
 public class KeywordHelper {
 	
-	public static TreeMap<Integer, KeywordType> getKeywordIndex(String input) {
+	public static TreeMap<Integer, KeywordType> getKeywordIndex(ArrayList<String> splitWords) {
 		TreeMap<Integer, KeywordType> keywordIndex = new TreeMap<Integer, KeywordType>();
-		List<String> splitWords = Arrays.asList(input.split(" "));
-		
-		for (int i = 0; i < splitWords.size(); i++) {
-			splitWords.set(i, splitWords.get(i).toLowerCase());
-		}
-		
-		for (KeywordType type: KeywordType.values()) {
-			String keyword = type.toString().toLowerCase();
-			int index = splitWords.indexOf(keyword);
 
-			if (index >= 0) {
-				keywordIndex.put(index, type);
+		for (int i = 0; i < splitWords.size(); i++) {
+			String word = splitWords.get(i);
+			KeywordType toType = KeywordType.toType(word);
+			
+			if (toType != KeywordType.INVALID) {
+				keywordIndex.put(i, toType);
 			}
 		}
-		
-		/*for(int key: keywordIndex.keySet()) {
-			System.out.println("key: " + key + " value: " + keywordIndex.get(key));
-		}*/
 		
 		return keywordIndex;
 	}
