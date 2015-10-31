@@ -35,7 +35,7 @@ public class Parser {
 		String title = tempResult.getContent();
 		Date startDate = tempResult.getStartDate();
 		Date endDate = tempResult.getEndDate();
-		TaskType type = analyzeTask(title, startDate, endDate);
+		TaskType type = analyzeTask(cmd, title, startDate, endDate);
 		
 		Result result = new Result(storageID, cmd, title, type, startDate, endDate);
 		return result;
@@ -104,8 +104,11 @@ public class Parser {
 	 * @param endDate - end date and time
 	 * @return task type
 	 */
-	private static TaskType analyzeTask(String title, Date startDate, Date endDate) {
+	private static TaskType analyzeTask(CommandType ct,String title, Date startDate, Date endDate) {
 		if (title == null && startDate == null && endDate == null) {
+			return TaskType.INVALID;
+		}
+		if (ct.equals(CommandType.ADD) && (title == null || title.equals("") || title.isEmpty())){
 			return TaskType.INVALID;
 		}
 		

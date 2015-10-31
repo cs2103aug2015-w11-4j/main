@@ -19,11 +19,24 @@ public class KeywordByDue implements IKeyword {
 	public Result analyze() {
 		String regexBy = "(.*?) by (.*?)";
 		String regexDue = "(.*?) due (.*?)";
+		String regexDueOn = "(.*?) due on (.*?)";
+		String regexOnlyBy = "by (.*?)";
+		String regexOnlyDue = "due (.*?)";
+		String regexOnlyDueOn = "due on (.*?)";
 		
-		String[] regex = {regexBy, regexDue};
+		String[] regex1 = {regexBy, regexDue, regexDueOn};
+		String[] regex2= { regexOnlyBy, regexOnlyDue, regexOnlyDueOn};
 		
-		for (int i = 0; i < regex.length; i++) {
-			Result regexResult = getMatcher(regex[i]);
+		for (int i = 0; i < regex1.length; i++) {
+			Result regexResult = getMatcher(regex1[i]);
+			
+			if (regexResult != null) {
+				return regexResult;
+			}
+		}
+		
+		for (int i = 0; i < regex1.length; i++) {
+			Result regexResult = getMatcher2(regex2[i]);
 			
 			if (regexResult != null) {
 				return regexResult;
@@ -41,6 +54,19 @@ public class KeywordByDue implements IKeyword {
 			Result result = KeywordHelper.analyzeTwoInfo(false, 
 					matcher.group(1), 
 					matcher.group(2));
+			return result;
+		}
+		
+		return null;
+	}
+	
+	private Result getMatcher2(String regex) {
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(_input);
+		
+		if (matcher.matches()) {
+			Result result = KeywordHelper.analyzeOneInfo(false, 
+					matcher.group(1));
 			return result;
 		}
 		
