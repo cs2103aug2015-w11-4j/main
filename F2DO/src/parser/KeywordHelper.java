@@ -71,6 +71,10 @@ public class KeywordHelper {
 		Date startDate = DateTime.parse(startDateString);
 		Date endDate = DateTime.parse(endDateString);
 		
+		if (startDate != null && endDate != null) {
+			endDate = DateTime.getLaterEndDate(startDate, endDate);
+		}
+		
 		return new Result(rmWhitespace(title), startDate, endDate);
 	}
 	
@@ -105,6 +109,14 @@ public class KeywordHelper {
 		
 		if (endTime != null && date != null) {
 			endDate = DateTime.combineDateTime(date, endTime);
+		}
+		
+		if (startTime == null && endTime == null && date != null) {
+			startDate = date;
+		}
+		
+		if (startDate != null && endDate != null) {
+			endDate = DateTime.getLaterEndDate(startDate, endDate);
 		}
 		
 		return new Result(rmWhitespace(title), startDate, endDate);

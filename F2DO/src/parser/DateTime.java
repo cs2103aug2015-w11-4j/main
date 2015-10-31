@@ -54,6 +54,54 @@ public class DateTime {
 	}
 	
 	/**
+	 * Ensure end date is later than start date.
+	 * @param startDate - start date
+	 * @param endDate - end date
+	 * @return later end date
+	 */
+	public static Date getLaterEndDate(Date startDate, Date endDate) {
+		Date newEndDate = endDate;
+		
+		if (startDate != null && endDate != null) {
+			Calendar startCalendar = Calendar.getInstance();
+			Calendar endCalendar = Calendar.getInstance();
+
+			startCalendar.setTime(startDate);
+			endCalendar.setTime(endDate);
+
+			if (!isEndDateLater(startDate, endDate)) {
+				int startYear = startCalendar.get(Calendar.YEAR);
+				int endYear = endCalendar.get(Calendar.YEAR);
+				
+				if (startYear > endYear) {
+					endCalendar.set(Calendar.YEAR, startCalendar.get(Calendar.YEAR));
+				} else {
+					endCalendar.add(Calendar.DAY_OF_MONTH, 7);
+				}
+				newEndDate = endCalendar.getTime();
+			}
+		}	
+		return newEndDate;
+	}
+	
+	/**
+	 * Compare if the end date is later than the start date.
+	 * @param startDate - start date
+	 * @param endDate - end date
+	 * @return true if end date is later than start date; false otherwise
+	 */
+	private static boolean isEndDateLater(Date startDate, Date endDate) {
+		try {
+			if (startDate.compareTo(endDate) < 0) {
+				return true;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+		return false;
+	}
+	
+	/**
 	 * Analyze input and return standard date format with the option of date in 
 	 * British or American date format.
 	 * @param input - possible date input
