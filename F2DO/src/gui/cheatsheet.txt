@@ -1,0 +1,55 @@
+Cheat Sheet :D 
+
+1. Add
+
+add <task>                                      
+add <task> by <end date>                        
+add <task> from <start date> to <end date>      
+
+To include the time for deadline tasks or events, append it after the date
+
+add <task> by <end date> <end time> 
+add <task> from <start date> <start time> to <end date> <end time>
+
+2. Edit
+
+edit <task no> <task name> 	 
+edit <task no> <task to be modified> <end date> 
+edit <task no> <task to be modified> <start date> <end date>
+edit <task no> <task to be modified> <start date> <start time> <end date> <end time>  
+
+3. Delete 
+
+del <task no>
+delete <task no>
+
+4. Undo 
+
+<Ctr + U>
+
+5. Redo 
+
+<Ctr + R>
+
+6. Mark a task as done or undone
+
+done <task no>
+undone <task no>
+
+7. Display
+
+show all 			
+show done 		
+
+8. Revert from Cheat Sheet Page to default UI view
+
+<TAB>				
+
+9. Exit 
+
+<Ctr + E> or <Escape key>		
+
+
+
+
+

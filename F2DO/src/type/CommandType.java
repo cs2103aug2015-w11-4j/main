@@ -5,14 +5,21 @@ public enum CommandType {
 	EDIT,
 	DELETE,
 	SEARCH,
-	COMPLETE,
-	INCOMPLETE,
+	SHOW,
+	DONE,
+	UNDONE,
 	HELP,
 	HOME,
-	INVALID;
+	INVALID, 
+	CAT;
 	
 	public static CommandType toCmd(String word) {
 		try {
+			word = word.toUpperCase();
+			if (word.equals("DEL")) {
+				return DELETE;
+			}
+			
 			return valueOf(word); 
 		} catch (Exception e) {
 			return INVALID; 
