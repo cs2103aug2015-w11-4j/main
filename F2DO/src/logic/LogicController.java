@@ -3,6 +3,7 @@ package logic;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentSkipListMap;
 
@@ -18,6 +19,9 @@ import type.TaskType;
 public class LogicController {
 	private static final String ERROR_NO_UNDO = "Feedback: No undo operation!";
 	private static final String ERROR_NO_REDO = "Feedback: No redo operation!";
+	
+	private static final int NON_FLOATING_DISPLAY_SIZE = 5;
+	private static CommandType _currentCmd = CommandType.INVALID;
 	
 	private static ArrayList<Task> _displayList = 
 			new ArrayList<Task>();
@@ -55,8 +59,12 @@ public class LogicController {
 		Feedback feedback = execute(result);
 		String message = feedback.getMessage();
 		
+		// Initialize current command
+		_currentCmd = CommandType.INVALID;
+		
 		// Store successful execution
 		if (feedback.isSuccessful()) {
+			_currentCmd = result.getCmd();
 			Task aftExeTask = _taskList.get(resultStorageID);
 			recordExecution(cmd, result.getContent(), befExeTask, aftExeTask);
 		}
@@ -202,7 +210,47 @@ public class LogicController {
 				nonFloatingList.add(task);
 			}
 		}
+		
 		Collections.sort(nonFloatingList, taskComparator);
+		
+		if (_currentCmd != CommandType.SHOW) {
+			ArrayList<Task>	displayList = new ArrayList<Task>();
+			Date today = new Date();
+			boolean isTodayOrEarlier = true;
+			boolean isMaxSize = false;
+			
+			for (Task task: nonFloatingList) {
+				Date startDate = task.getStartDate();
+				Date endDate = task.getEndDate();
+				
+				if (startDate != null) {		// Compare start date
+					if (startDate.compareTo(today) <= 0) {
+						displayList.add(task);
+					} else {
+						isTodayOrEarlier = false;
+					}
+				} else if (endDate != null) {	// Compare end date
+					if (endDate.compareTo(today) <= 0) {
+						displayList.add(task);
+					} else {
+						isTodayOrEarlier = false;
+					}
+				}
+				
+				if (displayList.size() < NON_FLOATING_DISPLAY_SIZE) {
+					displayList.add(task);
+				} else {
+					isMaxSize = true;
+				}
+				
+				if (!isTodayOrEarlier && isMaxSize) {
+					break;
+				}
+			}
+			
+			return displayList;
+		} 
+		
 		return nonFloatingList;
 	}
 	
