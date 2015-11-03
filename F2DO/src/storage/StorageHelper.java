@@ -38,7 +38,7 @@ public class StorageHelper {
 			ObjectMapper objMapper = new ObjectMapper();
 
 			objMapper.setDateFormat(_dateFormat);
-			objMapper.writeValue(file, taskList);
+			objMapper.writerWithDefaultPrettyPrinter().writeValue(file, taskList);
 
 		} catch (Exception e) {
 			e.printStackTrace();
