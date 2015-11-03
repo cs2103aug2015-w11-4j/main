@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Scanner;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 import history.History;
@@ -297,7 +296,7 @@ public class LogicController {
 	};
 	
 	// For testing purpose
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		System.out.print("Command: ");
 		Scanner scanner = new Scanner(System.in);
 		String input = scanner.nextLine();
@@ -310,5 +309,5 @@ public class LogicController {
 		for (int i = 0; i < displayList.size(); i++) {
 			System.out.println((i+1) + ". " + displayList.get(i).getTaskName());
 		}
-	}
+	}*/
 }
