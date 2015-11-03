@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -215,36 +216,38 @@ public class LogicController {
 		
 		if (_currentCmd != CommandType.SHOW) {
 			ArrayList<Task>	displayList = new ArrayList<Task>();
-			Date today = new Date();
-			boolean isTodayOrEarlier = true;
-			boolean isMaxSize = false;
+			Calendar todayCalendar = Calendar.getInstance();
+			
+			// Initialize today
+			todayCalendar.set(Calendar.HOUR_OF_DAY, 23);
+			todayCalendar.set(Calendar.MINUTE, 59);
+			todayCalendar.set(Calendar.SECOND, 59);
+			Date today = todayCalendar.getTime();
 			
 			for (Task task: nonFloatingList) {
 				Date startDate = task.getStartDate();
 				Date endDate = task.getEndDate();
+				int displaySize = displayList.size();
+				boolean isAdded = false;
 				
 				if (startDate != null) {		// Compare start date
 					if (startDate.compareTo(today) <= 0) {
 						displayList.add(task);
-					} else {
-						isTodayOrEarlier = false;
+						isAdded = true;
 					}
 				} else if (endDate != null) {	// Compare end date
 					if (endDate.compareTo(today) <= 0) {
 						displayList.add(task);
-					} else {
-						isTodayOrEarlier = false;
+						isAdded = true;
 					}
-				}
+				} 
 				
-				if (displayList.size() < NON_FLOATING_DISPLAY_SIZE) {
-					displayList.add(task);
-				} else {
-					isMaxSize = true;
-				}
-				
-				if (!isTodayOrEarlier && isMaxSize) {
-					break;
+				if (!isAdded) {
+					if (displaySize < NON_FLOATING_DISPLAY_SIZE) {
+						displayList.add(task);
+					} else {
+						break;
+					}
 				}
 			}
 			
