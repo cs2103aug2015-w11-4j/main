@@ -1,19 +1,10 @@
 package storage;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.concurrent.ConcurrentSkipListMap;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import object.Category;
 import object.Task;
 
 /**
@@ -38,7 +29,7 @@ public class StorageHelper {
 			ObjectMapper objMapper = new ObjectMapper();
 
 			objMapper.setDateFormat(_dateFormat);
-			objMapper.writeValue(file, taskList);
+			objMapper.writerWithDefaultPrettyPrinter().writeValue(file, taskList);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -90,83 +81,6 @@ public class StorageHelper {
 		} 
 		return true;
 	}
-
-	/**
-	 * @param _catFile - Path of the category file
-	 * @return category file list
-	 */
-	public static ArrayList<Category> readCatFile(File _catFile) {
-		ArrayList<Category> catFile = new ArrayList<Category>();
-		String line = null;
-		
-        try {
-            // FileReader reads text files in the default encoding.
-            FileReader fileReader = 
-                new FileReader(_catFile);
-
-            // Always wrap FileReader in BufferedReader.
-            BufferedReader bufferedReader = 
-                new BufferedReader(fileReader);
-
-            while((line = bufferedReader.readLine()) != null) {
-                Category cat = new Category(line);
-                catFile.add(cat);
-            }   
-
-            // Always close files.
-            bufferedReader.close();         
-        } catch(FileNotFoundException ex) {
-            System.out.println(
-                "Unable to open file '" + 
-                _catFile + "'");                
-        } catch(IOException ex) {
-            System.out.println(
-                "Error reading file '" 
-                + _catFile + "'");                  
-            // Or we could just do this: 
-            // ex.printStackTrace();
-        }
-		return catFile;
-	}
-	
-	/**
-	 * @param file - path of the category file
-	 * @param catList - category list to be written to file
-	 * @return true if the operation is successful, false if the operation fails
-	 */
-	public static boolean writeCatFile(File file, ArrayList<Category> catList){
-		
-		Writer fileWriter = null;
-		BufferedWriter bufferedWriter = null;
-
-		try {
-			fileWriter = new FileWriter(file);
-			bufferedWriter = new BufferedWriter(fileWriter);
-
-			// Write the lines one by one
-			for (int i = 0; i<catList.size(); i++) {
-				bufferedWriter.write(catList.get(i).getCategory());
-				bufferedWriter.newLine();
-				// alternatively add bufferedWriter.newLine() to change line
-			}
-
-		} catch (IOException e) {
-			System.err.println("Error writing the file : ");
-			e.printStackTrace();
-			return false;
-		} finally {
-			if (bufferedWriter != null && fileWriter != null) {
-				try {
-					bufferedWriter.close();
-					fileWriter.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-					return false;
-				}
-			}
-		}
-		
-		return true;
-	}
 	
 }
+
