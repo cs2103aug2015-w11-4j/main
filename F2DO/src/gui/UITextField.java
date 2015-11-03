@@ -153,12 +153,13 @@ public class UITextField extends TextField {
 		String alternateEventStr = floatingStr;
 		String deadlineStr = floatingStr;
 		
-		Calendar todayCalendar = Calendar.getInstance();
 		Calendar tmrCalendar = Calendar.getInstance();
+		Calendar afterTmrCalendar = Calendar.getInstance();
 		tmrCalendar.add(Calendar.DAY_OF_MONTH, 1);	
+		afterTmrCalendar.add(Calendar.DAY_OF_MONTH, 2);
 		
-		Date today = todayCalendar.getTime();
 		Date tomorrow = tmrCalendar.getTime();
+		Date afterTomorrow = afterTmrCalendar.getTime();
 		Date startDate = task.getStartDate();
 		Date endDate = task.getEndDate();
 		
@@ -190,27 +191,29 @@ public class UITextField extends TextField {
 			alternateEventStr += "on " + dateFormat.format(endDate);
 			
 		} else {
-			eventStr += "from " + dateFormat.format(today) + " ";
-			eventStr += "to " + dateFormat.format(tomorrow);
+			eventStr += "from " + dateFormat.format(tomorrow) + " ";
+			eventStr += "to " + dateFormat.format(afterTomorrow);
 			
-			alternateEventStr += "on " + dateFormat.format(today);
+			alternateEventStr += "on " + dateFormat.format(tomorrow);
 		}
 		
 		// Set deadline string
 		if (endDate != null) {
 			deadlineStr += "by " + dateFormat.format(endDate);
+		} else if (startDate != null) {
+			deadlineStr += "by " + dateFormat.format(startDate);
 		} else {
 			deadlineStr += "by " + dateFormat.format(tomorrow);
 		}
 		
 		// Assign display order
 		int eventIndex = 0;
-		int alternateEventIndex = 1;
-		int deadlineIndex = 2;
-		int floatingIndex = 3;
+		int floatingIndex = 1;
+		int alternateEventIndex = 2;
+		int deadlineIndex = 3;
 		int firstIndex = -1;
 		
-		String[] eventList = {eventStr, alternateEventStr, deadlineStr, floatingStr};
+		String[] eventList = {eventStr, floatingStr, alternateEventStr, deadlineStr};
 		
 		switch (taskType) {
 			case EVENT:
