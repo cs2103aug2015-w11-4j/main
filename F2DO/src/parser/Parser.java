@@ -85,7 +85,7 @@ public class Parser {
 					storageID = taskList.get(displayID).getTaskID();
 				}
 
-				if (splitWords.length > 1) {
+				if (splitWords.length >= 1) {
 					_removeCmdInput = "";
 					for (int i = 1; i < splitWords.length; i++) {
 						_removeCmdInput += splitWords[i] + " ";

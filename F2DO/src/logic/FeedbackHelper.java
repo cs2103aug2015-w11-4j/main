@@ -19,6 +19,7 @@ public class FeedbackHelper {
 	public static final String ERROR_NO_INDEX = "Feedback: The entered number does not exist!";
 	public static final String ERROR_SEARCH = "Feedback: No results found!";
 	public static final String ERROR_EDIT = "Feedback: %1$s cannot be modified!";
+	public static final String ERROR_EDIT_NOTHING = "Feedback: Nothing to be modified";
 	public static final String ERROR_SHOW_NO_ALL = "Feedback: No task!";
 	public static final String ERROR_SHOW_NO_DONE = "Feedback: No completed task!";
 	public static final String ERROR_SHOW_NO_UNDONE = "Feedback: No incomplete task!";

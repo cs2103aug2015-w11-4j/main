@@ -55,6 +55,8 @@ public class UITextField extends TextField {
 				String text = UITextField.this.getText();
 				String[] textTokens = text.split(" ");
 				
+				popupMenu.hide();
+				
 				int spaceCount = 0;
 				for (int i = 0; i < text.length() && spaceCount < 2; i++) {
 					if (text.charAt(i) == ' ') {
@@ -115,17 +117,13 @@ public class UITextField extends TextField {
 			String str = displayList.get(i);
 			Label label = new Label(str);
 			CustomMenuItem item = new CustomMenuItem(label, true);
-			
-			if (i == 0) {
-				this.setText(str);
-			}
 
 			item.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) {
 					setText(str);
-					popupMenu.hide();
+					positionCaret(str.length());
 				}
 
 			});
