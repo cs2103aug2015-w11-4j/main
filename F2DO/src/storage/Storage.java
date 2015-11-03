@@ -3,6 +3,9 @@ package storage;
 
 import object.Task;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
@@ -11,27 +14,25 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class Storage {
 	private static final String DEFAULT_DIRECTORY = "F2DO";
 	private static final String FILENAME = "F2DO.json";
-	private static final String SAVED_DIRECTORY = "%s\\F2DO";
+	private static final String SAVED_DIRECTORY = "%s/F2DO";
 	private static final String CHANGE_DIRECTORY = "user.dir";
+	private static final String DEFAULT_FILE_PATH = DEFAULT_DIRECTORY + "/" + FILENAME; 
+	private static final String PROPERTIES_FILE_PATH = DEFAULT_DIRECTORY + "/config.properties";
+	private static final String PROPERTIES_SAVE_FILE = "filepath";
 	
-	private static File _saveFolder = null;
-	private static File _saveFile = null;
+	private static File _saveFolder = new File(DEFAULT_DIRECTORY);
+	private static File _saveFile =  new File(DEFAULT_FILE_PATH);
+	private static File _propertiesFile = new File(PROPERTIES_FILE_PATH);
+	
+	private static Properties properties = new Properties();
 	
 	/**
 	 * Initialize storage class.
 	 */
 	static {
-		// TO BE IMPLEMENTED
-		// Read setting file for custom folder path
-		
-		// If custom folder path does not exist, use default path
-		String filePath = DEFAULT_DIRECTORY + "/" + FILENAME;
-		_saveFolder = new File(DEFAULT_DIRECTORY);
-		_saveFile = new File(filePath);
-		
-		if (createFolder()) {
-			createFile();
-		}
+		if(createPropertiesFile()) {
+			readPropertiesFile();
+		} 
 	}
 	
 	/**
@@ -52,12 +53,11 @@ public class Storage {
 			_saveFile = new File(filePath);
 
 			if (createFolder() && createFile()) {
-				isSuccessful = true;
+				isSuccessful = writePropertiesFile(filePath);
 				if ((prevFile != null) && (prevFile.exists()) ) {
 					writeTasks(taskList);		// Copy the task list into new file
 					prevFile.delete();
 				}
-				
 			} 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -68,6 +68,72 @@ public class Storage {
 			}
 		}
 		return isSuccessful;
+	}
+	
+	/**
+	 * Create properties file.
+	 * @return true if properties file is created successfully; false otherwise
+	 */
+	private static boolean createPropertiesFile() {
+		try {
+			if (!_propertiesFile.exists()) {
+				_saveFile =  new File(DEFAULT_FILE_PATH);
+				
+				if (createFolder()) {
+					createFile();
+				}
+				
+				FileOutputStream fos = new FileOutputStream(PROPERTIES_FILE_PATH);
+				
+				properties.setProperty(PROPERTIES_SAVE_FILE, DEFAULT_FILE_PATH);
+				properties.store(fos, "Properties file of F2DO");
+				fos.close();
+			}
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Read the stored file path from properties file.
+	 * @return true if the file path is read successfully; false otherwise
+	 */
+	private static boolean readPropertiesFile() {
+		try {
+			FileInputStream fis = new FileInputStream(PROPERTIES_FILE_PATH);
+			properties.load(fis);
+			
+			String filePath = properties.getProperty(PROPERTIES_SAVE_FILE);
+			_saveFile = new File(filePath);
+			fis.close();
+			
+			if (!_saveFile.exists()) {
+				_propertiesFile.delete();
+				createPropertiesFile();
+			}
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Write customized save folder to properties file.
+	 * @param path - customized path
+	 * @return true if the property is written successfully; false otherwise
+	 */
+	private static boolean writePropertiesFile(String path) {
+		try {
+			FileOutputStream fos = new FileOutputStream(PROPERTIES_FILE_PATH);
+
+			properties.setProperty(PROPERTIES_SAVE_FILE, path);
+			properties.store(fos, "Properties file of F2DO");
+			fos.close();
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
 	}
 
 	/**

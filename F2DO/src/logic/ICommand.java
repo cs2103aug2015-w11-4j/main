@@ -40,7 +40,7 @@ public interface ICommand {
 			case HELP:
 				return new CommandHelp(taskList);
 			case MOVE:
-				return new CommandMove(result);
+				return new CommandMove(result, taskList);
 			case HOME:
 				return new CommandHome(taskList);
 			case INVALID: default:
