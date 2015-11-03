@@ -1,3 +1,4 @@
+//@@author Cher Lin
 package gui;
 
 import java.text.SimpleDateFormat;

@@ -1,12 +1,16 @@
+//@@author Ming Yang
 package logic;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import org.junit.Test;
+
 import object.Task;
+import parser.DateTime;
 
 public class LogicControllerTest {
 	
@@ -77,7 +81,7 @@ public class LogicControllerTest {
 	    logger.info("Marking task as done works.");
 
 	    //Testing complete task display
-		assertEquals("Feedback: Show 1 complete task!",
+		assertEquals("Feedback: Show 1 completed task!",
 					(LogicController.process("show done", LogicController.getDisplayList())));
 	    logger.info("Showing completed tasks works");
 	    
@@ -103,7 +107,17 @@ public class LogicControllerTest {
 	    //Testing invalid adds
 		assertEquals("Feedback:  cannot be added!", LogicController.process("add        ", LogicController.getDisplayList()));
 	    logger.info("Adding blank task not acceptable throws the correct error feedback");
-		
+	    
+	    Task sampleTaskTwo = new Task();
+		sampleTaskTwo.setTaskID(1);
+		sampleTaskTwo.setTaskName("Meeting with Boss");
+		sampleTaskTwo.setStartDate(DateTime.parse("01/12/2015"));
+		sampleTaskTwo.setEndDate(DateTime.parse("31/12/2015"));
+		testDisplayList.add(sampleTaskOne);
+		LogicController.process("add Project from 00/12 to 32/12", LogicController.getDisplayList());
+		assertNotEquals(testDisplayList.get(0).getStartDate(), LogicController.getDisplayList().get(0).getStartDate());
+		assertNotEquals(testDisplayList.get(0).getEndDate(), LogicController.getDisplayList().get(0).getEndDate());
+			    
 	    //Finishing tests. Clears the test list.
 		int length = LogicController.getDisplayList().size();
 		if (length >= 0) {
@@ -115,8 +129,11 @@ public class LogicControllerTest {
 
 	}
 
+	//@@author Sufyan
 	@Test
 	public void testComparator() {
+		
+		logger.info("Start of comparator tests");
 
 		//t1 has end no start; t2 has end no start.
 		LogicController.process("add 2103 Tutorial homework by today", LogicController.getDisplayList());
@@ -186,6 +203,8 @@ public class LogicControllerTest {
 		for (int i = 0; i < length; i++) {
 			LogicController.process("delete 1", LogicController.getDisplayList());
 		}
+
+		logger.info("End of comparator tests");
 	}
 	
 }
