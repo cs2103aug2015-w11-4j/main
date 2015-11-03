@@ -36,58 +36,19 @@ public class CommandEdit implements ICommand {
 		if (_taskList.containsKey(taskID)) {
 			Task task = _taskList.get(taskID);
 			
-				switch(_result.getType()){
-				case FLOATING:{
-					String content = _result.getContent();
-					if (!(content == null || content.equals(null) || content.trim().equals(""))){
-						task.setTaskName(_result.getContent());
-					}
-				} break;
-				case DEADLINE:{
-					String content = _result.getContent();
-					if (!(content == null || content.equals(null) || content.trim().equals(""))){
-						task.setTaskName(_result.getContent());
-					}
-					Date date = _result.getEndDate();
-					if (date != null){
-						task.setEndDate( _result.getEndDate());
-					}
-					if (task.getTaskType() == TaskType.FLOATING){
-						task.setTaskType(TaskType.DEADLINE);
-					}
-				}break; 
-				case EVENT:{
-					String content = _result.getContent();
-					if (!(content == null || content.equals(null) || content.trim().equals(""))){
-						task.setTaskName(_result.getContent());
-					}
-					
-					Date endDate =  _result.getEndDate();
-					if (endDate != null){
-						task.setEndDate( _result.getEndDate());
-					}
-					
-					task.setStartDate(_result.getStartDate());
-					task.setTaskType(TaskType.EVENT); 
-				} break;
-				case INVALID: default:{
-					
-				} break;
-			}
+			task.setTaskName(_result.getContent());
+			task.setTaskType(_result.getType());
+			task.setStartDate(_result.getStartDate());
+			task.setEndDate(_result.getEndDate());
 			
-			
-			
-			
-			
-			_taskList.remove(taskID);
 			_taskList.put(taskID, task);
 			Storage.writeTasks(_taskList);
+			
 			message = String.format(FeedbackHelper.MSG_EDIT, _result.getContent());
 			isSuccessful = true;
 		}
 		
-		ArrayList<Task> displayList = 
-				new ArrayList<Task>(_taskList.values());
+		ArrayList<Task> displayList = new ArrayList<Task>(_taskList.values());
 		
 		return new Feedback(message, displayList, _taskList, isSuccessful);
 		
