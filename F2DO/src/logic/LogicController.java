@@ -214,6 +214,8 @@ public class LogicController {
 		
 		Collections.sort(nonFloatingList, taskComparator);
 		
+		// Show today's tasks.
+		// If today's tasks are fewer than 5, add up to 5 tasks.
 		if (_currentCmd != CommandType.SHOW) {
 			ArrayList<Task>	displayList = new ArrayList<Task>();
 			Calendar todayCalendar = Calendar.getInstance();
