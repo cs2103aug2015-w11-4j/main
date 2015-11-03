@@ -46,7 +46,14 @@ public class UITextField extends TextField {
 				String text = UITextField.this.getText();
 				String[] textTokens = text.split(" ");
 				
-				if (textTokens.length == 2) {
+				int spaceCount = 0;
+				for (int i = 0; i < text.length() && spaceCount < 2; i++) {
+					if (text.charAt(i) == ' ') {
+						spaceCount += 1;
+					}
+				}
+				
+				if (textTokens.length == 2 && spaceCount == 2) {
 					String firstToken = textTokens[0];
 					CommandType cmd = CommandType.toCmd(firstToken);
 					int index = getInteger(textTokens[1]) - 1;
@@ -100,6 +107,10 @@ public class UITextField extends TextField {
 			String str = displayList.get(i);
 			Label label = new Label(str);
 			CustomMenuItem item = new CustomMenuItem(label, true);
+			
+			if (i == 0) {
+				this.setText(str);
+			}
 
 			item.setOnAction(new EventHandler<ActionEvent>() {
 
