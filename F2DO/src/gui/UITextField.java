@@ -36,6 +36,15 @@ public class UITextField extends TextField {
 	}
 	
 	/**
+	 * Show pop-up menu.
+	 */
+	public void showPopup() {
+		if (!popupMenu.isShowing()) {
+			popupMenu.show(this, Side.BOTTOM, 0, 0);
+		}
+	}
+	
+	/**
 	 * Set up auto fill in of the text field.
 	 */
 	private void setAutoFill() {
@@ -64,14 +73,13 @@ public class UITextField extends TextField {
 						populatePopup(index, task);
 						
 						if (!popupMenu.isShowing()) {
-							popupMenu.setPrefWidth(UITextField.this.getPrefWidth());
 							popupMenu.show(UITextField.this, Side.BOTTOM, 0, 0);
-						}
-						
-					}
-				} else if (textTokens.length < 2){
+						}	
+					} 
+				} else if (textTokens.length <= 2){
 					// Hide pop up
 					popupMenu.hide();
+					popupMenu.getItems().clear();
 				}
 				
 			}

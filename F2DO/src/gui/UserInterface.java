@@ -275,7 +275,7 @@ public class UserInterface extends Application {
 					}
 				}
 			} else if (event.getCode() == KeyCode.DOWN) {
-				
+				_field.showPopup();
 			}
 			/*
 			else if (event.getCode() == KeyCode.TAB + SHIFT) {
