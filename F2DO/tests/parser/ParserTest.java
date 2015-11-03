@@ -13,6 +13,7 @@ import logic.LogicControllerTest;
 import object.Result;
 import object.Task;
 import type.CommandType;
+import type.KeywordType;
 import type.TaskType;
 
 /**
@@ -165,7 +166,7 @@ public class ParserTest extends LogicControllerTest{
 	}
 	
 	/**
-	 * Input 5: "add Walk home from market"
+	 * Input 8: "add Walk home from market"
 	 */
 	@Test
 	public void testParserAddInput8() {
@@ -177,6 +178,25 @@ public class ParserTest extends LogicControllerTest{
 		assertEquals(null, result.getStartDate());
 		assertEquals(-1, result.getPriority());
 	}
+
+	/**
+	 * Input 9: "add test in two days"
+	 */
+	@Test
+	public void testParserAddInput9() {
+		
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_YEAR, 2);
+		Date date = cal.getTime();
+		
+		result = Parser.parse("add test in two days", new ArrayList<Task>());
+		assertEquals("test", result.getContent());
+		assertEquals(TaskType.DEADLINE, result.getType());
+		assertEquals(CommandType.ADD, result.getCmd());
+		assertEquals(date.toString(), result.getEndDate().toString());
+		assertEquals(null, result.getStartDate());
+		assertEquals(-1, result.getPriority());
+	} 
 	
 	/**
 	 * 
@@ -191,6 +211,5 @@ public class ParserTest extends LogicControllerTest{
 		assertEquals(null, result.getStartDate());
 		assertEquals(-1, result.getPriority());
 	}
-	
 	
 }

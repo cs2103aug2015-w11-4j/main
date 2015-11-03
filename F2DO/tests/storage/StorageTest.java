@@ -55,7 +55,7 @@ public class StorageTest {
 		assertFalse(StorageHelper.createJsonFile(null));
 	}
 
-	@SuppressWarnings("resource")
+/*	@SuppressWarnings("resource")
 	@Test
 	public void testReadCatFile() throws IOException {
 		File abc = new File("abc");
@@ -96,6 +96,6 @@ public class StorageTest {
 		File abc2 = new File("");
 		assertFalse(StorageHelper.writeCatFile(abc2, failList));
 		
-	}
+	}*/
 }
 
