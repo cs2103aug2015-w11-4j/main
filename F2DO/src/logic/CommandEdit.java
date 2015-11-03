@@ -36,100 +36,40 @@ public class CommandEdit implements ICommand {
 		if (_taskList.containsKey(taskID)) {
 			Task task = _taskList.get(taskID);
 			
-			switch(_result.getType()){
+				switch(_result.getType()){
 				case FLOATING:{
-					switch(task.getTaskType()) {
-					case FLOATING:{
+					String content = _result.getContent();
+					if (!(content == null || content.equals(null) || content.trim().equals(""))){
 						task.setTaskName(_result.getContent());
-					}break;
-					case DEADLINE: case EVENT:{
-						String content = _result.getContent();
-						if (!(content == null || content.equals(null) || content.trim().equals(""))){
-							task.setTaskName(_result.getContent());
-						}
-					}break;
-					case INVALID: default:{
-						
-					} break;
 					}
 				} break;
 				case DEADLINE:{
-					switch(task.getTaskType()) {
-					case FLOATING:{
-						//convert floating to deadline
-						String content = _result.getContent();
-						if (!(content == null || content.equals(null) || content.trim().equals(""))){
-							task.setTaskName(_result.getContent());
-						}
+					String content = _result.getContent();
+					if (!(content == null || content.equals(null) || content.trim().equals(""))){
+						task.setTaskName(_result.getContent());
+					}
+					Date date = _result.getEndDate();
+					if (date != null){
 						task.setEndDate( _result.getEndDate());
+					}
+					if (task.getTaskType() == TaskType.FLOATING){
 						task.setTaskType(TaskType.DEADLINE);
-						
-					}break;
-					case DEADLINE:{
-						String content = _result.getContent();
-						if (!(content == null || content.equals(null) || content.trim().equals(""))){
-							task.setTaskName(_result.getContent());
-						}
-						Date date = _result.getEndDate();
-						if (date != null){
-							task.setEndDate( _result.getEndDate());
-						}
-					}break;
-					case EVENT:{
-						// just change the end date
-						String content = _result.getContent();
-						if (!(content == null || content.equals(null) || content.trim().equals(""))){
-							task.setTaskName(_result.getContent());
-						}
-						Date date = _result.getEndDate();
-						if (date != null){
-							task.setEndDate( _result.getEndDate());
-						}
-						
-					}break;
-					case INVALID: default:{
-						
-					} break;
 					}
 				}break; 
 				case EVENT:{
-					switch(task.getTaskType()) {
-					case FLOATING:{
-						//convert floating to event
-						String content = _result.getContent();
-						if (!(content == null || content.equals(null) || content.trim().equals(""))){
-							task.setTaskName(_result.getContent());
-						}
+					String content = _result.getContent();
+					if (!(content == null || content.equals(null) || content.trim().equals(""))){
+						task.setTaskName(_result.getContent());
+					}
+					
+					Date endDate =  _result.getEndDate();
+					if (endDate != null){
 						task.setEndDate( _result.getEndDate());
-						task.setStartDate(_result.getStartDate());
-						task.setTaskType(TaskType.EVENT);
-						
-					}break;
-					case DEADLINE:{
-						String content = _result.getContent();
-						if (!(content == null || content.equals(null) || content.trim().equals(""))){
-							task.setTaskName(_result.getContent());
-						}
-						task.setEndDate( _result.getEndDate());
-						task.setStartDate(_result.getStartDate());
-						task.setTaskType(TaskType.EVENT);
-						
-					}break;
-					case EVENT:{
-						String content = _result.getContent();
-						if (!(content == null || content.equals(null) || content.trim().equals(""))){
-							task.setTaskName(_result.getContent());
-						}
-						task.setEndDate( _result.getEndDate());
-						task.setStartDate(_result.getStartDate());
-						task.setTaskType(TaskType.EVENT);
-						
-					}break;
-					case INVALID: default:{
-						
-					} break;
-					} 
-				} 
+					}
+					
+					task.setStartDate(_result.getStartDate());
+					task.setTaskType(TaskType.EVENT); 
+				} break;
 				case INVALID: default:{
 					
 				} break;
