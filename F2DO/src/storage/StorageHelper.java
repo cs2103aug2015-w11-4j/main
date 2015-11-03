@@ -1,3 +1,4 @@
+//@@author Ming Yang
 package storage;
 
 import java.io.File;
@@ -9,8 +10,6 @@ import object.Task;
 
 /**
  * StorageHelper class maintains reading and writing of JSON file.
- * @author 
- *
  */
 public class StorageHelper {
 	private static SimpleDateFormat _dateFormat = 

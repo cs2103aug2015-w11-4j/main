@@ -1,3 +1,4 @@
+//@@author Ming Yang
 package storage;
 
 import object.Task;
@@ -6,8 +7,6 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * Storage class maintains file input and output related matters.
- * @author 
- *
  */
 public class Storage {
 	private static final String DEFAULT_DIRECTORY = "F2DO";

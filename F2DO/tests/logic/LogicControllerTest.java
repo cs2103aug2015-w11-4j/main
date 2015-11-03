@@ -1,3 +1,4 @@
+//@@author Ming Yang
 package logic;
 
 import static org.junit.Assert.assertEquals;
@@ -116,8 +117,7 @@ public class LogicControllerTest {
 		LogicController.process("add Project from 00/12 to 32/12", LogicController.getDisplayList());
 		assertNotEquals(testDisplayList.get(0).getStartDate(), LogicController.getDisplayList().get(0).getStartDate());
 		assertNotEquals(testDisplayList.get(0).getEndDate(), LogicController.getDisplayList().get(0).getEndDate());
-		
-	    
+			    
 	    //Finishing tests. Clears the test list.
 		int length = LogicController.getDisplayList().size();
 		if (length >= 0) {
@@ -129,6 +129,7 @@ public class LogicControllerTest {
 
 	}
 
+	//@@author Sufyan
 	@Test
 	public void testComparator() {
 		

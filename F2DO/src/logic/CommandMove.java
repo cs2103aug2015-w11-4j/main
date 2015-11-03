@@ -1,3 +1,4 @@
+//@@author Sufyan
 package logic;
 
 import object.Result;
