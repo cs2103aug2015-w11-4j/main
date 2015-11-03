@@ -13,7 +13,6 @@ import logic.LogicControllerTest;
 import object.Result;
 import object.Task;
 import type.CommandType;
-import type.KeywordType;
 import type.TaskType;
 
 /**
