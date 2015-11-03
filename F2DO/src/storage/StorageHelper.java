@@ -115,13 +115,11 @@ public class StorageHelper {
 
             // Always close files.
             bufferedReader.close();         
-        }
-        catch(FileNotFoundException ex) {
+        } catch(FileNotFoundException ex) {
             System.out.println(
                 "Unable to open file '" + 
                 _catFile + "'");                
-        }
-        catch(IOException ex) {
+        } catch(IOException ex) {
             System.out.println(
                 "Error reading file '" 
                 + _catFile + "'");                  
@@ -142,7 +140,6 @@ public class StorageHelper {
 		BufferedWriter bufferedWriter = null;
 
 		try {
-
 			fileWriter = new FileWriter(file);
 			bufferedWriter = new BufferedWriter(fileWriter);
 
@@ -158,7 +155,6 @@ public class StorageHelper {
 			e.printStackTrace();
 			return false;
 		} finally {
-
 			if (bufferedWriter != null && fileWriter != null) {
 				try {
 					bufferedWriter.close();
