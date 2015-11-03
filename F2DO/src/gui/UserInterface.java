@@ -40,7 +40,7 @@ public class UserInterface extends Application {
 	
 	private static UIButton _taskButton = new UIButton("Tasks & Events");
 	private static UIButton _floatingButton = new UIButton("Floating Tasks");
-	private static TextField _field = new TextField();
+	private static UITextField _field = new UITextField();
 	private static TextArea _cheatSheet = new TextArea();
 	private static Label _feedBack = new Label();
 	private static int commandIndex;
@@ -70,7 +70,7 @@ public class UserInterface extends Application {
 	public void start(Stage primaryStage) throws Exception {	
 		
 		setCommandPrompt(); 
-        updateTables();
+		updateDisplayList();
         setUpTables();
         
         setKeyCombinationListener();
@@ -104,7 +104,7 @@ public class UserInterface extends Application {
 	 */
 	private void setUpTables() {
 		
-		updateTables();
+		updateDisplayList();
 		
 		BorderPane.setMargin(_tables, new Insets(8, 20, 25, 20));
         BorderPane.setAlignment(_tables, Pos.CENTER);
@@ -122,7 +122,7 @@ public class UserInterface extends Application {
 	/**
 	 * Update tables.
 	 */
-	private static void updateTables() {
+	private static void updateDisplayList() {
 		ArrayList<Task> nonFloatingList = LogicController.getNonFloatingList();
 		ArrayList<Task> floatingList = LogicController.getFloatingList();
 		
@@ -132,6 +132,7 @@ public class UserInterface extends Application {
 		
 		_taskTable.updateTable(nonFloatingList, floatingList);
 		_floatingTable.updateTable(nonFloatingList, floatingList);
+		_field.updateDisplayList(_displayList);
 	}
 	
 	/**
@@ -163,7 +164,7 @@ public class UserInterface extends Application {
 					 _ctrlUCount = 0;
 					 String feedbackMsg = LogicController.undo();
 					 _feedBack.setText(feedbackMsg);
-					 updateTables();
+					 updateDisplayList();
 				 }
 			}
         });
@@ -178,7 +179,7 @@ public class UserInterface extends Application {
 					 _ctrlRCount = 0;
 					 String feedbackMsg = LogicController.redo();
 					 _feedBack.setText(feedbackMsg);
-					 updateTables();
+					 updateDisplayList();
 				 }
 			}
         });
@@ -224,6 +225,7 @@ public class UserInterface extends Application {
 	 */
 	private void setKeyPressed(TextField field, Label feedback, TableView<Integer> table, Stage primaryStage) {
 		field.setOnKeyPressed((KeyEvent event) -> {
+			
 			if (event.getCode() == KeyCode.ENTER) {
 				
 				String userInput = field.getText();
@@ -245,7 +247,7 @@ public class UserInterface extends Application {
 					}
 				} else {
 					feedback.setText(feedbackMsg);
-					updateTables();
+					updateDisplayList();
 				}			
 				
 				if (feedbackMsg == FeedbackHelper.MSG_HOME) {
@@ -272,6 +274,8 @@ public class UserInterface extends Application {
 						commandIndex = 0;
 					}
 				}
+			} else if (event.getCode() == KeyCode.DOWN) {
+				
 			}
 			/*
 			else if (event.getCode() == KeyCode.TAB + SHIFT) {
