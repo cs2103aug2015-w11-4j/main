@@ -11,7 +11,8 @@ public enum CommandType {
 	HELP,
 	HOME,
 	INVALID, 
-	CAT;
+	CAT, 
+	MOVE;
 	
 	public static CommandType toCmd(String word) {
 		try {

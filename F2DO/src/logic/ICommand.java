@@ -38,8 +38,8 @@ public interface ICommand {
 				return new CommandShow(result, taskList);
 			case HELP:
 				return new CommandHelp(taskList);
-			case CAT:
-				return new CommandCat(result, taskList, categoryList);
+			case MOVE:
+				return new CommandMove(result);
 			case HOME:
 				return new CommandHome(taskList);
 			case INVALID: default:
