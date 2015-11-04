@@ -124,7 +124,7 @@ public class UITextField extends InlineCssTextArea {
 
 				@Override
 				public void handle(ActionEvent event) {
-					//setText(str);
+					replaceText(str);
 					positionCaret(str.length());
 				}
 
