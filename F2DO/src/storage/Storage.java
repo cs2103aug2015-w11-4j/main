@@ -77,6 +77,7 @@ public class Storage {
 	private static boolean createPropertiesFile() {
 		try {
 			if (!_propertiesFile.exists()) {
+				_saveFolder = new File(DEFAULT_DIRECTORY);
 				_saveFile =  new File(DEFAULT_FILE_PATH);
 				
 				if (createFolder()) {
@@ -183,6 +184,10 @@ public class Storage {
 	 * @return true if it is written into the file successfully; false otherwise
 	 */
 	public static boolean writeTasks(ConcurrentSkipListMap<Integer, Task> taskList) {
+		if (!_saveFile.exists()) {
+			_propertiesFile.delete();
+			createPropertiesFile();
+		}
 		return StorageHelper.writeJsonFile(_saveFile, taskList);
 	}
 	
