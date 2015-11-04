@@ -73,7 +73,7 @@ public class LogicControllerTest {
 
 	    //Test Edit
 	    assertNotEquals("Feedback: Homework has been edited!",
-	    			(LogicController.process("edit 1 by Sunday", LogicController.getDisplayList())));
+	    			(LogicController.process("edit 1 Homework by Sunday", LogicController.getDisplayList())));
 	   	    
 	    //Testing completion marking
 		assertEquals("Feedback: Homework has been marked as completed!",
