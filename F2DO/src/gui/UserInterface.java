@@ -54,8 +54,6 @@ public class UserInterface extends Application {
 	private static UITable _taskTable = new UITable(false);
 	private static UITable _floatingTable = new UITable(true);
 	
-	private static String _firstWord;
-	
 	private static int _ctrlUCount = 0;
 	private static int _ctrlRCount = 0;
 	
@@ -174,69 +172,75 @@ public class UserInterface extends Application {
 		feedBack.setMouseTransparent(true);
 	}
 	
+	/**
+	 * Set highlighting of the keyword.
+	 */
 	private void setKeywordsHighlighting() {
-		
+
 		_field.textProperty().addListener((observable, oldValue, newValue) -> {
-		//check if the first word is a keyword - happens in most cases 
-		//for commands e.g. like add, search, edit, delete
-		_firstWord = getFirstWord(newValue);
-		
-		if (isValidCmd(_firstWord)) {
-			_field.setStyle(0, _firstWord.length(), "-fx-font-weight: bold; -fx-fill: red");
-			if (newValue.length() > _firstWord.length()) {
-				_field.setStyle(_firstWord.length() + 1, newValue.length(), "-fx-font-weight: normal; -fx-fill: black");
+			//check if the first word is a keyword - happens in most cases 
+			//for commands e.g. like add, search, edit, delete
+			String firstWord = getFirstWord(newValue);
+
+			if (isValidCmd(firstWord)) {
+				_field.setStyle(0, firstWord.length(), "-fx-font-weight: bold; -fx-fill: red");
+				if (newValue.length() > firstWord.length()) {
+					_field.setStyle(firstWord.length() + 1, newValue.length(), "-fx-font-weight: normal; -fx-fill: black");
+				}
+
+				String[] result = newValue.substring(firstWord.length()).split("\\s");
+				for (int i = 0; i < result.length; i++)
+					//System.out.println(result[i]);
+					if (isValidKeyword(result[i])) {
+						_field.setStyle((newValue.indexOf(result[i])), (newValue.indexOf(result[i]) + result[i].length()),
+								"-fx-font-weight: bold; -fx-fill: blue");
+					}
+
+			} else {
+				_field.setStyle(0, newValue.length(), "-fx-font-weight: normal; -fx-fill: black");
 			}
-			
-			String[] result = newValue.substring(_firstWord.length()).split("\\s");
-		     for (int i = 0; i < result.length; i++)
-		    	 //System.out.println(result[i]);
-		    	 if (isValidKeyword(result[i])) {
-		    		 _field.setStyle((newValue.indexOf(result[i])), (newValue.indexOf(result[i]) + result[i].length()),
-		    				 "-fx-font-weight: bold; -fx-fill: blue");
-		    	 }
-		 
-		} else {
-			_field.setStyle(0, newValue.length(), "-fx-font-weight: normal; -fx-fill: black");
-		}
-	});
+		});
 	}
 
+	/**
+	 * Get the first word of the command.
+	 * @param newCommand - input command
+	 * @return first word
+	 */
 	private String getFirstWord(String newCommand) {
-		int index;
-		String word;
 		
-		index = newCommand.indexOf(" ");
-		if (index == -1) {
-			//only word in the string as there are no occurrences of spaces
-			word = newCommand;
-		} else {
-			word = newCommand.substring(0, index);
+		String[] textTokens = newCommand.split(" ");
+		
+		if (textTokens.length > 0) {
+			return textTokens[0];
 		}
-		return word;
+		
+		return null;
 	}
 	
+	/**
+	 * Check if the entered word is a valid command.
+	 * @param word - input word
+	 * @return true if the word is a valid command; false otherwise
+	 */
 	private boolean isValidCmd(String word) {
-		
-		//checking against the list of command types defined
-		/*for (CommandType c : CommandType.values()) {
-	        if (c.name().equalsIgnoreCase(word)) {
-	            return true;
-	        }
-	    }*/
 		
 		if (CommandType.toCmd(word) != CommandType.INVALID) {
 			return true;
-		}
-		
+		}		
 		return false;	
 	}
 	
+	/**
+	 * Check if the entered word is a valid keyword.
+	 * @param word - input word
+	 * @return true if the word is a valid keyword; false otherwise
+	 */
 	private boolean isValidKeyword(String word) {
 		
 		if (KeywordType.toType(word) != KeywordType.INVALID) {
 			return true;
 		}
-		
 		return false;	
 	}
 	
