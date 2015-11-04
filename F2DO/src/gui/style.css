@@ -8,7 +8,6 @@
 	-fx-background-color:lavender;
 }
 
-
 .table-view {
   -fx-table-cell-border-color: transparent;
 }
@@ -19,13 +18,14 @@
 }
 
 .table-view .column-header{
-    -fx-font-size: 13;
+    -fx-font-size: 13.5;
     -fx-background-color:mistyrose;
 }
 
 .table-cell {
-    -fx-font-size: 13.5px;
+    -fx-font-size: 13.5;
     -fx-text-fill:black; 
+    -fx-font-family: semi_bold;
 }
 
 .table-row-cell:odd {
