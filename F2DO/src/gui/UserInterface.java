@@ -1,6 +1,8 @@
 //@@author Cher Lin
 package gui;
 
+import org.fxmisc.richtext.InlineCssTextArea;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -8,7 +10,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -22,7 +23,10 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import object.Task;
+import type.CommandType;
+import type.KeywordType;
 import logic.FeedbackHelper;
 import logic.LogicController;
 
@@ -35,19 +39,22 @@ import java.util.ArrayList;
 public class UserInterface extends Application {
 	
 	private static BorderPane _root = new BorderPane();
-	private static Scene _defaultScene = new Scene(_root, 650, 500);
+	private static Scene _defaultScene = new Scene(_root, 750, 580);
 	private static VBox _vbox = new VBox();
 	private static VBox _tables = new VBox();
 	
 	private static UIButton _taskButton = new UIButton("Tasks & Events");
 	private static UIButton _floatingButton = new UIButton("Floating Tasks");
 	private static UITextField _field = new UITextField();
+	
 	private static TextArea _cheatSheet = new TextArea();
 	private static Label _feedBack = new Label();
 	private static int commandIndex;
 	
 	private static UITable _taskTable = new UITable(false);
 	private static UITable _floatingTable = new UITable(true);
+	
+	private static String _firstWord;
 	
 	private static int _ctrlUCount = 0;
 	private static int _ctrlRCount = 0;
@@ -70,12 +77,13 @@ public class UserInterface extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {	
 		
-		setCommandPrompt(); 
+		setUpCommandPrompt(); 
 		updateDisplayList();
         setUpTables();
         
-        setKeyCombinationListener();
+        setKeywordsHighlighting();
         
+        setKeyCombinationListener();
         setKeyPressed(_field, _feedBack, _taskTable, primaryStage);
         
         String css = UserInterface.class.getResource("style.css").toExternalForm();
@@ -88,14 +96,14 @@ public class UserInterface extends Application {
 	/** 
 	 * Set up command prompt and feedback
 	 */
-	private void setCommandPrompt() {
-		_field.setPromptText("Enter your command..");
+	private void setUpCommandPrompt() {
+		setTextArea();
 		setFeedback(_feedBack);
 		
 		_vbox.setAlignment(Pos.CENTER);
 		_vbox.setSpacing(5);
 		_vbox.getChildren().addAll(_field, _feedBack);     
-        BorderPane.setMargin(_vbox, new Insets(15, 20, 0, 20));
+        BorderPane.setMargin(_vbox, new Insets(20, 20, 0, 20));
         
         _root.setTop(_vbox);
 	}
@@ -104,7 +112,6 @@ public class UserInterface extends Application {
 	 * Set up labels and tables 
 	 */
 	private void setUpTables() {
-		
 		updateDisplayList();
 		
 		BorderPane.setMargin(_tables, new Insets(8, 20, 25, 20));
@@ -112,8 +119,11 @@ public class UserInterface extends Application {
         
         _taskButton.setMaxWidth(Double.MAX_VALUE);
         _floatingButton.setMaxWidth(Double.MAX_VALUE);
+        _taskButton.setStyle("-fx-font-size: 13.5; -fx-font-weight: bold");
+        _floatingButton.setStyle("-fx-font-size: 13.5; -fx-font-weight: bold");
         
         _tables.setAlignment(Pos.CENTER);
+        //_tables.setPadding(new Insets(7.5,7.5,7.5,7.5));
         _tables.getChildren().addAll(_taskButton, _taskTable, _floatingButton, _floatingTable);
         _tables.setSpacing(7);
         
@@ -137,15 +147,97 @@ public class UserInterface extends Application {
 	}
 	
 	/**
+	 * Set the design of textArea 
+	 */
+	private void setTextArea() {
+		_field.setPrefHeight(25);
+		_field.setMaxHeight(25);
+		_field.setPadding(new Insets(2,2,2,2));
+		_field.setWrapText(true);
+		_field.setStyle("-fx-border-color: lightblue; -fx-font-size: 14");
+		
+		/*
+		ScrollBar scrollBarv = (ScrollBar)_field.lookup(".scroll-bar:vertical");
+		scrollBarv.setDisable(true);
+		*/
+	}
+	
+	/**
 	 * Set the design of feedback.
 	 * @param feedback
 	 */
 	private void setFeedback(Label feedBack) {
+		feedBack.setStyle("-fx-text-fill: black");
 		feedBack.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 13));
-		//feedBack.setPrefRowCount(3);
 		feedBack.setText("Welcome to F2DO, your personalised task manager(:\n"
 				+ "Type " + "\"Help\"" + " for a list of commands to get started.");
 		feedBack.setMouseTransparent(true);
+	}
+	
+	private void setKeywordsHighlighting() {
+		
+		_field.textProperty().addListener((observable, oldValue, newValue) -> {
+		//check if the first word is a keyword - happens in most cases 
+		//for commands e.g. like add, search, edit, delete
+		_firstWord = getFirstWord(newValue);
+		
+		if (isValidCmd(_firstWord)) {
+			_field.setStyle(0, _firstWord.length(), "-fx-font-weight: bold; -fx-fill: red");
+			if (newValue.length() > _firstWord.length()) {
+				_field.setStyle(_firstWord.length() + 1, newValue.length(), "-fx-font-weight: normal; -fx-fill: black");
+			}
+			
+			String[] result = newValue.substring(_firstWord.length()).split("\\s");
+		     for (int i = 0; i < result.length; i++)
+		    	 //System.out.println(result[i]);
+		    	 if (isValidKeyword(result[i])) {
+		    		 _field.setStyle((newValue.indexOf(result[i])), (newValue.indexOf(result[i]) + result[i].length()),
+		    				 "-fx-font-weight: bold; -fx-fill: blue");
+		    	 }
+		 
+		} else {
+			_field.setStyle(0, newValue.length(), "-fx-font-weight: normal; -fx-fill: black");
+		}
+	});
+	}
+
+	private String getFirstWord(String newCommand) {
+		int index;
+		String word;
+		
+		index = newCommand.indexOf(" ");
+		if (index == -1) {
+			//only word in the string as there are no occurrences of spaces
+			word = newCommand;
+		} else {
+			word = newCommand.substring(0, index);
+		}
+		return word;
+	}
+	
+	private boolean isValidCmd(String word) {
+		
+		//checking against the list of command types defined
+		/*for (CommandType c : CommandType.values()) {
+	        if (c.name().equalsIgnoreCase(word)) {
+	            return true;
+	        }
+	    }*/
+		
+		if (CommandType.toCmd(word) != CommandType.INVALID) {
+			return true;
+		}
+		
+		return false;	
+	}
+	
+	private boolean isValidKeyword(String word) {
+		
+		if (KeywordType.toType(word) != KeywordType.INVALID) {
+			return true;
+		}
+		
+		return false;	
 	}
 	
 	/**
@@ -224,95 +316,96 @@ public class UserInterface extends Application {
 	 * @param feedback
 	 * @param table
 	 */
-	private void setKeyPressed(TextField field, Label feedback, TableView<Integer> table, Stage primaryStage) {
-		field.setOnKeyPressed((KeyEvent event) -> {
+	private void setKeyPressed(InlineCssTextArea field, Label feedback, TableView<Integer> table, Stage primaryStage) {
 			
-			if (event.getCode() == KeyCode.ENTER) {
-				
-				String userInput = field.getText();
-			
-				commandHistory.add(userInput);
-				commandIndex = commandHistory.size() - 1;
-				
-				field.clear();
-				
-				String feedbackMsg = LogicController.process(userInput, _displayList);
+		field.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override 
+			public void handle(KeyEvent keyEvent) {
+				if (keyEvent.getCode() == KeyCode.ENTER) {
+					String userInput = field.getText();
+					commandHistory.add(userInput);
+					commandIndex = commandHistory.size() - 1;
+						
+					field.clear();
+					keyEvent.consume();
+		
+					String feedbackMsg = LogicController.process(userInput, _displayList);
 
-				if (feedbackMsg == 	FeedbackHelper.MSG_HELP) {
+					if (feedbackMsg == 	FeedbackHelper.MSG_HELP) {
+						try {
+							initialiseScene();
+							setUpCommandPrompt();
+							setCheatSheetContent();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					} else {
+						feedback.setText(feedbackMsg);
+						updateDisplayList();
+					}			
+				
+					if (feedbackMsg == FeedbackHelper.MSG_HOME) {
+						initialiseScene();
+						setUpCommandPrompt();
+						setUpTables();
+					}
+				}
+				else if (keyEvent.getCode() == KeyCode.F1) {
+				
+					if (!commandHistory.isEmpty()) {
+						_field.insertText(0, commandHistory.get(commandIndex));
+						//_field.setText(commandHistory.get(commandIndex));
+						int length = commandHistory.get(commandIndex).length();
+						commandIndex--;
+					
+						Platform.runLater( new Runnable() {
+							@Override
+							public void run() {
+								field.positionCaret(length);
+							}
+						});
+					
+						if (commandIndex < 0) {
+							commandIndex = 0;
+						}
+					}
+				} else if (keyEvent.getCode() == KeyCode.DOWN) {
+					_field.showPopup();
+				}
+				/*
+				else if (event.getCode() == KeyCode.TAB + SHIFT) {
+				
+					if (!commandHistory.isEmpty()) {
+						field.setText(commandHistory.get(commandIndex + 1));
+						int length = commandHistory.get(commandIndex + 1).length();
+						commandIndex++;
+					
+						Platform.runLater( new Runnable() {
+					    	@Override
+					    	public void run() {
+					        	field.positionCaret(length);
+					    	}
+						});
+					
+						if (commandIndex > commandHistory.size()) {
+							commandIndex = 0;
+						} 
+					}
+				}
+				*/
+				else if (keyEvent.getCode() == KeyCode.TAB) {
 					try {
 						initialiseScene();
-						setCommandPrompt();
-						setCheatSheetContent();
+						setUpCommandPrompt();
+						setUpTables();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-				} else {
-					feedback.setText(feedbackMsg);
-					updateDisplayList();
-				}			
-				
-				if (feedbackMsg == FeedbackHelper.MSG_HOME) {
-					initialiseScene();
-					setCommandPrompt();
-					setUpTables();
 				}
-			}
-			else if (event.getCode() == KeyCode.F1) {
-				
-				if (!commandHistory.isEmpty()) {
-					field.setText(commandHistory.get(commandIndex));
-					int length = commandHistory.get(commandIndex).length();
-					commandIndex--;
-					
-					Platform.runLater( new Runnable() {
-					    @Override
-					    public void run() {
-					        field.positionCaret(length);
-					    }
-					});
-					
-					if (commandIndex < 0) {
-						commandIndex = 0;
-					}
-				}
-			} else if (event.getCode() == KeyCode.DOWN) {
-				_field.showPopup();
-			}
-			/*
-			else if (event.getCode() == KeyCode.TAB + SHIFT) {
-				
-				if (!commandHistory.isEmpty()) {
-					field.setText(commandHistory.get(commandIndex + 1));
-					int length = commandHistory.get(commandIndex + 1).length();
-					commandIndex++;
-					
-					Platform.runLater( new Runnable() {
-					    @Override
-					    public void run() {
-					        field.positionCaret(length);
-					    }
-					});
-					
-					if (commandIndex > commandHistory.size()) {
-						commandIndex = 0;
-					}
-				}
-			}
-			*/
 			
-			else if (event.getCode() == KeyCode.TAB) {
-				try {
-					initialiseScene();
-					setCommandPrompt();
-					setUpTables();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				else if (keyEvent.getCode() == KeyCode.ESCAPE) {
+					exit();
 				}
-			}
-			
-			else if (event.getCode() == KeyCode.ESCAPE) {
-				exit();
 			}
 		});
 	}
