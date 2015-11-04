@@ -1,6 +1,8 @@
 //@@author Cher Lin
 package gui;
 
+import org.fxmisc.richtext.InlineCssTextArea;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,12 +16,11 @@ import javafx.geometry.Side;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import object.Task;
 import type.CommandType;
 import type.TaskType;
 
-public class UITextField extends TextField {
+public class UITextField extends InlineCssTextArea {
 	private static ArrayList<Task> _displayList = new ArrayList<Task>();
 	private ContextMenu popupMenu = new ContextMenu();
 	
@@ -123,7 +124,7 @@ public class UITextField extends TextField {
 
 				@Override
 				public void handle(ActionEvent event) {
-					setText(str);
+					//setText(str);
 					positionCaret(str.length());
 				}
 
