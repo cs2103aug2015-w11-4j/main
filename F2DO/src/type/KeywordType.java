@@ -9,7 +9,6 @@ public enum KeywordType {
 	DUE,
 	TODAY,
 	TOMORROW,
-	YESTERDAY,
 	TONIGHT,
 	THIS,
 	INVALID;
