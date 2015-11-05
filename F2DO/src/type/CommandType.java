@@ -1,4 +1,3 @@
-//@@author Yu Ting
 package type;
 
 public enum CommandType {

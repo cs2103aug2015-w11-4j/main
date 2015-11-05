@@ -20,7 +20,7 @@ public interface ICommand {
 	public static ICommand getCommand(Result result, 
 			ConcurrentSkipListMap<Integer, Task> taskList, 
 			ArrayList<Category> categoryList) {
-		CommandType commandType = result.getCmd();
+		CommandType commandType = result.getCommand();
 		
 		switch (commandType) {
 			case ADD:

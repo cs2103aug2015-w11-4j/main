@@ -1,169 +1,186 @@
-//@@author Yu Ting
 package parser;
 
-import java.util.Date;
-import java.util.TreeMap;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.lang.NumberFormatException;
+import java.util.Date;
+//import java.util.Scanner;
+import java.util.TreeMap;
 
+import object.Result;
+import object.Task;
 import type.CommandType;
 import type.KeywordType;
 import type.TaskType;
-import object.Result;
-import object.Task;
 
 public class Parser {
-	private static String _removeCmdInput = "";
 	
-	/**
-	 * Parse the command.
-	 * @param input - command input
-	 * @return the parsed result
-	 */
-	public static Result parse(String input, ArrayList<Task> taskList) {
-		int storageID = -1;
-		_removeCmdInput = "";
+	public static Result parse(String input, ArrayList<Task> displayList) {
+		String[] splitWords = input.split(" ");
+		ArrayList<String> words = new ArrayList<>(Arrays.asList(splitWords));
 		
-		CommandType cmd = analyzeCmd(input);
+		Result result = new Result();
+		CommandType cmd = analyzeCommand(words);
+		int taskID = -1;
+		String content = null;
+		TaskType taskType = TaskType.INVALID;
+		Date startDate = null;
+		Date endDate = null;
 		
-		if (cmd == CommandType.DELETE || 
-				cmd == CommandType.EDIT ||
-				cmd == CommandType.DONE ||
-				cmd == CommandType.UNDONE) {
-			storageID = analyzeID(_removeCmdInput, taskList);
+		if (cmd != CommandType.INVALID) {
+			words.remove(0);			// remove command from input string
+			
+			if (isIDNeeded(cmd)) {
+				taskID = analyzeID(words, displayList);
+				
+				if (taskID == -1) {
+					result.setErrorMsg(ParserMessage.ERROR_TASK_ID);
+				} else {
+					words.remove(0);	// remove display from input string
+				}
+			}
+			
+			ContentDate contentDate = analyzeContentDate(words);
+			
+			content = contentDate.getContent();
+			startDate = contentDate.getStartDate();
+			endDate = contentDate.getEndDate();
+			
+			if (contentDate.isError()) {
+				result.setErrorMsg(contentDate.getErrorMsg());
+			}
+			
+			taskType = analyzeTask(content, startDate, endDate);
+			
+		} else {
+			result.setErrorMsg(ParserMessage.ERROR_INVALID_COMMAND);
 		}
 		
-		Result tempResult = analyzeDateTitle(_removeCmdInput);
+		result.setCommand(cmd);
+		result.setStorageID(taskID);
+		result.setContent(content);
+		result.setType(taskType);
+		result.setStartDate(startDate);
+		result.setEndDate(endDate);
 		
-		String title = tempResult.getContent();
-		Date startDate = tempResult.getStartDate();
-		Date endDate = tempResult.getEndDate();
-		TaskType type = analyzeTask(cmd, title, startDate, endDate);
-		
-		Result result = new Result(storageID, cmd, title, type, startDate, endDate);
 		return result;
+	}
+	
+	private static boolean isIDNeeded(CommandType cmd) {
+		return cmd == CommandType.DELETE || 
+				cmd == CommandType.EDIT ||
+				cmd == CommandType.DONE ||
+				cmd == CommandType.UNDONE;
 	}
 	
 	/**
 	 * Determine type of the command.
-	 * @param word - parsed word
+	 * @param words - words to be analyzed
 	 * @return command type
 	 */
-	private static CommandType analyzeCmd(String input) {
-		String[] splitWords = input.split(" ");
-		CommandType cmd = CommandType.INVALID;
-		
-		for (int i = 0; i < splitWords.length; i++) {
-			if (cmd == CommandType.INVALID) {
-				cmd = CommandType.toCmd(splitWords[i]);
-				
-				if (cmd != CommandType.INVALID) {
-					continue;
-				}
-			}
-			_removeCmdInput += splitWords[i] + " ";
+	private static CommandType analyzeCommand(ArrayList<String> words) {
+		if (words.size() > 0) {
+			return CommandType.toCmd(words.get(0));
 		}
-
-		return cmd;
+		return CommandType.INVALID;
 	}
 	
 	/**
 	 * Determine the ID in storage corresponding to UI ID.
-	 * @param input - input after removing command
-	 * @param taskList - task list displayed in UI
-	 * @return ID in storage if exists, otherwise -1
+	 * @param words - words to be analyzed
+	 * @param displayList - task list displayed in UI
+	 * @return task ID in storage if exists; -1 otherwise
 	 */
-	private static int analyzeID(String input, ArrayList<Task> taskList) {
-		String[] splitWords = input.split(" ");
-		int storageID = -1;
+	private static int analyzeID(ArrayList<String> words, ArrayList<Task> displayList) {
+		int taskID = -1;
 		
-		if (splitWords.length > 0) {
-			try {
-				int displayID = Integer.parseInt(splitWords[0]) - 1;
-
-				if (displayID < taskList.size() && displayID >= 0) {
-					storageID = taskList.get(displayID).getTaskID();
-				}
-
-				if (splitWords.length >= 1) {
-					_removeCmdInput = "";
-					for (int i = 1; i < splitWords.length; i++) {
-						_removeCmdInput += splitWords[i] + " ";
-					}
-				}
+		try {
+			if (words.size() > 0) {
+				int displayID = Integer.parseInt(words.get(0)) - 1;
 				
-			} catch (NumberFormatException e) {
-				return -1;
+				if (displayID >= 0 && displayID < displayList.size()) {
+					taskID = displayList.get(displayID).getTaskID();
+				}
 			}
+		} catch (NumberFormatException e) {
+			return -1;
 		}
 		
-		return storageID;
-	}
-	
-	/**
-	 * Determine type of the task.
-	 * @param title - title of the task
-	 * @param startDate - start date and time
-	 * @param endDate - end date and time
-	 * @return task type
-	 */
-	private static TaskType analyzeTask(CommandType type, String title, Date startDate, Date endDate) {
-		if (title == null && startDate == null && endDate == null) {
-			return TaskType.INVALID;
-		}
-		
-		if (type.equals(CommandType.ADD) && (title == null || title.equals("") || title.isEmpty())) {
-			return TaskType.INVALID;
-		}
-		
-		if (startDate == null && endDate == null) {
-			return TaskType.FLOATING;
-		} else if (startDate == null && endDate != null) {
-			return TaskType.DEADLINE;
-		} else {
-			return TaskType.EVENT;
-		}
+		return taskID;
 	}
 	
 	/**
 	 * Determine the dates and title of the task.
-	 * @param input - input after removing command
+	 * @param words - words to be analyzed
 	 * @return title, start date and end date
 	 */
-	private static Result analyzeDateTitle(String input) {
-		ArrayList<String> splitWords = new ArrayList<String>(Arrays.asList(input.split(" ")));
-		TreeMap<Integer, KeywordType> keywordIndices = KeywordHelper.getKeywordIndex(splitWords);
+	private static ContentDate analyzeContentDate(ArrayList<String> words) {
+		TreeMap<Integer, KeywordType> keywordIndices = getKeywordIndex(words);
 		ArrayList<Integer> indexList = new ArrayList<Integer>(keywordIndices.keySet());
 		int listSize = indexList.size();
+		String content = String.join(" ", words);
+		Date startDate = null;
+		Date endDate = null;
+		boolean isError = false;
+		String errorMsg = null;
 		
-		// If the input contains keyword
 		for (int i = 0; i < listSize; i++) {
 			int index = indexList.get(i);
 			KeywordType keyword = keywordIndices.get(index);
 			String parseInput = "";
+			isError = false;
+			errorMsg = null;
 			
 			if (i < (listSize - 1)) {
 				int nextIndex = indexList.get(i + 1);
+				KeywordType nextKeyword = keywordIndices.get(nextIndex);
 				
-				for (int j = 0; j < nextIndex; j++) {
-					parseInput += splitWords.get(j) + " ";
+				if (nextKeyword == KeywordType.ON) {
+					if ((i+1) < (listSize - 1)) {
+						int nextNextIndex = indexList.get(i + 2);
+						parseInput = String.join(" ", words.subList(index, nextNextIndex));
+					} else {
+						parseInput = String.join(" ", words.subList(index, words.size()));
+					}
+				} else {
+					parseInput = String.join(" ", words.subList(index, nextIndex));
 				}
 			} else {
-				parseInput = input;
+				parseInput = String.join(" ", words.subList(index, words.size()));
 			}
 			
-			IKeyword function = IKeyword.parseKeyword(keyword, parseInput);
-			Result result = function.analyze();
+			IParseDateTime function = IParseDateTime.getFunction(keyword, parseInput);
+			DatePair result = function.analyze();
 			
 			if (isDateFound(result.getStartDate(), result.getEndDate())) {
-				return result;
+				startDate = result.getStartDate();
+				endDate = result.getEndDate();
+				
+				content = String.join(" ", words);
+				content = content.replace(parseInput, "");
+				
+				String[] splitWords = content.split("\\s+");
+				ArrayList<String> contentList = new ArrayList<>(Arrays.asList(splitWords));
+				
+				content = String.join(" ", contentList);
+				
+				if (startDate != null && endDate != null) {
+					if (startDate.compareTo(endDate) > 0) {
+						isError = true;
+						errorMsg = ParserMessage.ERROR_END_DATE_EARLIER;
+					}
+				}
+				
+				break;
 			}
 		}
 		
-		// If the input does not contain keyword
-		IKeyword function = IKeyword.parseKeyword(null, input);
-		return function.analyze();
+		ContentDate contentDate = new ContentDate(content, startDate, endDate);
+		
+		if (isError) {
+			contentDate.setErrorMsg(errorMsg);
+		}
+		
+		return contentDate;
 	}
 	
 	/**
@@ -178,4 +195,70 @@ public class Parser {
 		}
 		return true;
 	}
+	
+	/**
+	 * Determine type of the task.
+	 * @param title - title of the task
+	 * @param startDate - start date and time
+	 * @param endDate - end date and time
+	 * @return task type
+	 */
+	private static TaskType analyzeTask(String title, Date startDate, Date endDate) {
+		if (title == null || title.trim().isEmpty()) {
+			return TaskType.INVALID;
+		}
+		
+		if (startDate == null && endDate == null) {
+			return TaskType.FLOATING;
+		} else if (startDate == null && endDate != null) {
+			return TaskType.DEADLINE;
+		} else {
+			return TaskType.EVENT;
+		}
+	}
+	
+	private static TreeMap<Integer, KeywordType> getKeywordIndex(ArrayList<String> splitWords) {
+		TreeMap<Integer, KeywordType> keywordIndex = new TreeMap<Integer, KeywordType>();
+		boolean isConsecutive = false;
+		for (int i = 0; i < splitWords.size(); i++) {
+			String word = splitWords.get(i);
+			KeywordType toType = KeywordType.toType(word);
+			
+			if (toType != KeywordType.INVALID && !isConsecutive) {
+				keywordIndex.put(i, toType);
+				isConsecutive = true;
+			} else {
+				isConsecutive = false;
+			}
+		}
+		
+		return keywordIndex;
+	}
+	
+	/*public static void main(String[] args) {
+		while (true) {
+			System.out.print("Input: ");
+			Scanner scanner = new Scanner(System.in);
+			String input = scanner.nextLine();
+			ArrayList<Task> displayList = new ArrayList<Task>();
+			Task task1 = new Task(1, "lala", TaskType.FLOATING);
+			Task task2 = new Task(3, "haha", TaskType.EVENT);
+
+			displayList.add(task1);
+			displayList.add(task2);
+
+			Result result = Parser.parse(input, displayList);
+
+			if (result.isError()) {
+				System.out.println("Error: " + result.getErrorMsg());
+			}
+
+			System.out.println("Command: " + result.getCommand());
+			System.out.println("Task ID: " + result.getStorageID());
+			System.out.println("Content: " + result.getContent());
+			System.out.println("TaskType: " + result.getType());
+			System.out.println("StartDate: " + result.getStartDate());
+			System.out.println("EndDate: " + result.getEndDate());
+		}
+	}*/
 }

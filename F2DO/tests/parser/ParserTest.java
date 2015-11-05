@@ -33,10 +33,9 @@ public class ParserTest extends LogicControllerTest{
 		result = Parser.parse("add Read a book", new ArrayList<Task>());
 		assertEquals(result.getContent(),"Read a book");
 		assertEquals(result.getType(), TaskType.FLOATING);
-		assertEquals(result.getCmd(), CommandType.ADD);
+		assertEquals(result.getCommand(), CommandType.ADD);
 		assertEquals(result.getEndDate(),null);
 		assertEquals(result.getStartDate(),null);
-		assertEquals(result.getPriority(),-1);
 	}
 	
 	/**
@@ -55,10 +54,9 @@ public class ParserTest extends LogicControllerTest{
 		
 	    assertEquals(result.getContent(),"Read maths book");
 		assertEquals(result.getType(), TaskType.DEADLINE);
-		assertEquals(result.getCmd(), CommandType.ADD);
+		assertEquals(result.getCommand(), CommandType.ADD);
 	    assertEquals(result.getEndDate().toString(),date.toString());
 		assertEquals(result.getStartDate(),null);
-		assertEquals(result.getPriority(),-1);
 	}
 	/**
 	 * Input 3: "add Maths exam on thu"
@@ -76,10 +74,9 @@ public class ParserTest extends LogicControllerTest{
 		
 		assertEquals("Maths exam", result.getContent());
 		assertEquals(TaskType.EVENT, result.getType());
-		assertEquals(CommandType.ADD, result.getCmd());
+		assertEquals(CommandType.ADD, result.getCommand());
 		assertEquals(null, result.getEndDate());
 		assertEquals(date.toString(), result.getStartDate().toString());
-		assertEquals(-1, result.getPriority());
 	}
 	/**
 	 * Input 4: "add Camping trip from wed to mon"
@@ -109,10 +106,9 @@ public class ParserTest extends LogicControllerTest{
 		
 		assertEquals("Camping trip", result.getContent());
 		assertEquals(TaskType.EVENT, result.getType());
-		assertEquals(CommandType.ADD, result.getCmd());
+		assertEquals(CommandType.ADD, result.getCommand());
 		assertEquals(date2.toString(), result.getEndDate().toString());
 		assertEquals(date1.toString(), result.getStartDate().toString());
-		assertEquals(-1, result.getPriority());
 	}
 	/**
 	 * Input 5: "add Go to market"
@@ -122,10 +118,9 @@ public class ParserTest extends LogicControllerTest{
 		result = Parser.parse("add Go to market", new ArrayList<Task>());
 		assertEquals("Go to market", result.getContent());
 		assertEquals(TaskType.FLOATING, result.getType());
-		assertEquals(CommandType.ADD, result.getCmd());
+		assertEquals(CommandType.ADD, result.getCommand());
 		assertEquals(null, result.getEndDate());
 		assertEquals(null, result.getStartDate());
-		assertEquals(-1, result.getPriority());
 	}
 	/**
 	 * Input 6: "add Run marathon from Clementi to Bugis"
@@ -135,10 +130,9 @@ public class ParserTest extends LogicControllerTest{
 		result = Parser.parse("add Run marathon from Clementi to Bugis", new ArrayList<Task>());
 		assertEquals("Run marathon from Clementi to Bugis", result.getContent());
 		assertEquals(TaskType.FLOATING, result.getType());
-		assertEquals(CommandType.ADD, result.getCmd());
+		assertEquals(CommandType.ADD, result.getCommand());
 		assertEquals(null, result.getEndDate());
 		assertEquals(null, result.getStartDate());
-		assertEquals(-1, result.getPriority());
 	}
 	/**
 	 * Input 7: "add Read a book"
@@ -159,10 +153,9 @@ public class ParserTest extends LogicControllerTest{
 		
 		assertEquals("Watch a movie", result.getContent());
 		assertEquals(TaskType.EVENT, result.getType());
-		assertEquals(CommandType.ADD, result.getCmd());
+		assertEquals(CommandType.ADD, result.getCommand());
 		assertEquals(null, result.getEndDate());
 		assertEquals(date.toString(), result.getStartDate().toString());
-		assertEquals(-1, result.getPriority());
 	}
 	
 	/**
@@ -173,10 +166,8 @@ public class ParserTest extends LogicControllerTest{
 		result = Parser.parse("add Walk home from market", new ArrayList<Task>());
 		assertEquals("Walk home from market", result.getContent());
 		assertEquals(TaskType.FLOATING, result.getType());
-		assertEquals(CommandType.ADD, result.getCmd());
+		assertEquals(CommandType.ADD, result.getCommand());
 		assertEquals(null, result.getEndDate());
-		assertEquals(null, result.getStartDate());
-		assertEquals(-1, result.getPriority());
 	}
 
 	/**
@@ -192,10 +183,9 @@ public class ParserTest extends LogicControllerTest{
 		result = Parser.parse("add test in two days", new ArrayList<Task>());
 		assertEquals("test", result.getContent());
 		assertEquals(TaskType.DEADLINE, result.getType());
-		assertEquals(CommandType.ADD, result.getCmd());
+		assertEquals(CommandType.ADD, result.getCommand());
 		assertEquals(date.toString(), result.getEndDate().toString());
 		assertEquals(null, result.getStartDate());
-		assertEquals(-1, result.getPriority());
 	} 
 	
 	/**
@@ -206,10 +196,9 @@ public class ParserTest extends LogicControllerTest{
 		result = Parser.parse("del 1", new ArrayList<Task>());
 		assertEquals("1", result.getContent());
 		assertEquals(TaskType.FLOATING, result.getType());
-		assertEquals(CommandType.DELETE, result.getCmd());
+		assertEquals(CommandType.DELETE, result.getCommand());
 		assertEquals(null, result.getEndDate());
 		assertEquals(null, result.getStartDate());
-		assertEquals(-1, result.getPriority());
 	}
 	
 }

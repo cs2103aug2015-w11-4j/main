@@ -45,23 +45,20 @@ public class CommandAdd implements ICommand {
 			case FLOATING:
 				task = new Task(taskID, 
 						_result.getContent(),
-						_result.getType(),
-						_result.getPriority());
+						_result.getType());
 				break;
 			case DEADLINE:
 				task = new Task(taskID,
 						_result.getContent(),
 						_result.getType(),
-						_result.getEndDate(),
-						_result.getPriority());
+						_result.getEndDate());
 				break;
 			case EVENT:
 				task = new Task(taskID,
 						_result.getContent(),
 						_result.getType(),
 						_result.getStartDate(),
-						_result.getEndDate(),
-						_result.getPriority());
+						_result.getEndDate());
 				break;
 			case INVALID: default:
 				task = null;

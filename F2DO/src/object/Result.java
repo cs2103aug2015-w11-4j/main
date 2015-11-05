@@ -1,4 +1,3 @@
-//@@author Sufyan
 package object;
 
 import java.util.Date;
@@ -8,12 +7,14 @@ import type.TaskType;
 
 public class Result {
 	private int _storageID = -1;
-	private int _priority = -1;
 	private CommandType _cmd = null;
 	private TaskType _type = null;
 	private String _content = null;
 	private Date _startDate = null;
 	private Date _endDate = null;
+	
+	private boolean _isError = false;
+	private String _errorMsg = null;
 	
 	public Result() {
 		
@@ -36,7 +37,6 @@ public class Result {
 	public Result(CommandType cmd, Task task) {
 		this(task.getTaskID(), cmd, task.getTaskName(),
 				task.getTaskType(), task.getStartDate(), task.getEndDate());
-		_priority = task.getPriority();
 	}
 	
 	/**
@@ -47,18 +47,18 @@ public class Result {
 		return _storageID;
 	}
 	
+	public void setStorageID(int ID) {
+		_storageID = ID;
+	}
+	
 	/**
 	 * Get command.
 	 * @return command
 	 */
-	public CommandType getCmd() {
+	public CommandType getCommand() {
 		return _cmd;
 	}
 	
-	/**
-	 * Set command.
-	 * @param cmd
-	 */
 	public void setCommand(CommandType cmd) {
 		_cmd = cmd;
 	}
@@ -85,6 +85,10 @@ public class Result {
 	 */
 	public TaskType getType() {
 		return _type;
+	}
+	
+	public void setType(TaskType taskType) {
+		_type = taskType;
 	}
 	
 	/**
@@ -118,10 +122,27 @@ public class Result {
 	}
 	
 	/**
-	 * Get priority of the task.
-	 * @return priority
+	 * Set error message
+	 * @param msg - error message
 	 */
-	public int getPriority() {
-		return _priority;
+	public void setErrorMsg(String msg) {
+		_isError = true;
+		_errorMsg = msg;
+	}
+	
+	/**
+	 * Check if there is any parsing error.
+	 * @return true if there is any error; false otherwise
+	 */
+	public boolean isError() {
+		return _isError;
+	}
+	
+	/**
+	 * Get error message.
+	 * @return error message
+	 */
+	public String getErrorMsg() {
+		return _errorMsg;
 	}
 }

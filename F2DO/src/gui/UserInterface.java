@@ -343,15 +343,13 @@ public class UserInterface extends Application {
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-					} else {
-						feedback.setText(feedbackMsg);
-						updateDisplayList();
-					}			
-				
-					if (feedbackMsg == FeedbackHelper.MSG_HOME) {
+					} else if (feedbackMsg == FeedbackHelper.MSG_HOME) {
 						initialiseScene();
 						setUpCommandPrompt();
 						setUpTables();
+					} else {
+						feedback.setText(feedbackMsg);
+						updateDisplayList();
 					}
 				}
 				else if (keyEvent.getCode() == KeyCode.F1) {

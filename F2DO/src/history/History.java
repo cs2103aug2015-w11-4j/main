@@ -77,7 +77,7 @@ public class History {
 			_redoStack.push(pair);
 			
 			// Get undo again if the command type is not editable
-			if (!isEditableType(result.getCmd())) {
+			if (!isEditableType(result.getCommand())) {
 				pair = _undoStack.pop();
 				result = pair.getUndo();
 				_redoStack.push(pair);

@@ -48,26 +48,31 @@ public class LogicController {
 	public static String process(String input, ArrayList<Task> displayList) {
 		// Set up the parsing result
 		Result result = Parser.parse(input, displayList);
-		CommandType cmd = result.getCmd();
+		CommandType cmd = result.getCommand();
 		Task befExeTask = null;
 		int resultStorageID = result.getStorageID();
+		String message = null;
 		
-		if (result.getStorageID() != -1) {
-			befExeTask = _taskList.get(resultStorageID);
-		}
-		
-		// Execute parsing result
-		Feedback feedback = execute(result);
-		String message = feedback.getMessage();
-		
-		// Initialize current command
-		_currentCmd = CommandType.INVALID;
-		
-		// Store successful execution
-		if (feedback.isSuccessful()) {
-			_currentCmd = result.getCmd();
-			Task aftExeTask = _taskList.get(resultStorageID);
-			recordExecution(cmd, result.getContent(), befExeTask, aftExeTask);
+		if (result.isError()) {
+			message = result.getErrorMsg();
+		} else {
+			if (result.getStorageID() != -1) {
+				befExeTask = _taskList.get(resultStorageID);
+			}
+
+			// Execute parsing result
+			Feedback feedback = execute(result);
+			message = feedback.getMessage();
+
+			// Initialize current command
+			_currentCmd = CommandType.INVALID;
+
+			// Store successful execution
+			if (feedback.isSuccessful()) {
+				_currentCmd = result.getCommand();
+				Task aftExeTask = _taskList.get(resultStorageID);
+				recordExecution(cmd, result.getContent(), befExeTask, aftExeTask);
+			}
 		}
 		
 		return message;
@@ -112,7 +117,7 @@ public class LogicController {
 		
 		_taskList = feedback.getUpdatedTaskList();
 		_displayList = feedback.getDisplayList();
-		_displayList = setDisplayList(result.getCmd() == CommandType.SHOW);
+		_displayList = setDisplayList(result.getCommand() == CommandType.SHOW);
 		return feedback;
 	}
 

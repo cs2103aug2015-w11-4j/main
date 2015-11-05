@@ -1,4 +1,3 @@
-//@@author Yu Ting
 package type;
 
 public enum KeywordType {
@@ -8,9 +7,11 @@ public enum KeywordType {
 	IN,
 	BY,
 	DUE,
-	UNTIL,
+	TODAY,
 	TOMORROW,
 	YESTERDAY,
+	TONIGHT,
+	THIS,
 	INVALID;
 	
 	public static KeywordType toType(String word) {
