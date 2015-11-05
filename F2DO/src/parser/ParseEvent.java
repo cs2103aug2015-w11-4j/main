@@ -51,6 +51,7 @@ public class ParseEvent implements IParseDateTime {
 	private DatePair analyzeFrom() {
 		String regexFromToOn = "from (.*?) to (.*) on (.*?)";
 		String regexFromTo = "from (.*?) to (.*)";
+		String regexFrom = "from (.*?)";
 		final int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
 		Date startDate = null;
 		Date endDate = null;
@@ -90,7 +91,8 @@ public class ParseEvent implements IParseDateTime {
 			startDate = DateTime.parse(matcher.group(1));
 			endDate = DateTime.parse(matcher.group(2));
 			
-			if (endDate.compareTo(startDate) < 0) {
+			if (endDate != null && startDate != null && 
+					endDate.compareTo(startDate) < 0) {
 				String[] startWords = matcher.group(1).split("\\s");
 				String[] endWords = matcher.group(2).split("\\s");
 				boolean isDayForStart = false;
@@ -112,12 +114,29 @@ public class ParseEvent implements IParseDateTime {
 					endDate = DateTime.getOneWeekLater(endDate);
 				}
 			}
+			
+			if (startDate != null || endDate != null) {
+				isFound = true;
+			}
+		}
+		
+		pattern = Pattern.compile(regexFrom, flags);
+		matcher = pattern.matcher(_input);
+		
+		if (matcher.matches() && !isFound) {
+			startDate = DateTime.parse(_input);
 		}
 		
 		Date now = new Date();
-		if (startDate.compareTo(now) < 0) {
-			startDate = DateTime.getOneYearLater(startDate);
-			endDate = DateTime.getOneYearLater(endDate);
+		
+		if (startDate != null) {
+			if (startDate.compareTo(now) < 0) {
+				startDate = DateTime.getOneYearLater(startDate);
+				
+				if (endDate != null) {
+					endDate = DateTime.getOneYearLater(endDate);
+				}
+			}
 		}
 		
 		return new DatePair(startDate, endDate);
