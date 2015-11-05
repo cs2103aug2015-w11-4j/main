@@ -1,4 +1,7 @@
+//@@author Yu Ting
 package parser;
+
+import object.Result;
 
 public class KeywordDefault implements IKeyword {
 	String _input = null;

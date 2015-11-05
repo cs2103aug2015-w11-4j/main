@@ -1,32 +1,28 @@
+//@@author Yu Ting
 package parser;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.TreeMap;
 
+import object.Result;
 import type.KeywordType;
 
 
 public class KeywordHelper {
 	
-	public static TreeMap<Integer, KeywordType> getKeywordIndex(String input) {
+	public static TreeMap<Integer, KeywordType> getKeywordIndex(ArrayList<String> splitWords) {
 		TreeMap<Integer, KeywordType> keywordIndex = new TreeMap<Integer, KeywordType>();
-		List<String> splitWords = Arrays.asList(input.split(" "));
-		
-		for (KeywordType type: KeywordType.values()) {
-			String keyword = type.toString().toLowerCase();
-			int index = splitWords.indexOf(keyword);
 
-			if (index >= 0) {
-				keywordIndex.put(index, type);
+		for (int i = 0; i < splitWords.size(); i++) {
+			String word = splitWords.get(i);
+			KeywordType toType = KeywordType.toType(word);
+			
+			if (toType != KeywordType.INVALID) {
+				keywordIndex.put(i, toType);
 			}
 		}
-		
-		/*for(int key: keywordIndex.keySet()) {
-			System.out.println("key: " + key + " value: " + keywordIndex.get(key));
-		}*/
 		
 		return keywordIndex;
 	}
@@ -38,18 +34,26 @@ public class KeywordHelper {
 		functions.put(KeywordType.ON, new KeywordOn(input));
 		functions.put(KeywordType.FROM, new KeywordFromTo(input));
 		functions.put(KeywordType.IN, new KeywordIn(input));
-		functions.put(KeywordType.BY, new KeywordBy(input));
-		functions.put(KeywordType.TOMORROW, new KeywordTomorrowYesterday(input));
-		functions.put(KeywordType.YESTERDAY, new KeywordTomorrowYesterday(input));
+		functions.put(KeywordType.BY, new KeywordByDue(input));
+		functions.put(KeywordType.DUE, new KeywordByDue(input));
+		functions.put(KeywordType.TOMORROW, new KeywordDay(input));
+		functions.put(KeywordType.YESTERDAY, new KeywordDay(input));
 		
-		/*ON,
-		FROM,
-		IN,
-		BY,
-		UNTIL,
-		TOMORROW,
-		YESTERDAY*/
 		return functions;
+	}
+	
+	// analyze Only On (day)
+	public static Result analyzeOneInfo(boolean isStartDate, String dateTimeString) {
+		Date dateTime = DateTime.parse(dateTimeString);
+		Result res = new Result();
+		
+		if (isStartDate) {
+			res.setStartDate(dateTime);
+			return res;
+		} else {
+			res.setEndDate(dateTime);
+			return res;
+		}
 	}
 	
 	public static Result analyzeTwoInfo(boolean isStartDate, String title, 
@@ -67,6 +71,10 @@ public class KeywordHelper {
 			String endDateString) {
 		Date startDate = DateTime.parse(startDateString);
 		Date endDate = DateTime.parse(endDateString);
+		
+		if (startDate != null && endDate != null) {
+			endDate = DateTime.getLaterEndDate(startDate, endDate);
+		}
 		
 		return new Result(rmWhitespace(title), startDate, endDate);
 	}
@@ -102,6 +110,14 @@ public class KeywordHelper {
 		
 		if (endTime != null && date != null) {
 			endDate = DateTime.combineDateTime(date, endTime);
+		}
+		
+		if (startTime == null && endTime == null && date != null) {
+			startDate = date;
+		}
+		
+		if (startDate != null && endDate != null) {
+			endDate = DateTime.getLaterEndDate(startDate, endDate);
 		}
 		
 		return new Result(rmWhitespace(title), startDate, endDate);

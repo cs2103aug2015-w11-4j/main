@@ -1,19 +1,13 @@
 //@@author Yu Ting
 package type;
 
-public enum KeywordType {
-	AT,
-	ON,
-	FROM,
-	IN,
-	BY,
-	DUE,
-	UNTIL,
-	TOMORROW,
-	YESTERDAY,
+public enum ShowType {
+	ALL,
+	DONE,
+	UNDONE,
 	INVALID;
 	
-	public static KeywordType toType(String word) {
+	public static ShowType toType(String word) {
 		try {
 			word = word.toUpperCase();
 			return valueOf(word); 

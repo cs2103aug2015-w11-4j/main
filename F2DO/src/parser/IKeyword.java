@@ -1,32 +1,20 @@
+//@@author Yu Ting
 package parser;
 
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
-
+import object.Result;
 import type.KeywordType;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
-public interface IKeyword {
-	public static IKeyword parsedPreposition(String input) {
-		IKeyword preposition = new KeywordDefault(input);
-		
-		TreeMap<Integer, KeywordType> keywordIndex = KeywordHelper.getKeywordIndex(input);
+public interface IKeyword {	
+	public static IKeyword parseKeyword(KeywordType keywordType, String input) {
+		IKeyword keywordFunc = new KeywordDefault(input);
 		HashMap<KeywordType, IKeyword> functions = KeywordHelper.getFunctions(input);
-		Set<Entry<Integer, KeywordType>> entrySet = keywordIndex.entrySet();
-		Iterator<Entry<Integer, KeywordType>> setIterator = entrySet.iterator();
-		
-		if (setIterator.hasNext()) {
-			Map.Entry<Integer, KeywordType> entry = setIterator.next();
-			KeywordType prepType = entry.getValue();
-			
-			preposition = functions.get(prepType);
+
+		if (functions.containsKey(keywordType)) {
+			keywordFunc = functions.get(keywordType);
 		}
-		
-		return preposition;
+		return keywordFunc;
 	}
 	
 	public Result analyze();

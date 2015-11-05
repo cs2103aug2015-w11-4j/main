@@ -1,98 +1,314 @@
+//@@author Sufyan
 package logic;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.concurrent.ConcurrentSkipListMap;
 
-import objects.Task;
+import history.History;
+import object.Category;
+import object.Result;
+import object.Task;
 import parser.Parser;
-import parser.Result;
 import storage.Storage;
+import type.CommandType;
 import type.TaskType;
 
 public class LogicController {
+	private static final String ERROR_NO_UNDO = "Feedback: No undo operation!";
+	private static final String ERROR_NO_REDO = "Feedback: No redo operation!";
 	
-	private static ArrayList<Task> _taskList =  new ArrayList<Task>();
-	private static int taskID = 0;
+	private static final int NON_FLOATING_DISPLAY_SIZE = 5;
+	private static CommandType _currentCmd = CommandType.INVALID;
 	
-	private static String MSG_ADD = "Feedback: %1$s has been successfully added!";
-	private static String MSG_EDIT = "Feedback: %1$s has been modified!";
-	private static String MSG_DELETE = "Feedback: %1$s has been deleted!";
-	private static String MSG_SEARCH = "";
-	private static String MSG_NO_ACTION = "Feedback: No action is done!";
-	
-	private static String ERROR_EDIT = "Feedback: %1$s cannot be modified!";
-	private static String ERROR_DELETE = "Feedback: %1$s cannot be deleted!";
-	
-	// Initialize LogicController class
+	private static ArrayList<Task> _displayList = 
+			new ArrayList<Task>();
+	private static ConcurrentSkipListMap<Integer, Task> _taskList =
+			new ConcurrentSkipListMap<Integer, Task>();
+	private static ArrayList<Category> _categoryList =
+			new ArrayList<Category>();
+	/**
+	 * Initialize logic class.
+	 */
 	static {
-		initialize();
+		_taskList = Storage.readTasks();
+		_displayList = new ArrayList<Task>(_taskList.values());
+		_displayList = setDisplayList(false);
 	}
 	
-	private static void initialize() {
-		_taskList = Storage.getTaskList();
-		if (_taskList.isEmpty()){
-			// If taskList is empty, set taskID to 1
-			taskID = 1;
+	/**
+	 * Process the command.
+	 * @param input - command to be executed
+	 * @param displayList - task list that is being displayed
+	 * @return feedback message
+	 */
+	public static String process(String input, ArrayList<Task> displayList) {
+		// Set up the parsing result
+		Result result = Parser.parse(input, displayList);
+		CommandType cmd = result.getCmd();
+		Task befExeTask = null;
+		int resultStorageID = result.getStorageID();
+		
+		if (result.getStorageID() != -1) {
+			befExeTask = _taskList.get(resultStorageID);
+		}
+		
+		// Execute parsing result
+		Feedback feedback = execute(result);
+		String message = feedback.getMessage();
+		
+		// Initialize current command
+		_currentCmd = CommandType.INVALID;
+		
+		// Store successful execution
+		if (feedback.isSuccessful()) {
+			_currentCmd = result.getCmd();
+			Task aftExeTask = _taskList.get(resultStorageID);
+			recordExecution(cmd, result.getContent(), befExeTask, aftExeTask);
+		}
+		
+		return message;
+	}
+	
+	/**
+	 * Undo the previous operations.
+	 * @return feedback message
+	 */
+	public static String undo() {
+		Result result = History.undo();
+		if (result != null) {
+			Feedback feedback = execute(result);
+			return feedback.getMessage();
 		} else {
-			// Get taskID of last object in taskList
-			// Then increment that ID by 1 and store to local var taskID
-			taskID = _taskList.get(_taskList.size()-1).getTaskID() + 1;
+			return ERROR_NO_UNDO;
 		}
 	}
 	
-	public static String process(String input, ArrayList<Task> taskList) {	
-		Result result = Parser.parse(input, taskList);
-		
-		System.out.println("displayID: " + result.getDisplayID());
-		System.out.println("storageID: " + result.getStorageID());
-		
-		switch (result.getCmd()) {
-			case ADD: {
-				//taskList = LogicAdd.add(taskID,result,taskList);
-				Task task = new Task(taskID,
-						result.getType(),
-						result.getTitle(),
-						result.getStartDate(),
-						result.getEndDate(),
-						0);
-				Storage.addTask(task);
-				taskID++;
-				return String.format(MSG_ADD, result.getTitle());
-			}
-			case DELETE: {
-				//LogicDelete.delete(taskList, result);
-				if (result.getDisplayID() != -1 && 
-						result.getStorageID() == getTaskList().get(result.getDisplayID()).getTaskID()) {
-					Storage.deleteTask(result.getDisplayID());
-					
-					return String.format(MSG_DELETE, result.getTitle());
-				}
-				//taskList = LogicDelete.delete(taskID, taskList, result);
-				return String.format(ERROR_DELETE, result.getTitle());
-			} 
-			case EDIT: {
-				if (result.getDisplayID() != -1 && 
-						result.getStorageID() == getTaskList().get(result.getDisplayID()).getTaskID()) {
-					Storage.updateTask(result.getDisplayID(), 
-							result.getTitle(), 
-							result.getStartDate(), 
-							result.getEndDate());
-					return String.format(MSG_EDIT, result.getTitle());
-				}
-				return String.format(ERROR_EDIT, result.getTitle());
-			}
-			case SEARCH: {
-				LogicSearch.search(taskList, result);
-				return MSG_SEARCH;
-			} 
-			default: {
-				return MSG_NO_ACTION;
-			} 
+	/**
+	 * Redo the operations.
+	 * @return feedback message
+	 */
+	public static String redo() {
+		Result result = History.redo();
+		if (result != null) {
+			Feedback feedback = execute(result);
+			return feedback.getMessage();
+		} else {
+			return ERROR_NO_REDO;
 		}
-		//return false;
+	}
+	
+	/**
+	 * Execute the input according to the parsing result.
+	 * @param result - parsing result
+	 * @return feedback
+	 */
+	private static Feedback execute(Result result) {
+		ICommand command = ICommand.getCommand(result, _taskList,_categoryList);
+		Feedback feedback = command.execute();
+		
+		_taskList = feedback.getUpdatedTaskList();
+		_displayList = feedback.getDisplayList();
+		_displayList = setDisplayList(result.getCmd() == CommandType.SHOW);
+		return feedback;
 	}
 
-	public static ArrayList<Task> getTaskList() {
+	/**
+	 * Record the execution for undo and redo purposes
+	 * @param cmd - command type
+	 * @param content - content of the input
+	 * @param befExeTask - task before execution
+	 * @param aftExeTask - task after execution
+	 */
+	private static void recordExecution(CommandType cmd, String content,
+			Task befExeTask, Task aftExeTask) {
+		switch(cmd) {
+			case ADD:
+				int index = _taskList.lastKey();
+				Task newTask = _taskList.get(index);
+				History.push(cmd, newTask);
+				break;
+			case DELETE:
+				History.push(cmd, befExeTask);
+				break;
+			case EDIT:
+				History.push(cmd, befExeTask, aftExeTask);
+				break;
+			case DONE: case UNDONE:
+				History.push(cmd, aftExeTask);
+				break;
+			default:
+				History.push(cmd, content);
+		}
+	}
+	
+	/**
+	 * Remove done task(s) for display purpose except for command "show".
+	 * @param isShowCommand - true if the command is "show"; false otherwise
+	 * @return display task list
+	 */
+	private static ArrayList<Task> setDisplayList(boolean isShowCommand) {
+		ArrayList<Task> displayList = new ArrayList<Task>();
+		if (isShowCommand) {
+			displayList = _displayList;
+		} else {
+			for (int i = 0; i < _displayList.size(); i++) {
+				Task task = _displayList.get(i);
+				if (!task.getCompleted()) {
+					displayList.add(task);
+				}
+			}
+		}
+		return displayList;
+	}
+	
+	/**
+	 * Get the task list in ConcurrentSkipListMap<Integer, Task> form.
+	 * @return tasklist
+	 */
+	public static ConcurrentSkipListMap<Integer, Task> getTaskList() {
 		return _taskList;
 	}
+	
+	/**
+	 * Get the task list for display.
+	 * @return display task list
+	 */
+	public static ArrayList<Task> getDisplayList() {
+		Collections.sort(_displayList, taskComparator);
+		return _displayList;
+	}
+	
+	/**
+	 * Get the floating task list for display.
+	 * @return display floating task list
+	 */
+	public static ArrayList<Task> getFloatingList() {
+		ArrayList<Task> floatingList = new ArrayList<Task>();
+		
+		for (int i = 0; i < _displayList.size(); i++) {
+			Task task = _displayList.get(i);
+			if (task.getTaskType() == TaskType.FLOATING) {
+				floatingList.add(task);
+			}
+		}
+		return floatingList;
+	}
+	
+	/**
+	 * Get the non-floating task list for display.
+	 * @return display non-floating task list
+	 */
+	public static ArrayList<Task> getNonFloatingList() {
+		ArrayList<Task> nonFloatingList = new ArrayList<Task>();
+		
+		for (int i = 0; i < _displayList.size(); i++) {
+			Task task = _displayList.get(i);
+			if (task.getTaskType() != TaskType.FLOATING) {
+				nonFloatingList.add(task);
+			}
+		}
+		
+		Collections.sort(nonFloatingList, taskComparator);
+		
+		// Show today's tasks.
+		// If today's tasks are fewer than 5, add up to 5 tasks.
+		if (_currentCmd != CommandType.SHOW) {
+			ArrayList<Task>	displayList = new ArrayList<Task>();
+			Calendar todayCalendar = Calendar.getInstance();
+			
+			// Initialize today
+			todayCalendar.set(Calendar.HOUR_OF_DAY, 23);
+			todayCalendar.set(Calendar.MINUTE, 59);
+			todayCalendar.set(Calendar.SECOND, 59);
+			Date today = todayCalendar.getTime();
+			
+			for (Task task: nonFloatingList) {
+				Date startDate = task.getStartDate();
+				Date endDate = task.getEndDate();
+				int displaySize = displayList.size();
+				boolean isAdded = false;
+				
+				if (startDate != null) {		// Compare start date
+					if (startDate.compareTo(today) <= 0) {
+						displayList.add(task);
+						isAdded = true;
+					}
+				} else if (endDate != null) {	// Compare end date
+					if (endDate.compareTo(today) <= 0) {
+						displayList.add(task);
+						isAdded = true;
+					}
+				} 
+				
+				if (!isAdded) {
+					if (displaySize < NON_FLOATING_DISPLAY_SIZE) {
+						displayList.add(task);
+					} else {
+						break;
+					}
+				}
+			}
+			
+			return displayList;
+		} 
+		
+		return nonFloatingList;
+	}
+	
+	private static Comparator<Task> taskComparator = new Comparator<Task>() {
+		@Override
+		/**
+		 * Overriding comparator to compare by start/end dates.
+		 * 
+		 * Custom comparator will set tasks with dates allocated 
+		 * (deadlines etc) based on chronological order first,
+		 * followed by floating tasks (in alphabetical order).
+		 */
+		public int compare(Task t1, Task t2) {
+
+			if (t1.getEndDate() != null && t2.getEndDate() != null) {
+				return t1.getEndDate().compareTo(t2.getEndDate());
+			} else if ((t1.getStartDate() == null && 
+					t1.getEndDate() != null && t2.getStartDate() != null)
+					|| (t1.getEndDate() != null && t2.getEndDate() == null && t2.getStartDate() != null)) {
+				return t1.getEndDate().compareTo(t2.getStartDate());
+			} else if ((t1.getStartDate() != null && t2.getStartDate() == null && t2.getEndDate() != null)
+					|| (t1.getEndDate() == null && t1.getStartDate() != null && t2.getEndDate() != null)) {
+				return t1.getStartDate().compareTo(t2.getEndDate());
+			} else if (t1.getStartDate() != null && t2.getStartDate() != null) {
+				return t1.getStartDate().compareTo(t2.getStartDate());
+			} else if (t1.getStartDate() == null && t1.getEndDate() == null && t2.getStartDate() != null
+					|| t2.getEndDate() != null) {
+				return 1;
+			} else if (t1.getStartDate() != null || t1.getEndDate() != null && t2.getStartDate() == null
+					&& t2.getEndDate() == null) {
+				return -1;
+			} else if (t1.getStartDate() == null && t1.getEndDate() == null && t2.getStartDate() == null
+					&& t2.getEndDate() == null && t1.getTaskName() != null && t2.getTaskName() != null) {
+				return t1.getTaskName().compareTo(t2.getTaskName());
+			}
+
+			return 0;
+		}
+	};
+	
+	// For testing purpose
+/*	public static void main(String[] args) {
+		System.out.print("Command: ");
+		Scanner scanner = new Scanner(System.in);
+		String input = scanner.nextLine();
+		scanner.close();
+		
+		String feedback = LogicController.process(input, _displayList);
+		System.out.println(feedback);
+		ArrayList<Task> displayList = LogicController.getDisplayList();
+		
+		for (int i = 0; i < displayList.size(); i++) {
+			System.out.println((i+1) + ". " + displayList.get(i).getTaskName());
+		}
+	}*/
 }
