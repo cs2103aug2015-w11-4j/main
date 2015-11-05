@@ -17,6 +17,11 @@ public enum KeywordType {
 	public static KeywordType toType(String word) {
 		try {
 			word = word.toUpperCase();
+			
+			if (word.equals("TMR")) {
+				return TOMORROW;
+			}
+			
 			return valueOf(word); 
 		} catch (Exception e) {
 			return INVALID; 
