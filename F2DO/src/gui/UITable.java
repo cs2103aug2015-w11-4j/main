@@ -17,6 +17,7 @@ public class UITable extends TableView<Integer> {
 	private int _rowIndex = 0;
 	private int _displayIndex = 0;
 	private boolean _isFloating;
+	private DateFormat dateFormat = new SimpleDateFormat("dd MMM HH:mm");
 	
 	/**
 	 * Constructor of UITable.
@@ -79,18 +80,10 @@ public class UITable extends TableView<Integer> {
         startDate.setCellValueFactory(cellData -> {
         	_rowIndex = cellData.getValue();
         	SimpleStringProperty property = new SimpleStringProperty();
-        	DateFormat dateWithTime = new SimpleDateFormat("dd MMM HH:mm");
-        	DateFormat dateWithoutTime = new SimpleDateFormat("dd MMM");
 			Date date = _displayList.get(_rowIndex).getStartDate();
 			
 			if (date != null) {
-				String date_string = date.toString();
-				//- to be edited : would not work if user inputs 12:00am/pm as the time
-				if (date_string.contains("12:00")) {
-					property.setValue(dateWithoutTime.format(date));
-				} else {
-					property.setValue(dateWithTime.format(date));
-				}		
+				property.setValue(dateFormat.format(date));
 			} 
 	
 			return property;
@@ -100,19 +93,13 @@ public class UITable extends TableView<Integer> {
         endDate.setCellValueFactory(cellData -> {
         	_rowIndex = cellData.getValue();
         	SimpleStringProperty property = new SimpleStringProperty();
-			DateFormat dateWithTime = new SimpleDateFormat("dd MMM HH:mm");
-			DateFormat dateWithoutTime = new SimpleDateFormat("dd MMM");
 			Date date = _displayList.get(_rowIndex).getEndDate();
 			
 			if (date != null) {
-				String date_string = date.toString();
-				//- to be edited : would not work if user inputs 12:00am/pm as the time
-				if (date_string.contains("12:00")) {
-					property.setValue(dateWithoutTime.format(date));
-				} else {
-					property.setValue(dateWithTime.format(date));
-				}		
-			} 
+				property.setValue(dateFormat.format(date));
+			} else {
+				property.setValue("-");
+			}
 			
 			return property;
         });
