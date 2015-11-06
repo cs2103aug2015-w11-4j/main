@@ -40,9 +40,13 @@ public class ParseEvent implements IParseDateTime {
 		
 		Date now = new Date();
 		
-		if (startDate.compareTo(now) < 0) {
+		
+		if (startDate != null && startDate.compareTo(now) < 0) {
 			startDate = DateTime.getOneYearLater(startDate);
-			endDate = DateTime.getOneYearLater(endDate);
+			
+			if (endDate != null) {
+				endDate = DateTime.getOneYearLater(endDate);
+			}
 		}
 		
 		return new DatePair(startDate, endDate);
