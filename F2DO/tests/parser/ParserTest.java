@@ -34,11 +34,11 @@ public class ParserTest extends LogicControllerTest{
 	@Test
 	public void testParserAddInput1() {
 		result = Parser.parse("add Read a book", new ArrayList<Task>());
-		assertEquals(result.getContent(),"Read a book");
-		assertEquals(result.getType(), TaskType.FLOATING);
-		assertEquals(result.getCommand(), CommandType.ADD);
-		assertEquals(result.getEndDate(),null);
-		assertEquals(result.getStartDate(),null);
+		assertEquals("Read a book", result.getContent());
+		assertEquals(TaskType.FLOATING, result.getType());
+		assertEquals(CommandType.ADD, result.getCommand());
+		assertEquals(null, result.getEndDate());
+		assertEquals(null, result.getStartDate());
 	}
 	
 	/**
@@ -55,11 +55,11 @@ public class ParserTest extends LogicControllerTest{
 		cal.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
 		Date date = cal.getTime();
 		
-	    assertEquals(result.getContent(),"Read maths book");
-		assertEquals(result.getType(), TaskType.DEADLINE);
-		assertEquals(result.getCommand(), CommandType.ADD);
-	    assertEquals(result.getEndDate().toString(),date.toString());
-		assertEquals(result.getStartDate(),null);
+		assertEquals("Read maths book", result.getContent());
+		assertEquals(TaskType.DEADLINE,result.getType());
+		assertEquals(CommandType.ADD, result.getCommand());
+		assertEquals(date.toString(), result.getEndDate().toString());
+		assertEquals(null, result.getStartDate());
 	}
 	/**
 	 * Input 3: "add Maths exam on thu"
