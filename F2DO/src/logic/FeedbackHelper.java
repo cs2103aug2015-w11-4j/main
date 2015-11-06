@@ -6,7 +6,7 @@ public class FeedbackHelper {
 	public static final String MSG_CAT = "Feedback: Category %1$s has been successfully added!";
 	public static final String MSG_EDIT = "Feedback: %1$s has been modified!";
 	public static final String MSG_DELETE = "Feedback: %1$s has been deleted!";
-	public static final String MSG_SEARCH = "Feedback: Return %1$s result%2$s!";
+	public static final String MSG_SEARCH = "Feedback: Return %1$s search result%2$s!";
 	public static final String MSG_SHOW_ALL = "Feedback: Show all task%1$s!";
 	public static final String MSG_SHOW_DONE = "Feedback: Show %1$s completed task%2$s!";
 	public static final String MSG_SHOW_UNDONE = "Feedback: Show %1$s incomplete task%2$s!";
