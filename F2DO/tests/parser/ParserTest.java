@@ -5,6 +5,9 @@
 package parser;
 
 import static org.junit.Assert.*;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -199,6 +202,51 @@ public class ParserTest extends LogicControllerTest{
 		assertEquals(CommandType.DELETE, result.getCommand());
 		assertEquals(null, result.getEndDate());
 		assertEquals(null, result.getStartDate());
+	}
+	
+	private String getResult(int year, int month, int date, int hour, int min) {
+		Date currentTime = new Date();
+		Calendar currentCalendar = Calendar.getInstance();
+		Calendar givenCalendar = Calendar.getInstance();
+		
+		givenCalendar.clear();
+		currentCalendar.setTime(currentTime);
+		
+		if (year == 0) {
+			givenCalendar.set(Calendar.YEAR, currentCalendar.get(Calendar.YEAR));
+		} else {
+			givenCalendar.set(Calendar.YEAR, year);
+		}
+		
+		if (month == 0) {
+			givenCalendar.set(Calendar.MONTH, currentCalendar.get(Calendar.MONTH));
+		} else {
+			givenCalendar.set(Calendar.MONTH, month - 1);
+		}
+		
+		if (date == 0) {
+			givenCalendar.set(Calendar.DATE, currentCalendar.get(Calendar.DATE));
+		} else {
+			givenCalendar.set(Calendar.DATE, date);
+		}
+		
+		givenCalendar.set(Calendar.HOUR_OF_DAY, hour);
+		givenCalendar.set(Calendar.MINUTE, min);
+		
+		int compare = givenCalendar.compareTo(currentCalendar);
+		
+		if (compare < 0 && year == 0) {
+			givenCalendar.set(Calendar.YEAR, currentCalendar.get(Calendar.YEAR) + 1);
+		}
+		
+		System.out.println(givenCalendar.getTime().toString());
+		
+		return simpleFormat(givenCalendar.getTime());
+	}
+	
+	private String simpleFormat(Date date) {
+		DateFormat simpleDate = new SimpleDateFormat("dd MMM yyyy HH:mm");
+		return simpleDate.format(date);
 	}
 	
 }
