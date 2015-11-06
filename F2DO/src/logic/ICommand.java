@@ -1,10 +1,8 @@
 //@@author Sufyan
 package logic;
 
-import java.util.ArrayList;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-import object.Category;
 import object.Result;
 import object.Task;
 import type.CommandType;
@@ -18,8 +16,7 @@ public interface ICommand {
 	 * @return class to execute
 	 */
 	public static ICommand getCommand(Result result, 
-			ConcurrentSkipListMap<Integer, Task> taskList, 
-			ArrayList<Category> categoryList) {
+			ConcurrentSkipListMap<Integer, Task> taskList) {
 		CommandType commandType = result.getCommand();
 		
 		switch (commandType) {
