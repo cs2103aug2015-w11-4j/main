@@ -189,12 +189,16 @@ public class UserInterface extends Application {
 				}
 
 				String[] result = newValue.substring(firstWord.length()).split("\\s");
-				for (int i = 0; i < result.length; i++)
+				int currentIndex = firstWord.length();
+				for (int i = 0; i < result.length; i++) {
 					//System.out.println(result[i]);
-					if (isValidKeyword(result[i])) {
-						_field.setStyle((newValue.indexOf(result[i])), (newValue.indexOf(result[i]) + result[i].length()),
+					String word = result[i];
+					if (isValidKeyword(word)) {
+						_field.setStyle(currentIndex, currentIndex + word.length(),
 								"-fx-font-weight: bold; -fx-fill: blue");
 					}
+					currentIndex += word.length() + 1;
+				}
 
 			} else {
 				_field.setStyle(0, newValue.length(), "-fx-font-weight: normal; -fx-fill: black");
