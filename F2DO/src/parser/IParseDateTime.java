@@ -7,7 +7,7 @@ public interface IParseDateTime {
 		IParseDateTime function = null;
 		
 		switch (keywordType) {
-			case AT: case IN: case ON: case FROM: case THIS:
+			case AT: case IN: case ON: case FROM: case THIS: case NEXT:
 				case TODAY: case TOMORROW: case TONIGHT:
 				function = new ParseEvent(input);
 				break;

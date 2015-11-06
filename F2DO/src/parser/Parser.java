@@ -33,7 +33,7 @@ public class Parser {
 				taskID = analyzeID(words, displayList);
 				
 				if (taskID == -1) {
-					result.setErrorMsg(ParserMessage.ERROR_TASK_ID);
+					result.setErrorMsg(ParserHelper.ERROR_TASK_ID);
 				} else {
 					words.remove(0);	// remove display from input string
 				}
@@ -52,7 +52,7 @@ public class Parser {
 			taskType = analyzeTask(content, startDate, endDate);
 			
 		} else {
-			result.setErrorMsg(ParserMessage.ERROR_INVALID_COMMAND);
+			result.setErrorMsg(ParserHelper.ERROR_INVALID_COMMAND);
 		}
 		
 		result.setCommand(cmd);
@@ -166,7 +166,7 @@ public class Parser {
 				if (startDate != null && endDate != null) {
 					if (startDate.compareTo(endDate) > 0) {
 						isError = true;
-						errorMsg = ParserMessage.ERROR_END_DATE_EARLIER;
+						errorMsg = ParserHelper.ERROR_END_DATE_EARLIER;
 					}
 				}
 				

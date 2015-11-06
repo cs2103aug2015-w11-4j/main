@@ -11,6 +11,7 @@ public enum KeywordType {
 	TOMORROW,
 	TONIGHT,
 	THIS,
+	NEXT,
 	INVALID;
 	
 	public static KeywordType toType(String word) {

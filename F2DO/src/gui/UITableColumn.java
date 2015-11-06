@@ -1,4 +1,4 @@
-//@@author Cher Lin
+//@@author Yu Ting
 package gui;
 
 import javafx.beans.property.DoubleProperty;
