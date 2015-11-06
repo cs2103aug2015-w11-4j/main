@@ -48,17 +48,27 @@ public class ParserTest extends LogicControllerTest{
 	public void testParserAddInput2() {
 		result = Parser.parse("add Read maths book by wed", new ArrayList<Task>());
 		
+		Date today = Calendar.getInstance().getTime();
+		int weekOfYear = Integer.parseInt(new SimpleDateFormat("w").format(new java.util.Date()));
+		
 		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.HOUR,0);
-		cal.set(Calendar.MINUTE,0);
+		cal.set(Calendar.WEEK_OF_YEAR, weekOfYear);
+		cal.set(Calendar.DAY_OF_WEEK,Calendar.WEDNESDAY);
+		cal.set(Calendar.HOUR, 23);
+		cal.set(Calendar.MINUTE, 59);
 		cal.set(Calendar.SECOND,0);
-		cal.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
-		Date date = cal.getTime();
+		Date testEndDate = cal.getTime();
+		
+		while (testEndDate.before(today)) {
+			weekOfYear++;
+			cal.set(Calendar.WEEK_OF_YEAR, weekOfYear);
+			testEndDate = cal.getTime();
+		} 
 		
 		assertEquals("Read maths book", result.getContent());
 		assertEquals(TaskType.DEADLINE,result.getType());
 		assertEquals(CommandType.ADD, result.getCommand());
-		assertEquals(date.toString(), result.getEndDate().toString());
+		assertEquals(testEndDate.toString(), result.getEndDate().toString());
 		assertEquals(null, result.getStartDate());
 	}
 	/**
@@ -68,18 +78,33 @@ public class ParserTest extends LogicControllerTest{
 	public void testParserAddInput3() {
 		result = Parser.parse("add Maths exam on thu", new ArrayList<Task>());
 		
+		Date today = Calendar.getInstance().getTime();
+		int weekOfYear = Integer.parseInt(new SimpleDateFormat("w").format(new java.util.Date()));
+		
 		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.HOUR,0);
-		cal.set(Calendar.MINUTE,0);
+		cal.set(Calendar.WEEK_OF_YEAR, weekOfYear);
+		cal.set(Calendar.DAY_OF_WEEK,Calendar.THURSDAY);
+		cal.set(Calendar.HOUR, 8);
+		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND,0);
-		cal.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
-		Date date = cal.getTime();
+		Date testStartDate = cal.getTime();
+		
+		while (testStartDate.before(today)) {
+			weekOfYear++;
+			cal.set(Calendar.WEEK_OF_YEAR, weekOfYear);
+			testStartDate = cal.getTime();
+		} 
+		
+		cal.set(Calendar.HOUR, 23);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND,0);
+		Date testEndDate = cal.getTime();
 		
 		assertEquals("Maths exam", result.getContent());
 		assertEquals(TaskType.EVENT, result.getType());
 		assertEquals(CommandType.ADD, result.getCommand());
-		assertEquals(null, result.getEndDate());
-		assertEquals(date.toString(), result.getStartDate().toString());
+		assertEquals(testStartDate.toString(), result.getStartDate().toString());
+		assertEquals(testEndDate.toString(), result.getEndDate().toString());
 	}
 	/**
 	 * Input 4: "add Camping trip from wed to mon"
@@ -87,32 +112,42 @@ public class ParserTest extends LogicControllerTest{
 	@Test
 	public void testParserAddInput4() {
 		result = Parser.parse("add Camping trip from wed to mon", new ArrayList<Task>());
+		Date today = Calendar.getInstance().getTime();
+		int weekOfYear = Integer.parseInt(new SimpleDateFormat("w").format(new java.util.Date()));
 		
 		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.HOUR,0);
-		cal.set(Calendar.MINUTE,0);
+		cal.set(Calendar.WEEK_OF_YEAR, weekOfYear);
+		cal.set(Calendar.DAY_OF_WEEK,Calendar.WEDNESDAY);
+		cal.set(Calendar.HOUR, 8);
+		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND,0);
-		cal.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
-		Date date1 = cal.getTime();
+		Date testStartDate = cal.getTime();
 		
-		// Need to manually edit the date should this day is reached.
-		cal.set(Calendar.MONTH,10);
-		cal.set(Calendar.WEEK_OF_MONTH,1);
-		cal.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
-		Date date2 = cal.getTime();
+		while (testStartDate.before(today)) {
+			weekOfYear++;
+			cal.set(Calendar.WEEK_OF_YEAR, weekOfYear);
+			testStartDate = cal.getTime();
+		} 
 		
-		System.out.println("1DATE: "+ date1.toString());
-		System.out.println("1RDATE: "+ result.getStartDate().toString());
+		cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+		cal.set(Calendar.HOUR, 23);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND,0);
+		Date testEndDate = cal.getTime();
 		
-		System.out.println("2DATE: "+ date2.toString());
-		System.out.println("2RDATE: "+ result.getEndDate().toString());
+		while (testEndDate.before(testStartDate)) {
+			weekOfYear++;
+			cal.set(Calendar.WEEK_OF_YEAR, weekOfYear);
+			testEndDate = cal.getTime();
+		}
 		
 		assertEquals("Camping trip", result.getContent());
 		assertEquals(TaskType.EVENT, result.getType());
 		assertEquals(CommandType.ADD, result.getCommand());
-		assertEquals(date2.toString(), result.getEndDate().toString());
-		assertEquals(date1.toString(), result.getStartDate().toString());
+		assertEquals(testStartDate.toString(), result.getStartDate().toString());
+		assertEquals(testEndDate.toString(), result.getEndDate().toString());
 	}
+	
 	/**
 	 * Input 5: "add Go to market"
 	 */
@@ -144,21 +179,28 @@ public class ParserTest extends LogicControllerTest{
 	public void testParserAddInput7() {
 		result = Parser.parse("add Watch a movie on thu 4pm", new ArrayList<Task>());
 		
-		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.HOUR,4);
-		cal.set(Calendar.MINUTE,0);
-		cal.set(Calendar.SECOND,0);
-		cal.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
-		Date date = cal.getTime();
+		Date today = Calendar.getInstance().getTime();
+		int weekOfYear = Integer.parseInt(new SimpleDateFormat("w").format(new java.util.Date()));
 		
-		//System.out.println("DATE: "+ date.toString());
-		//System.out.println("RDATE: "+ result.getStartDate().toString());
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.WEEK_OF_YEAR, weekOfYear);
+		cal.set(Calendar.DAY_OF_WEEK,Calendar.THURSDAY);
+		cal.set(Calendar.HOUR, 16);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND,0);
+		Date testStartDate = cal.getTime();
+		
+		while (testStartDate.before(today)) {
+			weekOfYear++;
+			cal.set(Calendar.WEEK_OF_YEAR, weekOfYear);
+			testStartDate = cal.getTime();
+		} 
 		
 		assertEquals("Watch a movie", result.getContent());
 		assertEquals(TaskType.EVENT, result.getType());
 		assertEquals(CommandType.ADD, result.getCommand());
+		assertEquals(testStartDate.toString(), result.getStartDate().toString());
 		assertEquals(null, result.getEndDate());
-		assertEquals(date.toString(), result.getStartDate().toString());
 	}
 	
 	/**
@@ -181,14 +223,22 @@ public class ParserTest extends LogicControllerTest{
 		
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DAY_OF_YEAR, 2);
-		Date date = cal.getTime();
+		cal.set(Calendar.HOUR, 8);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND,0);
+		Date testStartDate = cal.getTime();
+		
+		cal.set(Calendar.HOUR, 23);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND,0);
+		Date testEndDate = cal.getTime();
 		
 		result = Parser.parse("add test in two days", new ArrayList<Task>());
 		assertEquals("test", result.getContent());
-		assertEquals(TaskType.DEADLINE, result.getType());
+		assertEquals(TaskType.EVENT, result.getType());
 		assertEquals(CommandType.ADD, result.getCommand());
-		assertEquals(date.toString(), result.getEndDate().toString());
-		assertEquals(null, result.getStartDate());
+		assertEquals(testStartDate.toString(), result.getStartDate().toString());
+		assertEquals(testEndDate.toString(), result.getEndDate().toString());
 	} 
 	
 	/**
@@ -202,51 +252,6 @@ public class ParserTest extends LogicControllerTest{
 		assertEquals(CommandType.DELETE, result.getCommand());
 		assertEquals(null, result.getEndDate());
 		assertEquals(null, result.getStartDate());
-	}
-	
-	private String getResult(int year, int month, int date, int hour, int min) {
-		Date currentTime = new Date();
-		Calendar currentCalendar = Calendar.getInstance();
-		Calendar givenCalendar = Calendar.getInstance();
-		
-		givenCalendar.clear();
-		currentCalendar.setTime(currentTime);
-		
-		if (year == 0) {
-			givenCalendar.set(Calendar.YEAR, currentCalendar.get(Calendar.YEAR));
-		} else {
-			givenCalendar.set(Calendar.YEAR, year);
-		}
-		
-		if (month == 0) {
-			givenCalendar.set(Calendar.MONTH, currentCalendar.get(Calendar.MONTH));
-		} else {
-			givenCalendar.set(Calendar.MONTH, month - 1);
-		}
-		
-		if (date == 0) {
-			givenCalendar.set(Calendar.DATE, currentCalendar.get(Calendar.DATE));
-		} else {
-			givenCalendar.set(Calendar.DATE, date);
-		}
-		
-		givenCalendar.set(Calendar.HOUR_OF_DAY, hour);
-		givenCalendar.set(Calendar.MINUTE, min);
-		
-		int compare = givenCalendar.compareTo(currentCalendar);
-		
-		if (compare < 0 && year == 0) {
-			givenCalendar.set(Calendar.YEAR, currentCalendar.get(Calendar.YEAR) + 1);
-		}
-		
-		System.out.println(givenCalendar.getTime().toString());
-		
-		return simpleFormat(givenCalendar.getTime());
-	}
-	
-	private String simpleFormat(Date date) {
-		DateFormat simpleDate = new SimpleDateFormat("dd MMM yyyy HH:mm");
-		return simpleDate.format(date);
 	}
 	
 }
