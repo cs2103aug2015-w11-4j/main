@@ -41,7 +41,8 @@ public interface ICommand {
 			case HOME:
 				return new CommandHome(taskList);
 			case INVALID: default:
-				return new CommandDefault(taskList);
+				//return new CommandDefault(taskList);
+				return new CommandSearch(result, taskList);
 		}
 	}
 	

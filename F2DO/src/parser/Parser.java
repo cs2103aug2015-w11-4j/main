@@ -52,7 +52,8 @@ public class Parser {
 			taskType = analyzeTask(content, startDate, endDate);
 			
 		} else {
-			result.setErrorMsg(ParserHelper.ERROR_INVALID_COMMAND);
+			//result.setErrorMsg(ParserHelper.ERROR_INVALID_COMMAND);
+			content = input;
 		}
 		
 		result.setCommand(cmd);
