@@ -435,6 +435,8 @@ public class UserInterface extends Application {
 	    while ((text = br.readLine()) != null) {
 	    	content.append(text).append("\n");
 	    }
+	    
+	    _cheatSheet.clear();
 	    _cheatSheet.appendText(content.toString());
 	    
 	    _root.setCenter(_cheatSheet);
