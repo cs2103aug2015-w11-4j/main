@@ -15,7 +15,6 @@ import parser.DateTime;
 public class LogicControllerTest {
 	
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static ArrayList<Task> testTaskList = new ArrayList<Task>();
 	
 	@Test
 	public final void testProcess() {
@@ -27,14 +26,13 @@ public class LogicControllerTest {
 		sampleTaskOne.setStartDate(null);
 		sampleTaskOne.setEndDate(null);
 		testDisplayList.add(sampleTaskOne);
-		
-		
+				
 		//Starting the logger
 		logger.info("Starting general logic tests");
 	    
 		//Testing floating tasks
 		assertEquals("Feedback: Meeting with Boss has been successfully added!",
-					(LogicController.process("add Meeting with Boss", testTaskList)));
+					(LogicController.process("add Meeting with Boss", LogicController.getDisplayList())));
 		
 		//Checking if the adding works fine
 		assertEquals(testDisplayList.get(0).getTaskName(), LogicController.getDisplayList().get(0).getTaskName());
