@@ -136,7 +136,7 @@ public class Parser {
 				KeywordType nextKeyword = keywordIndices.get(nextIndex);
 				
 				// Include next keyword
-				if (nextKeyword == KeywordType.ON) {
+				if (shouldInclude(nextKeyword)) {
 					if ((i+1) < (listSize - 1)) {
 						int nextNextIndex = indexList.get(i + 2);
 						parseInput = String.join(" ", words.subList(index, nextNextIndex));
@@ -189,6 +189,12 @@ public class Parser {
 		}
 		
 		return contentDate;
+	}
+	
+	private static boolean shouldInclude(KeywordType keyword) {
+		return keyword == KeywordType.ON ||
+				keyword == KeywordType.TODAY ||
+				keyword == KeywordType.TOMORROW;
 	}
 	
 	/**
