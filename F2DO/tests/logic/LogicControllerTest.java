@@ -15,7 +15,8 @@ import parser.DateTime;
 public class LogicControllerTest {
 	
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
+	private static ArrayList<Task> testTaskList = new ArrayList<Task>();
+	
 	@Test
 	public final void testProcess() {
 	    
@@ -33,14 +34,13 @@ public class LogicControllerTest {
 	    
 		//Testing floating tasks
 		assertEquals("Feedback: Meeting with Boss has been successfully added!",
-					(LogicController.process("add Meeting with Boss", LogicController.getDisplayList())));
+					(LogicController.process("add Meeting with Boss", testTaskList)));
 		
 		//Checking if the adding works fine
-		assertNotEquals(testDisplayList.get(0), LogicController.getDisplayList().get(0));
 		assertEquals(testDisplayList.get(0).getTaskName(), LogicController.getDisplayList().get(0).getTaskName());
 		assertEquals(testDisplayList.get(0).getStartDate(), LogicController.getDisplayList().get(0).getStartDate());
 		assertEquals(testDisplayList.get(0).getEndDate(), LogicController.getDisplayList().get(0).getEndDate());
-		assertEquals(LogicController.getDisplayList().size(), testDisplayList.size());
+		assertEquals(testDisplayList.size(), LogicController.getDisplayList().size());
 		
 		//Testing if task can be added with "from-to" keywords
 	    assertEquals("Feedback: Holiday with wife has been successfully added!", 
