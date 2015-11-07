@@ -135,6 +135,7 @@ public class Parser {
 				int nextIndex = indexList.get(i + 1);
 				KeywordType nextKeyword = keywordIndices.get(nextIndex);
 				
+				// Include next keyword
 				if (nextKeyword == KeywordType.ON) {
 					if ((i+1) < (listSize - 1)) {
 						int nextNextIndex = indexList.get(i + 2);
@@ -153,11 +154,17 @@ public class Parser {
 			DatePair result = function.analyze();
 			
 			if (isDateFound(result.getStartDate(), result.getEndDate())) {
+				String dateString = result.getDateString();
 				startDate = result.getStartDate();
 				endDate = result.getEndDate();
 				
 				content = String.join(" ", words);
-				content = content.replace(parseInput, "");
+				
+				if (dateString != null) {
+					content = content.replace(dateString, "");
+				} else {
+					content = content.replace(parseInput, "");
+				}
 				
 				String[] splitWords = content.split("\\s+");
 				ArrayList<String> contentList = new ArrayList<>(Arrays.asList(splitWords));
