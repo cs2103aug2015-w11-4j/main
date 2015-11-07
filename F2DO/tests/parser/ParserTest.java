@@ -54,7 +54,7 @@ public class ParserTest extends LogicControllerTest{
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.WEEK_OF_YEAR, weekOfYear);
 		cal.set(Calendar.DAY_OF_WEEK,Calendar.WEDNESDAY);
-		cal.set(Calendar.HOUR, 23);
+		cal.set(Calendar.HOUR_OF_DAY, 23);
 		cal.set(Calendar.MINUTE, 59);
 		cal.set(Calendar.SECOND,0);
 		Date testEndDate = cal.getTime();
@@ -84,7 +84,7 @@ public class ParserTest extends LogicControllerTest{
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.WEEK_OF_YEAR, weekOfYear);
 		cal.set(Calendar.DAY_OF_WEEK,Calendar.THURSDAY);
-		cal.set(Calendar.HOUR, 8);
+		cal.set(Calendar.HOUR_OF_DAY, 8);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND,0);
 		Date testStartDate = cal.getTime();
@@ -95,7 +95,7 @@ public class ParserTest extends LogicControllerTest{
 			testStartDate = cal.getTime();
 		} 
 		
-		cal.set(Calendar.HOUR, 23);
+		cal.set(Calendar.HOUR_OF_DAY, 23);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND,0);
 		Date testEndDate = cal.getTime();
@@ -118,7 +118,7 @@ public class ParserTest extends LogicControllerTest{
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.WEEK_OF_YEAR, weekOfYear);
 		cal.set(Calendar.DAY_OF_WEEK,Calendar.WEDNESDAY);
-		cal.set(Calendar.HOUR, 8);
+		cal.set(Calendar.HOUR_OF_DAY, 8);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND,0);
 		Date testStartDate = cal.getTime();
@@ -130,7 +130,7 @@ public class ParserTest extends LogicControllerTest{
 		} 
 		
 		cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-		cal.set(Calendar.HOUR, 23);
+		cal.set(Calendar.HOUR_OF_DAY, 23);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND,0);
 		Date testEndDate = cal.getTime();
@@ -185,7 +185,7 @@ public class ParserTest extends LogicControllerTest{
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.WEEK_OF_YEAR, weekOfYear);
 		cal.set(Calendar.DAY_OF_WEEK,Calendar.THURSDAY);
-		cal.set(Calendar.HOUR, 16);
+		cal.set(Calendar.HOUR_OF_DAY, 16);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND,0);
 		Date testStartDate = cal.getTime();
@@ -223,12 +223,12 @@ public class ParserTest extends LogicControllerTest{
 		
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DAY_OF_YEAR, 2);
-		cal.set(Calendar.HOUR, 8);
+		cal.set(Calendar.HOUR_OF_DAY, 8);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND,0);
 		Date testStartDate = cal.getTime();
 		
-		cal.set(Calendar.HOUR, 23);
+		cal.set(Calendar.HOUR_OF_DAY, 23);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND,0);
 		Date testEndDate = cal.getTime();
