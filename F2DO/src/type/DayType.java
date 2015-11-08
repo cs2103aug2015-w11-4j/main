@@ -29,7 +29,6 @@ public enum DayType {
 			word = word.toUpperCase();
 			return valueOf(word); 
 		} catch (Exception e) {
-			logger.info("An invalid day type was specified.");
 			return INVALID;
 		}
 	}

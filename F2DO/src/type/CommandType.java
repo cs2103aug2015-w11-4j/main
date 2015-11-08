@@ -27,7 +27,6 @@ public enum CommandType {
 			
 			return valueOf(word); 
 		} catch (Exception e) {
-			logger.info("An invalid command was detected.");
 			return INVALID; 
 		}
 	}
