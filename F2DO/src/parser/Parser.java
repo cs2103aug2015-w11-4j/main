@@ -16,7 +16,7 @@ import type.TaskType;
 public class Parser {
 	
 	public static Result parse(String input, ArrayList<Task> displayList) {
-		String[] splitWords = input.split(" ");
+		String[] splitWords = input.split("\\s+");
 		ArrayList<String> words = new ArrayList<>(Arrays.asList(splitWords));
 		
 		Result result = new Result();
@@ -154,6 +154,7 @@ public class Parser {
 			IParseDateTime function = IParseDateTime.getFunction(keyword, parseInput);
 			DatePair result = function.analyze();
 			
+			// If date is found, remove the date time string from the input string
 			if (isDateFound(result.getStartDate(), result.getEndDate())) {
 				String dateString = result.getDateString();
 				startDate = result.getStartDate();

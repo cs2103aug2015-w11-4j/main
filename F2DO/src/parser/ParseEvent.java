@@ -1,6 +1,9 @@
 package parser;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,6 +32,7 @@ public class ParseEvent implements IParseDateTime {
 			endDate = result.getEndDate();
 		} 
 		
+		// If no time is given, set default event time from 8am to 11pm
 		if (timeStr == null) {
 			Date startTime = DateTime.parse("8:00");
 			Date endTime = DateTime.parse("23:00");
@@ -41,17 +45,52 @@ public class ParseEvent implements IParseDateTime {
 			}
 		}
 		
-		Date today = DateTime.getToday();
-		
-		if (startDate != null && startDate.compareTo(today) < 0) {
-			startDate = DateTime.getOneYearLater(startDate);
-			
-			if (endDate != null) {
+		// If the entered date RANGE has passed, get the date(s) next year
+		Date now = new Date();
+		if (startDate != null && startDate.compareTo(now) < 0) {
+			if (endDate != null && endDate.compareTo(now) < 0) {
+				startDate = DateTime.getOneYearLater(startDate);
 				endDate = DateTime.getOneYearLater(endDate);
+			} else if (endDate == null) {
+				startDate = DateTime.getOneYearLater(startDate);
 			}
 		}
 		
-		return new DatePair(startDate, endDate);
+		// Get the string contains date time format
+		DatePair datePair = new DatePair(startDate, endDate);
+		datePair.setDateString(getDateStr());
+		
+		return datePair;
+	}
+	
+	private String getDateStr() {
+		ArrayList<String> words = new ArrayList<>(Arrays.asList(_input.split("\\s+")));
+		TreeMap<Integer, KeywordType> keywordIndices = ParserHelper.getKeywordIndex(words);
+		ArrayList<Integer> indexList = new ArrayList<Integer>(keywordIndices.keySet());
+		int listSize = indexList.size();
+		String dateTimeStr = _input;
+		
+		for (int i = 0; i < listSize; i++) {
+			int index = indexList.get(i);
+			String impossibleStr = "";
+			
+			if (i < (listSize - 1)) {
+				int nextIndex = indexList.get(i + 1);
+				impossibleStr = String.join(" ", words.subList(index, nextIndex));
+			} else {
+				impossibleStr = String.join(" ", words.subList(index, words.size()));
+			}
+			
+			if (DateTime.parse(impossibleStr) == null) {
+				dateTimeStr = dateTimeStr.replace(impossibleStr, "");
+			}
+		}
+		
+		// Reformat the string
+		words = new ArrayList<>(Arrays.asList(dateTimeStr.split("\\s+")));
+		dateTimeStr = String.join("\\s", dateTimeStr);
+		
+		return dateTimeStr;
 	}
 	
 	private DatePair analyzeKeywordFrom() {
@@ -83,15 +122,6 @@ public class ParseEvent implements IParseDateTime {
 			}
 			
 			functionNo += 1;
-		}
-		
-		Date now = new Date();
-		if (startDate != null && startDate.compareTo(now) < 0) {
-			startDate = DateTime.getOneYearLater(startDate);
-
-			if (endDate != null) {
-				endDate = DateTime.getOneYearLater(endDate);
-			}
 		}
 		
 		return new DatePair(startDate, endDate);
