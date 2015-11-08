@@ -17,10 +17,10 @@ public class UserInterfaceTest extends GuiTest {
 		return UI.getRootNode();
 	}
 	
-	@Test
+	/*@Test
 	public void testTextArea() {
 		TableView<S> table = (TableView)find("floatingTable");
 		click("#textarea").type("testing 1").push(Enter);
 		Assertions.verifyThat(table, TableViews.containsCell("testing 1"));
-	}
+	}*/
 }

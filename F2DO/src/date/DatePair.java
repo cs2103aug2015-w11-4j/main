@@ -6,6 +6,8 @@ public class DatePair {
 	private Date _startDate = null;
 	private Date _endDate = null;
 	private String _dateString = null;
+	private String _errorMsg = null;
+	private boolean _isError = false;
 	
 	public DatePair(Date startDate, Date endDate) {
 		_startDate = startDate;
@@ -26,5 +28,17 @@ public class DatePair {
 	
 	public String getDateString() {
 		return _dateString;
+	}
+	
+	public void setErrorMsg(String msg) {
+		_errorMsg = msg;
+	}
+	
+	public boolean isError() {
+		return _isError;
+	}
+	
+	public String getErrorMsg() {
+		return _errorMsg;
 	}
 }

@@ -1,6 +1,7 @@
 //@@ Yu Ting
 package date;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,6 +25,7 @@ public class DateTime {
 	private static final int DAY_MONTH_SIZE = 2;
 	private static final int DAY_MONTH_YEAR_SIZE = 3;
 	private static final HashMap<MonthType, Integer> months = new HashMap<MonthType, Integer>();
+	private static final String JOIN_DELIMITER = "-";
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	static {
@@ -182,6 +184,45 @@ public class DateTime {
 		return null;
 	}
 	
+	public static String getDate(String input) {
+		String shortMonth = "jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec";
+		String longMonth = "january|february|march|april|may|june|"
+				+ "july|august|september|october|november|december";
+		String month = shortMonth + "|" + longMonth;
+		String regexTextMD1 = ".*?(" + month + ")[ /-]([0-9]{1,2})\\s.*";
+		String regexTextMD2 = ".*?(" + month + ")[ /-]([0-9]{1,2})";
+		String regexTextMDY1 = ".*?(" + month + ")[ /-]([0-9]{1,2})[ ,/-]\\s?([0-9]{2,4})\\s.*";
+		String regexTextMDY2 = ".*?(" + month + ")[ /-]([0-9]{1,2})[ ,/-]\\s?([0-9]{2,4})";
+		String[] allRegex = {regexTextMD1, regexTextMD2, regexTextMDY1, regexTextMDY2};
+		
+		String date = getAmericanDate(input);
+		
+		if (date == null) {
+			for (int i = 0; i < allRegex.length; i++) {
+				String regex = allRegex[i];
+				Pattern pattern = Pattern.compile(regex, _flags);
+				Matcher matcher = pattern.matcher(input);
+				
+				if (matcher.matches()) {
+					int groupNum = matcher.groupCount();
+					ArrayList<String> words = new ArrayList<String>();
+					
+					for (int j = 1; j <= groupNum; j++) {
+						String word = matcher.group(j);
+						
+						if (j == 1 && !isConvertable(word)) {
+							word = months.get(MonthType.toMonth(word)).toString();
+						}
+						words.add(word);
+					}
+					date = String.join(JOIN_DELIMITER, words);
+				}
+			}
+		}
+		
+		return date;
+	}
+	
 	private static boolean isValidTime(String hourStr, String minStr) {
 		try {
 			int hour = Integer.parseInt(hourStr);
@@ -272,12 +313,12 @@ public class DateTime {
 					}
 				}
 				
-				dateTime += dayMonthYear[MONTH] + "-";
+				dateTime += dayMonthYear[MONTH] + JOIN_DELIMITER;
 				dateTime += dayMonthYear[DAY];
 			}
 
 			if (groupNumber == DAY_MONTH_YEAR_SIZE) {
-				dateTime += "-" + dayMonthYear[YEAR];
+				dateTime += JOIN_DELIMITER + dayMonthYear[YEAR];
 			}
 		}
 
@@ -299,8 +340,9 @@ public class DateTime {
 		//System.out.println(parse("at 5 nov 12 12pm"));
 		//System.out.println(parse("at 5 dec 15"));
 		//System.out.println(parse("at 12 jan"));
-		System.out.println(parse("17 March 2016 22:10"));
+		//System.out.println(parse("17 March 2016 22:10"));
 		//System.out.println(parse("16 Dec 2015"));
 		//System.out.println(getTime("4 pm"));
+		System.out.println(getDate("10 March 2015"));
 	}
 }
