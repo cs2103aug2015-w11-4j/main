@@ -10,6 +10,8 @@ import java.util.regex.Pattern;
 
 import com.joestelmach.natty.Parser;
 
+import type.MonthType;
+
 public class DateTime {
 	private static final Parser dateParser = new Parser();
 	private static final int _flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
@@ -19,11 +21,12 @@ public class DateTime {
 	private static final int DATE_SIZE = 3;
 	private static final int DAY_MONTH_SIZE = 2;
 	private static final int DAY_MONTH_YEAR_SIZE = 3;
-	private static final HashMap<String, Integer> months = new HashMap<String, Integer>();
+	//private static final HashMap<String, Integer> months = new HashMap<String, Integer>();
+	private static final HashMap<MonthType, Integer> months = new HashMap<MonthType, Integer>();
 	
 	static {
 		months.clear();
-		months.put("jan", 1);
+		/*months.put("jan", 1);
 		months.put("feb", 2);
 		months.put("mar", 3);
 		months.put("apr", 4);
@@ -34,7 +37,42 @@ public class DateTime {
 		months.put("sep", 9);
 		months.put("oct", 10);
 		months.put("nov", 11);
-		months.put("dec", 12);
+		months.put("dec", 12);*/
+		
+		months.put(MonthType.JAN, 1);
+		months.put(MonthType.JANUARY, 1);
+		
+		months.put(MonthType.FEB, 2);
+		months.put(MonthType.FEBRUARY, 2);
+		
+		months.put(MonthType.MAR, 3);
+		months.put(MonthType.MARCH, 3);
+		
+		months.put(MonthType.APR, 4);
+		months.put(MonthType.APRIL, 4);
+		
+		months.put(MonthType.MAY, 5);
+		
+		months.put(MonthType.JUN, 6);
+		months.put(MonthType.JUNE, 6);
+		
+		months.put(MonthType.JUL, 7);
+		months.put(MonthType.JULY, 7);
+		
+		months.put(MonthType.AUG, 8);
+		months.put(MonthType.AUGUST, 8);
+		
+		months.put(MonthType.SEP, 9);
+		months.put(MonthType.SEPTEMBER, 9);
+		
+		months.put(MonthType.OCT, 10);
+		months.put(MonthType.OCTOBER, 10);
+		
+		months.put(MonthType.NOV, 11);
+		months.put(MonthType.NOVEMBER, 11);
+		
+		months.put(MonthType.DEC, 12);
+		months.put(MonthType.DECEMBER, 12);
 	}
 	
 	/**
@@ -108,7 +146,6 @@ public class DateTime {
 				if (timeStr != null) {
 					dateStr += " " + timeStr;
 				}
-				System.out.println(dateStr);
 				date = dateParser.parse(dateStr).get(0).getDates().get(0);
 			} else {
 				date = dateParser.parse(input).get(0).getDates().get(0);
@@ -186,12 +223,13 @@ public class DateTime {
 				+ "july|august|september|october|november|december";
 		String month = shortMonth + "|" + longMonth;
 		String regexNumbericDM = ".*?([0-9]{1,2})[/-]([0-9]{1,2}).*";
-		String regexTextDM = ".*?([0-9]{1,2})[ /-](" + month + ").*";
+		String regexTextDM1 = ".*?([0-9]{1,2})[ /-](" + month + ")\\s.*";
+		String regexTextDM2 = ".*?([0-9]{1,2})[ /-](" + month + ")";
 		String regexNumericDMY = ".*?([0-9]{1,2})[/-]([0-9]{1,2})[/-]([0-9]{2,4}).*";
 		String regexTextDMY1 = ".*?([0-9]{1,2})[ /-](" + month + ")[ /-]([0-9]{2,4})\\s.*";
 		String regexTextDMY2 = ".*?([0-9]{1,2})[ /-](" + month + ")[ /-]([0-9]{2,4})";
 		
-		String[] twoGroups = {regexNumbericDM, regexTextDM};
+		String[] twoGroups = {regexNumbericDM, regexTextDM1, regexTextDM2 };
 		String[] threeGroups = {regexNumericDMY, regexTextDMY1, regexTextDMY2};
 		
 		for (int i = 0; i < threeGroups.length; i++) {
@@ -234,8 +272,9 @@ public class DateTime {
 			}
 
 			if (groupNumber >= DAY_MONTH_SIZE) {
-				String month = dayMonthYear[MONTH].toLowerCase();
-				if (!isConvertable(month)) {
+				String monthStr = dayMonthYear[MONTH].toLowerCase();
+				if (!isConvertable(monthStr)) {
+					MonthType month = MonthType.toMonth(monthStr);
 					if(months.containsKey(month)) {
 						dayMonthYear[MONTH] = months.get(month).toString();
 					}
@@ -263,12 +302,12 @@ public class DateTime {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(isValidTime("23", "59"));
+		//System.out.println(isValidTime("23", "59"));
 		//System.out.println(parse("at 5 nov 12 12pm"));
 		//System.out.println(parse("at 5 dec 15"));
 		//System.out.println(parse("at 12 jan"));
-		System.out.println(parse("17 February 22:10"));
-		System.out.println(parse("16 Dec 2015"));
-		System.out.println(getTime("4 pm"));
+		System.out.println(parse("17 March 22:10"));
+		//System.out.println(parse("16 Dec 2015"));
+		//System.out.println(getTime("4 pm"));
 	}
 }
