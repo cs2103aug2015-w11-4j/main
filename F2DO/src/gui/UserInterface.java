@@ -35,6 +35,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class UserInterface extends Application {
 	
@@ -64,6 +65,7 @@ public class UserInterface extends Application {
 	private static final BooleanBinding _ctrlAndUPressed = _ctrlPressed.and(_uPressed);
 	private static final BooleanBinding _ctrlAndRPressed = _ctrlPressed.and(_rPressed);
 	private static final BooleanBinding _ctrlAndEPressed = _ctrlPressed.and(_ePressed);
+	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private static ArrayList<String> commandHistory = new ArrayList<String>();
 	private static ArrayList<Task> _displayList = new ArrayList<Task>();
@@ -416,6 +418,7 @@ public class UserInterface extends Application {
 						setUpCommandPrompt();
 						setUpTables();
 					} catch (Exception e) {
+						logger.warning("Unable to properly process TAB keycode");
 						e.printStackTrace();
 					}
 				}

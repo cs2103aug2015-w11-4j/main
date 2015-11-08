@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Date;
 //import java.util.Scanner;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 
 import date.DatePair;
 import object.Result;
@@ -18,6 +19,8 @@ public class Parser {
 	private static final String SPLIT_DELIMITER = "\\s+";
 	private static final String REPLACE_DELIMITER = "";
 	
+	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
 	/**
 	 * Parse the input string. 
 	 * The result includes command type, corresponding taskID,
@@ -121,6 +124,7 @@ public class Parser {
 				}
 			}
 		} catch (NumberFormatException e) {
+			logger.warning("Unable to retrieve task ID in storage.");
 			return -1;
 		}
 		
@@ -226,6 +230,7 @@ public class Parser {
 	 */
 	private static boolean isDateFound(Date startDate, Date endDate) {
 		if (startDate == null && endDate == null) {
+			logger.info("Both the desired start and end date are not found.");
 			return false;
 		}
 		return true;

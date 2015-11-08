@@ -4,6 +4,9 @@ package storage;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import object.Task;
@@ -14,6 +17,8 @@ import object.Task;
 public class StorageHelper {
 	private static SimpleDateFormat _dateFormat = 
 			new SimpleDateFormat("EEE dd MMM HH:mm:ss zzz yyyy");
+	
+	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	/**
 	 * Write the task list into JSON file.
@@ -31,7 +36,7 @@ public class StorageHelper {
 			objMapper.writerWithDefaultPrettyPrinter().writeValue(file, taskList);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.WARNING, "An exception was thrown when writing to JSON file.", e);
 			return false;
 		} 
 		return true;
@@ -55,7 +60,7 @@ public class StorageHelper {
 					taskList = objMapper.readValue(file, typeRef);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.WARNING, "An exception was thrown when reading from JSON file.", e);
 			return taskList;
 		}
 		return taskList;
@@ -75,7 +80,7 @@ public class StorageHelper {
 			objMapper.writeValue(file, taskList);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.WARNING, "An exception was thrown when creating the JSON file.", e);
 			return false;
 		} 
 		return true;

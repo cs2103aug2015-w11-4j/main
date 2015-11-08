@@ -1,5 +1,7 @@
 package type;
 
+import java.util.logging.Logger;
+
 public enum KeywordType {
 	AT,
 	ON,
@@ -13,6 +15,8 @@ public enum KeywordType {
 	THIS,
 	NEXT,
 	INVALID;
+
+	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	public static KeywordType toType(String word) {
 		try {
@@ -24,6 +28,7 @@ public enum KeywordType {
 			
 			return valueOf(word); 
 		} catch (Exception e) {
+			logger.info("An invalid keyword type was specified.");
 			return INVALID; 
 		}
 	}
