@@ -308,12 +308,6 @@ public class DateTimeTest {
 		givenCalendar.set(Calendar.HOUR_OF_DAY, hour);
 		givenCalendar.set(Calendar.MINUTE, min);
 		
-		int compare = givenCalendar.compareTo(currentCalendar);
-		
-		if (compare < 0 && year == 0) {
-			givenCalendar.set(Calendar.YEAR, currentCalendar.get(Calendar.YEAR) + 1);
-		}
-		
 		System.out.println(givenCalendar.getTime().toString());
 		
 		return simpleFormat(givenCalendar.getTime());

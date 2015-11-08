@@ -108,7 +108,7 @@ public class DateTime {
 				if (timeStr != null) {
 					dateStr += " " + timeStr;
 				}
-				System.out.println("dateStr: " + dateStr);
+				System.out.println(dateStr);
 				date = dateParser.parse(dateStr).get(0).getDates().get(0);
 			} else {
 				date = dateParser.parse(input).get(0).getDates().get(0);
@@ -185,8 +185,8 @@ public class DateTime {
 		String regexNumbericDM = ".*?([0-9]{1,2})[/-]([0-9]{1,2}).*";
 		String regexShortDM = ".*?([0-9]{1,2})[ /-](" + shortMonth + ").*";
 		String regexNumericDMY = ".*?([0-9]{1,2})[/-]([0-9]{1,2})[/-]([0-9]{2,4}).*";
-		String regexShortDMY1 = ".*?([0-9]{1,2})[ /-](" + shortMonth + ")[ /-]([0-9]{2,4})[^\\d?].*";
-		String regexShortDMY2 = ".*?([0-9]{1,2})[ /-](" + shortMonth + ")[ /-]([0-9]{2,4})[^\\d?]";
+		String regexShortDMY1 = ".*?([0-9]{1,2})[ /-](" + shortMonth + ")[ /-]([0-9]{2,4})\\s.*";
+		String regexShortDMY2 = ".*?([0-9]{1,2})[ /-](" + shortMonth + ")[ /-]([0-9]{2,4})";
 		
 		String[] twoGroups = {regexNumbericDM, regexShortDM};
 		String[] threeGroups = {regexNumericDMY, regexShortDMY1, regexShortDMY2};
@@ -261,9 +261,12 @@ public class DateTime {
 	
 	public static void main(String[] args) {
 		System.out.println(isValidTime("23", "59"));
-		System.out.println(parse("at 5 nov 12 12pm"));
-		System.out.println(parse("at 5 dec 15"));
-		System.out.println(parse("at 12 jan"));
+		//System.out.println(parse("at 5 nov 12 12pm"));
+		//System.out.println(parse("at 5 dec 15"));
+		//System.out.println(parse("at 12 jan"));
+		System.out.println(parse("17 Feb 22:10"));
+		System.out.println(parse("16 Dec 2015"));
+		//System.out.println(parse("18 Jan 10pm"));
 		System.out.println(getTime("4 pm"));
 	}
 }
