@@ -271,6 +271,8 @@ public class DateTimeTest {
 		assertEquals(getResult(0, 0, 0, 8, 0), simpleFormat(DateTime.parse("8am").getDate()));
 		assertEquals(getResult(0, 0, 0, 17, 30), simpleFormat(DateTime.parse("17:30").getDate()));
 		assertEquals(getResult(0, 0, 0, 17, 30), simpleFormat(DateTime.parse("17.30").getDate()));
+		assertEquals(getResult(0, 0, 0, 17, 30), simpleFormat(DateTime.parse("5.30pm").getDate()));
+		assertEquals(null, simpleFormat(DateTime.parse("25.30").getDate()));
 	
 		logger.info("Successful end of Time test");
 	}
@@ -304,6 +306,23 @@ public class DateTimeTest {
 		assertEquals(testDate, simpleFormat(DateTime.parse("17 Feb 2015 22:10").getDate()));
 	
 	    logger.info("Successful end of Mixture test");
+	}
+	
+	@Test
+	public void testValidity(){
+		
+		logger.info("Starting Validity test");
+		
+		assertFalse(DateTime.parse("30 Feb").isValid());		// invalid day
+		assertFalse(DateTime.parse("31 April").isValid());		// invalid day
+		assertFalse(DateTime.parse("20/13/2015").isValid());	// invalid month
+		assertFalse(DateTime.parse("20/-1/2015").isValid());	// invalid month
+		assertFalse(DateTime.parse("29 Feb 2015").isValid());	// invalid leap year
+		assertTrue(DateTime.parse("29 Feb 2016").isValid());	// valid leap year
+		assertTrue(DateTime.parse("1 Jan").isValid());			// valid date
+		assertTrue(DateTime.parse("31 Mar").isValid());			// valid date
+		
+		logger.info("Successful end of Validity test");
 	}
 	
 	private String getResult(int year, int month, int date, int hour, int min) {
@@ -341,6 +360,9 @@ public class DateTimeTest {
 	}
 	
 	private String simpleFormat(Date date) {
+		if (date == null) {
+			return null;
+		}
 		DateFormat simpleDate = new SimpleDateFormat("dd MMM yyyy HH:mm");
 		return simpleDate.format(date);
 	}
