@@ -3,7 +3,7 @@ package parser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-//import java.util.Scanner;
+import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
@@ -177,24 +177,29 @@ public class Parser {
 			
 			// If date is found, remove the date time string from the input string
 			if (isDateFound(result.getStartDate(), result.getEndDate())) {
-				String dateString = result.getDateString();
-				startDate = result.getStartDate();
-				endDate = result.getEndDate();
-				content = String.join(" ", words);
-				
-				assert (dateString != null);
+				if (result.isError()) {
+					isError = true;
+					errorMsg = result.getErrorMsg();
+				} else {
+					String dateString = result.getDateString();
+					startDate = result.getStartDate();
+					endDate = result.getEndDate();
+					content = String.join(" ", words);
 
-				content = content.replace(dateString, REPLACE_DELIMITER);
-				
-				String[] splitWords = content.split(SPLIT_DELIMITER);
-				ArrayList<String> contentList = new ArrayList<>(Arrays.asList(splitWords));
-				
-				content = String.join(JOIN_DELIMITER, contentList);
-				
-				if (startDate != null && endDate != null) {
-					if (startDate.compareTo(endDate) > 0) {
-						isError = true;
-						errorMsg = ParserHelper.ERROR_END_DATE_EARLIER;
+					assert (dateString != null);
+
+					content = content.replace(dateString, REPLACE_DELIMITER);
+
+					String[] splitWords = content.split(SPLIT_DELIMITER);
+					ArrayList<String> contentList = new ArrayList<>(Arrays.asList(splitWords));
+
+					content = String.join(JOIN_DELIMITER, contentList);
+
+					if (startDate != null && endDate != null) {
+						if (startDate.compareTo(endDate) > 0) {
+							isError = true;
+							errorMsg = ParserHelper.ERROR_END_DATE_EARLIER;
+						}
 					}
 				}
 				
@@ -257,7 +262,7 @@ public class Parser {
 		}
 	}
 	
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		while (true) {
 			System.out.print("Input: ");
 			Scanner scanner = new Scanner(System.in);
@@ -282,5 +287,5 @@ public class Parser {
 			System.out.println("StartDate: " + result.getStartDate());
 			System.out.println("EndDate: " + result.getEndDate());
 		}
-	}*/
+	}
 }

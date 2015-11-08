@@ -31,6 +31,7 @@ public class DatePair {
 	}
 	
 	public void setErrorMsg(String msg) {
+		_isError = true;
 		_errorMsg = msg;
 	}
 	

@@ -27,27 +27,27 @@ public class DateTimeTest {
 		
 		cal.set(2015, 11, 16);
 		String testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("16/12/2015")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("16/12/2015").getDate()));
 		
 		cal.set(2015, 11, 17);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("17/12/15")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("17/12/15").getDate()));
 		
 		cal.set(2015, 11, 6);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("6/12/2015")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("6/12/2015").getDate()));
 		
 		cal.set(2015, 11, 7);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("07/12/2015")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("07/12/2015").getDate()));
 		
 		cal.set(2015, 1, 16);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("16/2/2015")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("16/2/2015").getDate()));
 		
 		cal.set(2015, 1, 17);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("17/02/2015")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("17/02/2015").getDate()));
 
 		logger.info("Successful end of SlashNumericDMY test");
 	}
@@ -62,27 +62,27 @@ public class DateTimeTest {
 		
 		cal.set(2015, 11, 16);
 		String testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("16-12-2015")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("16-12-2015").getDate()));
 
 		cal.set(2015, 11, 16);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("16-12-15")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("16-12-15").getDate()));
 
 		cal.set(2015, 11, 6);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("6-12-2015")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("6-12-2015").getDate()));
 
 		cal.set(2015, 11, 6);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("06-12-2015")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("06-12-2015").getDate()));
 
 		cal.set(2015, 1, 16);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("16-2-2015")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("16-2-2015").getDate()));
 
 		cal.set(2015, 1, 16);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("16-02-2015")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("16-02-2015").getDate()));
 
 	    logger.info("Successful end of HyphenNumericDMY test");
 	}
@@ -97,23 +97,23 @@ public class DateTimeTest {
 		
 		cal.set(2015, 11, 16);
 		String testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("16 Dec 2015")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("16 Dec 2015").getDate()));
 
 		cal.set(2015, 11, 16);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("16 Dec 15")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("16 Dec 15").getDate()));
 
 		cal.set(2015, 11, 6);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("6 Dec 2015")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("6 Dec 2015").getDate()));
 
 		cal.set(2015, 11, 6);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("06 Dec 2015")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("06 Dec 2015").getDate()));
 
 		cal.set(2015, 1, 8);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("08 Feb 15")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("08 Feb 15").getDate()));
 
 	    logger.info("Successful end of ShortDMY test");
 	}
@@ -128,23 +128,23 @@ public class DateTimeTest {
 		
 		cal.set(2015, 11, 16);
 		String testDate = sdf.format(cal.getTime());
-	    assertEquals(testDate, simpleFormat(DateTime.parse("16/12")));
+	    assertEquals(testDate, simpleFormat(DateTime.parse("16/12").getDate()));
 	    
 	    cal.set(2015, 11, 6);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("6/12")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("6/12").getDate()));
 		
 		cal.set(2015, 11, 6);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("06/12")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("06/12").getDate()));
 		
 		cal.set(2015, 1, 16);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("16/2")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("16/2").getDate()));
 		
 		cal.set(2015, 1, 16);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("16/02")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("16/02").getDate()));
 	
 	    logger.info("Successful end of SlashNumbericDM test");
 	}
@@ -159,23 +159,23 @@ public class DateTimeTest {
 		
 		cal.set(2015, 11, 16);
 		String testDate = sdf.format(cal.getTime());
-	    assertEquals(testDate, simpleFormat(DateTime.parse("16-12")));
+	    assertEquals(testDate, simpleFormat(DateTime.parse("16-12").getDate()));
 
 		cal.set(2015, 11, 6);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("6-12")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("6-12").getDate()));
 
 		cal.set(2015, 11, 6);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("06-12")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("06-12").getDate()));
 
 		cal.set(2015, 1, 16);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("16-2")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("16-2").getDate()));
 
 		cal.set(2015, 1, 16);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("16-02")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("16-02").getDate()));
 
 		logger.info("Successful end of HyphenNumbericDM test");
 	}
@@ -190,19 +190,19 @@ public class DateTimeTest {
 		
 		cal.set(2015, 11, 16);
 		String testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("16 Dec")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("16 Dec").getDate()));
 
 		cal.set(2015, 11, 6);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("6 Dec")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("6 Dec").getDate()));
 
 		cal.set(2015, 11, 6);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("06 Dec")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("06 Dec").getDate()));
 
 		cal.set(2015, 1, 16);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("16 Feb")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("16 Feb").getDate()));
 		
 		logger.info("Successful end of ShortDM test");
 	}
@@ -217,19 +217,19 @@ public class DateTimeTest {
 		
 		cal.set(2015, 11, 16);
 		String testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("Dec 16")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("Dec 16").getDate()));
 		
 		cal.set(2015, 11, 6);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("Dec 6")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("Dec 6").getDate()));
 		
 		cal.set(2015, 11, 6);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("Dec 06")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("Dec 06").getDate()));
 		
 		cal.set(2015, 1, 16);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("Feb 16")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("Feb 16").getDate()));
 
 		logger.info("Successful end of ShortMD test");
 	}
@@ -244,19 +244,19 @@ public class DateTimeTest {
 		
 		cal.set(2015, 11, 16);
 		String testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("December 16")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("December 16").getDate()));
 		
 		cal.set(2015, 11, 6);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("December 6")));		
+		assertEquals(testDate, simpleFormat(DateTime.parse("December 6").getDate()));		
 		
 		cal.set(2015, 11, 6);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("December 06")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("December 06").getDate()));
 		
 		cal.set(2015, 1, 16);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("February 16")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("February 16").getDate()));
 		
 		logger.info("Successful end of LongMD test");
 
@@ -267,10 +267,10 @@ public class DateTimeTest {
 	    
 		logger.info("Starting Time test");
 
-	    assertEquals(getResult(0, 0, 0, 15, 0), simpleFormat(DateTime.parse("3pm")));
-		assertEquals(getResult(0, 0, 0, 8, 0), simpleFormat(DateTime.parse("8am")));
-		assertEquals(getResult(0, 0, 0, 17, 30), simpleFormat(DateTime.parse("17:30")));
-		assertEquals(getResult(0, 0, 0, 17, 30), simpleFormat(DateTime.parse("17.30")));
+	    assertEquals(getResult(0, 0, 0, 15, 0), simpleFormat(DateTime.parse("3pm").getDate()));
+		assertEquals(getResult(0, 0, 0, 8, 0), simpleFormat(DateTime.parse("8am").getDate()));
+		assertEquals(getResult(0, 0, 0, 17, 30), simpleFormat(DateTime.parse("17:30").getDate()));
+		assertEquals(getResult(0, 0, 0, 17, 30), simpleFormat(DateTime.parse("17.30").getDate()));
 	
 		logger.info("Successful end of Time test");
 	}
@@ -285,23 +285,23 @@ public class DateTimeTest {
 		
 		cal.set(2015, 10, 4, 16, 0);
 		String testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("Nov 4 4pm")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("Nov 4 4pm").getDate()));
 		
 		cal.set(2015, 1, 16, 7, 0);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("16 Feb 7am")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("16 Feb 7am").getDate()));
 		
 		cal.set(2015, 10, 4, 8, 30);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("Nov 4 8.30")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("Nov 4 8.30").getDate()));
 		
 		cal.set(2015, 1, 16, 22, 10);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("16 Feb 22:10")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("16 Feb 22:10").getDate()));
 		
 		cal.set(2015, 1, 17, 22, 10);
 		testDate = sdf.format(cal.getTime());
-		assertEquals(testDate, simpleFormat(DateTime.parse("17 Feb 2015 22:10")));
+		assertEquals(testDate, simpleFormat(DateTime.parse("17 Feb 2015 22:10").getDate()));
 	
 	    logger.info("Successful end of Mixture test");
 	}

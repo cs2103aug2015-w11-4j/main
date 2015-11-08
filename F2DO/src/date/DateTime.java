@@ -1,6 +1,8 @@
 //@@ Yu Ting
 package date;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -128,26 +130,76 @@ public class DateTime {
 		return todayCalendar.getTime();
 	}
 
-	public static Date parse(String input) {
-		Date date = null;
+	public static ParsedDate parse(String input) {
+		ParsedDate result = new ParsedDate();
 		try {
-			String dateStr = getAmericanDate(input);
+			String dateStr = getDate(input);
 			String timeStr = getTime(input);
+			String parsedStr = input;
+			Date date = null;
 			
 			if (dateStr != null) {
 				if (timeStr != null) {
 					dateStr += " " + timeStr;
 				}
-				date = dateParser.parse(dateStr).get(0).getDates().get(0);
-			} else {
-				date = dateParser.parse(input).get(0).getDates().get(0);
+				parsedStr = dateStr;
+			}
+			date = dateParser.parse(parsedStr).get(0).getDates().get(0);
+			
+			if (date != null) {
+				boolean isAbsolute = isAbsoluteDate(parsedStr);
+				boolean isValid = isValidDate(parsedStr);
+				result = new ParsedDate(date, isValid, isAbsolute);
 			}
 
 		} catch (Exception e) {
 			logger.log(Level.INFO, "Exception was thrown when parsing date from input.", e);
-			return null;
+			return new ParsedDate();
 		}
-		return date;
+		return result;
+	}
+	
+	private static boolean isAbsoluteDate(String input) {
+		if (input == null) {
+			return false;
+		}
+		
+		Pattern pattern = Pattern.compile("([0-9]{1,2})-([0-9]{1,2})-([0-9]{2,4})", _flags);
+		Matcher matcher = pattern.matcher(input);
+		
+		return matcher.matches();
+	}
+	
+	private static boolean isValidDate(String input) {
+		if (input == null) {
+			return false;
+		}
+		
+		String[] formats = {"MM-dd-yyyy", "MM-dd"};
+		SimpleDateFormat dateFormat = new SimpleDateFormat();
+		boolean isDate = false;
+		
+		Pattern pattern1 = Pattern.compile("([0-9]{1,2})-([0-9]{1,2})-([0-9]{2,4})", _flags);
+		Matcher matcher1 = pattern1.matcher(input);
+		
+		Pattern pattern2 = Pattern.compile("([0-9]{1,2})-([0-9]{1,2})", _flags);
+		Matcher matcher2 = pattern2.matcher(input);
+		
+		isDate = matcher1.matches() || matcher2.matches();
+		
+		if (!isDate) {
+			return true;
+		}
+		
+		for (int i = 0; i < formats.length; i++) {
+			try {
+				dateFormat = new SimpleDateFormat(formats[i]);
+				dateFormat.setLenient(false);
+				dateFormat.parse(input);
+				return true;
+			} catch (ParseException e) {}
+		}
+		return false;
 	}
 
 	public static String getTime(String input) {
@@ -342,7 +394,7 @@ public class DateTime {
 		//System.out.println(parse("at 12 jan"));
 		//System.out.println(parse("17 March 2016 22:10"));
 		//System.out.println(parse("16 Dec 2015"));
-		//System.out.println(getTime("4 pm"));
-		System.out.println(getDate("10 March 2015"));
+		System.out.println(isValidDate("wed"));
+		//System.out.println(isValidDate("30 Feb"));
 	}
 }

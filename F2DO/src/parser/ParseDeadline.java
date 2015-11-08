@@ -6,9 +6,11 @@ import java.util.Date;
 
 import date.DatePair;
 import date.DateTime;
+import date.ParsedDate;
 import type.KeywordType;
 
 public class ParseDeadline implements IParseDateTime {
+	private static final String JOIN_DELIMITER = " ";
 	private static final String SPLIT_DELIMITER = "\\s+";
 	
 	private String _input = null;
@@ -27,22 +29,34 @@ public class ParseDeadline implements IParseDateTime {
 			
 			if (keyword == KeywordType.DUE || keyword == KeywordType.BY) {
 				words.remove(0);
-				input = String.join(" ", words);
+				input = String.join(JOIN_DELIMITER, words);
 			}
 		}
 		
-		Date dateTime = DateTime.parse(input);
+		ParsedDate result = DateTime.parse(input);
+		Date dateTime = result.getDate();
 		String timeStr = DateTime.getTime(input);
 		
 		if (timeStr == null) {
-			Date time = DateTime.parse("23:59");
+			Date time = DateTime.parse("23:59").getDate();
 			dateTime = DateTime.combineDateTime(dateTime, time);
+		}
+		
+		Date now = new Date();
+		if (dateTime != null && !result.isAbsolute() && dateTime.compareTo(now) < 0) {
+			dateTime = DateTime.getOneYearLater(dateTime);
 		}
 		
 		DatePair datePair = new DatePair(null, dateTime);
 		
 		if (dateTime != null) {
 			datePair.setDateString(_input);
+		}
+		
+		System.out.println(result.isValid());
+		
+		if (!result.isValid()) {
+			datePair.setErrorMsg(ParserHelper.ERROR_INVALID_DATE);
 		}
 		
 		return datePair;

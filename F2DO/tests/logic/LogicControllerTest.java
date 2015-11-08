@@ -178,8 +178,8 @@ public class LogicControllerTest {
 	    Task sampleTaskTwo = new Task();
 		sampleTaskTwo.setTaskID(1);
 		sampleTaskTwo.setTaskName("Meeting with Boss");
-		sampleTaskTwo.setStartDate(DateTime.parse("01/12/2015"));
-		sampleTaskTwo.setEndDate(DateTime.parse("31/12/2015"));
+		sampleTaskTwo.setStartDate(DateTime.parse("01/12/2015").getDate());
+		sampleTaskTwo.setEndDate(DateTime.parse("31/12/2015").getDate());
 		testDisplayList.add(sampleTaskOne);
 		LogicController.process("add Project from 00/12 to 32/12", LogicController.getDisplayList());
 		assertNotEquals(testDisplayList.get(0).getStartDate(), LogicController.getDisplayList().get(0).getStartDate());

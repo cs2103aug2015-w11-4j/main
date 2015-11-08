@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import date.DatePair;
 import date.DateTime;
+import date.ParsedDate;
 import type.DayType;
 import type.KeywordType;
 
@@ -19,6 +20,8 @@ public class ParseEvent implements IParseDateTime {
 	
 	private String _input = null;
 	private final int _flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
+	private boolean _isAbsoluteDate = false;
+	private boolean _isValidDate = false;
 
 	public ParseEvent(String input) {
 		_input = input;
@@ -27,19 +30,23 @@ public class ParseEvent implements IParseDateTime {
 	@Override
 	public DatePair analyze() {
 		String timeStr = DateTime.getTime(_input);
-		Date startDate = DateTime.parse(_input);
+		ParsedDate result = DateTime.parse(_input);
+		Date startDate = result.getDate();
 		Date endDate = null;
 		
+		_isAbsoluteDate = result.isAbsolute();
+		_isValidDate = result.isValid();
+		
 		if (isFrom()) {
-			DatePair result = analyzeKeywordFrom();
-			startDate = result.getStartDate();
-			endDate = result.getEndDate();
+			DatePair pair = analyzeKeywordFrom();
+			startDate = pair.getStartDate();
+			endDate = pair.getEndDate();
 		} 
 		
 		// If no time is given, set default event time from 8am to 11pm
 		if (timeStr == null) {
-			Date startTime = DateTime.parse("8:00");
-			Date endTime = DateTime.parse("23:00");
+			Date startTime = DateTime.parse("08:00").getDate();
+			Date endTime = DateTime.parse("23:00").getDate();
 			
 			startDate = DateTime.combineDateTime(startDate, startTime);
 			if (endDate != null) {
@@ -51,7 +58,7 @@ public class ParseEvent implements IParseDateTime {
 		
 		// If the entered date RANGE has passed, get the date(s) next year
 		Date now = new Date();
-		if (startDate != null && startDate.compareTo(now) < 0) {
+		if (startDate != null && !_isAbsoluteDate && startDate.compareTo(now) < 0) {
 			if (endDate != null && endDate.compareTo(now) < 0) {
 				startDate = DateTime.getOneYearLater(startDate);
 				endDate = DateTime.getOneYearLater(endDate);
@@ -63,6 +70,11 @@ public class ParseEvent implements IParseDateTime {
 		// Get the string contains date time format
 		DatePair datePair = new DatePair(startDate, endDate);
 		datePair.setDateString(getDateStr());
+		
+		if (!_isValidDate) {
+			datePair.setErrorMsg(ParserHelper.ERROR_INVALID_DATE);
+			System.out.println(datePair.isError());
+		}
 		
 		return datePair;
 	}
@@ -151,9 +163,15 @@ public class ParseEvent implements IParseDateTime {
 		Date endDate = null;
 		
 		if (matcher.matches()) {
-			Date startTime = DateTime.parse(matcher.group(1));
-			Date endTime = DateTime.parse(matcher.group(2));
-			Date date = DateTime.parse(matcher.group(3));
+			Date startTime = DateTime.parse(matcher.group(1)).getDate();
+			Date endTime = DateTime.parse(matcher.group(2)).getDate();
+			
+			ParsedDate dateResult = DateTime.parse(matcher.group(3));
+			Date date = dateResult.getDate();
+
+			//_isRelativeDate = DateTime.isRelativeDate(matcher.group(3));
+			_isAbsoluteDate = dateResult.isAbsolute();
+			_isValidDate = dateResult.isValid();
 			
 			if (startTime != null && date != null) {
 				startDate = DateTime.combineDateTime(date, startTime);
@@ -183,8 +201,13 @@ public class ParseEvent implements IParseDateTime {
 		Date endDate = null;
 		
 		if (matcher.matches()) {
-			startDate = DateTime.parse(matcher.group(1));
-			endDate = DateTime.parse(matcher.group(2));
+			ParsedDate startResult = DateTime.parse(matcher.group(1));
+			ParsedDate endResult = DateTime.parse(matcher.group(2));
+			startDate = startResult.getDate();
+			endDate = endResult.getDate();
+			
+			_isAbsoluteDate = startResult.isAbsolute() || endResult.isAbsolute();
+			_isValidDate = startResult.isValid() && endResult.isValid();
 			
 			if (endDate != null && startDate != null && 
 					endDate.compareTo(startDate) < 0) {
@@ -224,7 +247,10 @@ public class ParseEvent implements IParseDateTime {
 		Date startDate = null;
 		
 		if (matcher.matches()) {
-			startDate = DateTime.parse(_input);
+			ParsedDate result = DateTime.parse(_input);
+			startDate = result.getDate();
+			_isAbsoluteDate = result.isAbsolute();
+			_isValidDate = result.isValid();
 		}
 		
 		return new DatePair(startDate, null);
