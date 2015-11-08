@@ -53,8 +53,6 @@ public class UserInterface extends Application {
 	private final KeyCombination _showUndoneKey = new KeyCodeCombination(KeyCode.U, KeyCombination.CONTROL_DOWN);
 	private final KeyCombination _showDoneKey = new KeyCodeCombination(KeyCode.D, KeyCombination.CONTROL_DOWN);
 	private final KeyCombination _showAllKey = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
-	
-	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private static ArrayList<String> commandHistory = new ArrayList<String>();
 	private static ArrayList<Task> _displayList = new ArrayList<Task>();
@@ -122,7 +120,6 @@ public class UserInterface extends Application {
         _floatingButton.setStyle("-fx-font-size: 13.5; -fx-font-weight: bold");
         
         _tables.setAlignment(Pos.CENTER);
-        //_tables.setPadding(new Insets(7.5,7.5,7.5,7.5));
         _tables.getChildren().addAll(_taskButton, _taskTable, _floatingButton, _floatingTable);
         _tables.setSpacing(7);
         
@@ -154,11 +151,6 @@ public class UserInterface extends Application {
 		_field.setPadding(new Insets(2,2,2,2));
 		_field.setWrapText(true);
 		_field.setStyle("-fx-border-color: lightblue; -fx-font-size: 14");
-		
-		/*
-		ScrollBar scrollBarv = (ScrollBar)_field.lookup(".scroll-bar:vertical");
-		scrollBarv.setDisable(true);
-		*/
 	}
 	
 	/**
@@ -166,8 +158,6 @@ public class UserInterface extends Application {
 	 * @param feedback
 	 */
 	private void setFeedback() {
-		//feedBack.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 13));
-		//feedBack.setStyle("-fx-text-fill: black");
 		_feedBack.setText("Welcome to F2DO, your personalised task manager(:\n"
 				+ "Type " + "\"Help\"" + " for a list of commands to get started.");
 		_feedBack.setMouseTransparent(true);
@@ -192,7 +182,6 @@ public class UserInterface extends Application {
 				String[] result = newValue.substring(firstWord.length()).split("\\s");
 				int currentIndex = firstWord.length();
 				for (int i = 0; i < result.length; i++) {
-					//System.out.println(result[i]);
 					String word = result[i];
 					if (isValidKeyword(word)) {
 						_field.setStyle(currentIndex, currentIndex + word.length(),
@@ -249,6 +238,17 @@ public class UserInterface extends Application {
 		return false;	
 	}
 	
+	/**
+	 * Set the hot keys.
+	 * Ctrl + Z: undo operation.
+	 * Ctrl + Y: redo operation.
+	 * Ctrl + H: home page.
+	 * Ctrl + U: show undone tasks.
+	 * Ctrl + D: show done tasks.
+	 * Ctrl + S: show all.
+	 * F1: help page.
+	 * ESC: exit application.
+	 */
 	private void setHotKey() {
 		String showUndone = "show undone";
 		String showDone = "show done";
@@ -286,6 +286,8 @@ public class UserInterface extends Application {
 					setUpCommandPrompt();
 					setCheatSheetContent();
 				} catch (Exception e) {}
+			} else if (event.getCode().equals(KeyCode.ESCAPE)) {
+				exit();
 			}
 			
 		});
@@ -293,101 +295,59 @@ public class UserInterface extends Application {
 	
 	/**
 	 * Set the event handler when the key is pressed.
-	 * @param field
-	 * @param feedback
-	 * @param table
 	 */
 	private void setCommandKeyPressed() {
-			
-		_field.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override 
-			public void handle(KeyEvent keyEvent) {
-				if (keyEvent.getCode() == KeyCode.ENTER) {
-					String userInput = _field.getText();
-					commandHistory.add(userInput);
-					commandIndex = commandHistory.size() - 1;
-						
-					_field.clear();
-					keyEvent.consume();
 		
-					String feedbackMsg = LogicController.process(userInput, _displayList);
+		_field.setOnKeyPressed((KeyEvent event) -> {
+			if (event.getCode().equals(KeyCode.ENTER)) {
+				String userInput = _field.getText();
+				commandHistory.add(userInput);
+				commandIndex = commandHistory.size() - 1;
+					
+				_field.clear();
+				event.consume();
+	
+				String feedbackMsg = LogicController.process(userInput, _displayList);
 
-					if (feedbackMsg == 	FeedbackHelper.MSG_HELP) {
-						try {
-							initialiseScene();
-							setUpCommandPrompt();
-							setCheatSheetContent();
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					} else if (feedbackMsg == FeedbackHelper.MSG_HOME) {
-						initialiseScene();
-						setUpCommandPrompt();
-						setUpTables();
-					} else {
-						_feedBack.setText(feedbackMsg);
-						updateDisplayList();
-					}
-				}
-				else if (keyEvent.getCode() == KeyCode.F1) {
-				
-					if (!commandHistory.isEmpty()) {
-						_field.insertText(0, commandHistory.get(commandIndex));
-						//_field.setText(commandHistory.get(commandIndex));
-						int length = commandHistory.get(commandIndex).length();
-						commandIndex--;
-					
-						Platform.runLater( new Runnable() {
-							@Override
-							public void run() {
-								_field.positionCaret(length);
-							}
-						});
-					
-						if (commandIndex < 0) {
-							commandIndex = 0;
-						}
-					}
-				} else if (keyEvent.getCode() == KeyCode.DOWN) {
-					_field.showPopup();
-				}
-				/*
-				else if (event.getCode() == KeyCode.TAB + SHIFT) {
-				
-					if (!commandHistory.isEmpty()) {
-						field.setText(commandHistory.get(commandIndex + 1));
-						int length = commandHistory.get(commandIndex + 1).length();
-						commandIndex++;
-					
-						Platform.runLater( new Runnable() {
-					    	@Override
-					    	public void run() {
-					        	field.positionCaret(length);
-					    	}
-						});
-					
-						if (commandIndex > commandHistory.size()) {
-							commandIndex = 0;
-						} 
-					}
-				}
-				*/
-				else if (keyEvent.getCode() == KeyCode.TAB) {
+				if (feedbackMsg == 	FeedbackHelper.MSG_HELP) {
 					try {
 						initialiseScene();
 						setUpCommandPrompt();
-						setUpTables();
+						setCheatSheetContent();
 					} catch (Exception e) {
-						logger.warning("Unable to properly process TAB keycode");
 						e.printStackTrace();
 					}
+				} else if (feedbackMsg == FeedbackHelper.MSG_HOME) {
+					initialiseScene();
+					setUpCommandPrompt();
+					setUpTables();
+				} else {
+					_feedBack.setText(feedbackMsg);
+					updateDisplayList();
 				}
+			} else if (event.getCode().equals(KeyCode.UP)) {
 			
-				else if (keyEvent.getCode() == KeyCode.ESCAPE) {
-					exit();
+				if (!commandHistory.isEmpty()) {
+					_field.replaceText(commandHistory.get(commandIndex));
+					int length = commandHistory.get(commandIndex).length();
+					commandIndex--;
+				
+					Platform.runLater( new Runnable() {
+						@Override
+						public void run() {
+							_field.positionCaret(length);
+						}
+					});
+				
+					if (commandIndex < 0) {
+						commandIndex = 0;
+					}
 				}
+			} else if (event.getCode().equals(KeyCode.DOWN)) {
+				_field.showPopup();
 			}
 		});
+		
 	}
 	
 	private void initialiseScene() {
