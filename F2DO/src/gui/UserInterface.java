@@ -10,13 +10,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -55,16 +55,13 @@ public class UserInterface extends Application {
 	private static UITable _taskTable = new UITable(false);
 	private static UITable _floatingTable = new UITable(true);
 	
-	private static int _ctrlUCount = 0;
-	private static int _ctrlRCount = 0;
+	private final KeyCombination _undoKey = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
+	private final KeyCombination _redoKey = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
+	private final KeyCombination _homeKey = new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_DOWN);
+	private final KeyCombination _showUndoneKey = new KeyCodeCombination(KeyCode.U, KeyCombination.CONTROL_DOWN);
+	private final KeyCombination _showDoneKey = new KeyCodeCombination(KeyCode.D, KeyCombination.CONTROL_DOWN);
+	private final KeyCombination _showAllKey = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
 	
-	private static final BooleanProperty _ctrlPressed = new SimpleBooleanProperty(false);
-	private static final BooleanProperty _uPressed = new SimpleBooleanProperty(false);
-	private static final BooleanProperty _rPressed = new SimpleBooleanProperty(false);
-	private static final BooleanProperty _ePressed = new SimpleBooleanProperty(false);
-	private static final BooleanBinding _ctrlAndUPressed = _ctrlPressed.and(_uPressed);
-	private static final BooleanBinding _ctrlAndRPressed = _ctrlPressed.and(_rPressed);
-	private static final BooleanBinding _ctrlAndEPressed = _ctrlPressed.and(_ePressed);
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private static ArrayList<String> commandHistory = new ArrayList<String>();
@@ -83,8 +80,8 @@ public class UserInterface extends Application {
         
         setKeywordsHighlighting();
         
-        setKeyCombinationListener();
-        setKeyPressed(_field, _feedBack, _taskTable, primaryStage);
+        setHotKey();
+        setCommandKeyPressed();
         
         String css = UserInterface.class.getResource("style.css").toExternalForm();
         _defaultScene.getStylesheets().add(css);
@@ -261,74 +258,40 @@ public class UserInterface extends Application {
 		return false;	
 	}
 	
-	/**
-	 * Create key combination handler.
-	 * CTRL+U: undo listener.
-	 * CTRL+R: redo listener.
-	 * CTRL+E: exit listener.
-	 */
-	private void setKeyCombinationListener() {
-		// Undo listener
-		_ctrlAndUPressed.addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				_ctrlUCount += 1;
-				 
-				 if ((_ctrlUCount % 2) == 0) {
-					 _ctrlUCount = 0;
-					 String feedbackMsg = LogicController.undo();
-					 _feedBack.setText(feedbackMsg);
-					 updateDisplayList();
-				 }
+	private void setHotKey() {
+		String showUndone = "show undone";
+		String showDone = "show done";
+		String showAll = "show all";
+
+		_root.setOnKeyPressed((KeyEvent event) -> {
+			
+			if (_undoKey.match(event)) {
+				String feedbackMsg = LogicController.undo();
+				 _feedBack.setText(feedbackMsg);
+				 updateDisplayList();
+			} else if (_redoKey.match(event)) {
+				String feedbackMsg = LogicController.redo();
+				 _feedBack.setText(feedbackMsg);
+				 updateDisplayList();
+			} else if (_homeKey.match(event)) {
+				initialiseScene();
+				setUpCommandPrompt();
+				setUpTables();
+			} else if (_showUndoneKey.match(event)) {
+				String feedbackMsg = LogicController.process(showUndone, _displayList);
+				_feedBack.setText(feedbackMsg);
+				 updateDisplayList();
+			} else if (_showDoneKey.match(event)) {
+				String feedbackMsg = LogicController.process(showDone, _displayList);
+				_feedBack.setText(feedbackMsg);
+				 updateDisplayList();
+			} else if (_showAllKey.match(event)) {
+				String feedbackMsg = LogicController.process(showAll, _displayList);
+				_feedBack.setText(feedbackMsg);
+				 updateDisplayList();
 			}
-        });
-		
-		// Redo listener
-		_ctrlAndRPressed.addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				_ctrlRCount += 1;
-				 
-				 if ((_ctrlRCount % 2) == 0) {
-					 _ctrlRCount = 0;
-					 String feedbackMsg = LogicController.redo();
-					 _feedBack.setText(feedbackMsg);
-					 updateDisplayList();
-				 }
-			}
-        });
-		
-		// Exit listener
-		_ctrlAndEPressed.addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				System.exit(1);
-			}
-        });
-        
-        _root.setOnKeyPressed((KeyEvent event) -> {
-        	if (event.getCode() == KeyCode.CONTROL) {
-        		_ctrlPressed.set(true);
-            } else if (event.getCode() == KeyCode.U) {
-            	_uPressed.set(true);
-            } else if (event.getCode() == KeyCode.R) {
-            	_rPressed.set(true);
-            } else if (event.getCode() == KeyCode.E) {
-            	_ePressed.set(true);
-            }
-        });
-        
-        _root.setOnKeyReleased((KeyEvent event) -> {
-        	if (event.getCode() == KeyCode.CONTROL) {
-        		_ctrlPressed.set(false);
-            } else if (event.getCode() == KeyCode.U) {
-            	_uPressed.set(false);
-            } else if (event.getCode() == KeyCode.R) {
-            	_rPressed.set(false);
-            } else if (event.getCode() == KeyCode.E) {
-            	_ePressed.set(false);
-            }
-        });
+			
+		});
 	}
 	
 	/**
@@ -337,17 +300,17 @@ public class UserInterface extends Application {
 	 * @param feedback
 	 * @param table
 	 */
-	private void setKeyPressed(InlineCssTextArea field, Label feedback, TableView<Integer> table, Stage primaryStage) {
+	private void setCommandKeyPressed() {
 			
-		field.setOnKeyPressed(new EventHandler<KeyEvent>() {
+		_field.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override 
 			public void handle(KeyEvent keyEvent) {
 				if (keyEvent.getCode() == KeyCode.ENTER) {
-					String userInput = field.getText();
+					String userInput = _field.getText();
 					commandHistory.add(userInput);
 					commandIndex = commandHistory.size() - 1;
 						
-					field.clear();
+					_field.clear();
 					keyEvent.consume();
 		
 					String feedbackMsg = LogicController.process(userInput, _displayList);
@@ -365,7 +328,7 @@ public class UserInterface extends Application {
 						setUpCommandPrompt();
 						setUpTables();
 					} else {
-						feedback.setText(feedbackMsg);
+						_feedBack.setText(feedbackMsg);
 						updateDisplayList();
 					}
 				}
@@ -380,7 +343,7 @@ public class UserInterface extends Application {
 						Platform.runLater( new Runnable() {
 							@Override
 							public void run() {
-								field.positionCaret(length);
+								_field.positionCaret(length);
 							}
 						});
 					

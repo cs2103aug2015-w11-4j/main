@@ -54,8 +54,6 @@ public class ParseDeadline implements IParseDateTime {
 			datePair.setDateString(_input);
 		}
 		
-		System.out.println(result.isValid());
-		
 		if (!result.isValid()) {
 			datePair.setErrorMsg(ParserHelper.ERROR_INVALID_DATE);
 		}
