@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Storage class maintains file input and output related matters.
@@ -19,6 +21,8 @@ public class Storage {
 	private static final String DEFAULT_FILE_PATH = DEFAULT_DIRECTORY + "/" + FILENAME; 
 	private static final String PROPERTIES_FILE_PATH = DEFAULT_DIRECTORY + "/config.properties";
 	private static final String PROPERTIES_SAVE_FILE = "filepath";
+
+	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	private static File _saveFolder = new File(DEFAULT_DIRECTORY);
 	private static File _saveFile =  new File(DEFAULT_FILE_PATH);
@@ -60,7 +64,7 @@ public class Storage {
 				}
 			} 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.WARNING, "An exception was thrown when setting folder path.", e);
 		} finally {
 			if (!isSuccessful) {
 				_saveFolder = prevFolder;
@@ -91,6 +95,7 @@ public class Storage {
 				fos.close();
 			}
 		} catch (Exception e) {
+			logger.log(Level.WARNING, "An exception was thrown when creating properties file.", e);
 			return false;
 		}
 		return true;
@@ -114,6 +119,7 @@ public class Storage {
 				createPropertiesFile();
 			}
 		} catch (Exception e) {
+			logger.log(Level.WARNING, "An exception was thrown when reading properties file.", e);
 			return false;
 		}
 		return true;
@@ -132,6 +138,7 @@ public class Storage {
 			properties.store(fos, "Properties file of F2DO");
 			fos.close();
 		} catch (Exception e) {
+			logger.log(Level.WARNING, "An exception was thrown when writing properties file.", e);
 			return false;
 		}
 		return true;
@@ -148,7 +155,7 @@ public class Storage {
 			}
 			System.setProperty(CHANGE_DIRECTORY, _saveFolder.getPath());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.WARNING, "An exception was thrown when creating the folder.", e);
 			return false;
 		}
 		return true;
@@ -164,7 +171,7 @@ public class Storage {
 				StorageHelper.createJsonFile(_saveFile);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.WARNING, "An exception was thrown when creating the file.", e);
 			return false;
 		}
 		return true;

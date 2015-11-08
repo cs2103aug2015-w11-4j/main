@@ -1,5 +1,7 @@
 package type;
 
+import java.util.logging.Logger;
+
 public enum DayType {
 	MONDAY,
 	TUESDAY,
@@ -20,11 +22,14 @@ public enum DayType {
 	SUN,
 	INVALID;
 	
+	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
 	public static DayType toDay(String word) {
 		try {
 			word = word.toUpperCase();
 			return valueOf(word); 
 		} catch (Exception e) {
+			logger.info("An invalid day type was specified.");
 			return INVALID;
 		}
 	}

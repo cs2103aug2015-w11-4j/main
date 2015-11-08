@@ -1,5 +1,7 @@
 package type;
 
+import java.util.logging.Logger;
+
 public enum CommandType {
 	ADD,
 	EDIT,
@@ -14,6 +16,8 @@ public enum CommandType {
 	CAT, 
 	MOVE;
 	
+	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	
 	public static CommandType toCmd(String word) {
 		try {
 			word = word.toUpperCase();
@@ -23,6 +27,7 @@ public enum CommandType {
 			
 			return valueOf(word); 
 		} catch (Exception e) {
+			logger.info("An invalid command was detected.");
 			return INVALID; 
 		}
 	}

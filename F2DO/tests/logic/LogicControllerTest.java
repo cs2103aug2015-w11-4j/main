@@ -14,7 +14,7 @@ import object.Task;
 
 public class LogicControllerTest {
 	
-	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	@Test
 	public final void testProcess() {

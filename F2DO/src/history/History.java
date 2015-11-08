@@ -3,6 +3,7 @@ package history;
 
 import java.util.EmptyStackException;
 import java.util.Stack;
+import java.util.logging.Logger;
 
 import object.Result;
 import object.Task;
@@ -10,6 +11,9 @@ import object.ExecutionPair;
 import type.CommandType;
 
 public class History {
+	
+	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	
 	private static Stack<ExecutionPair> _undoStack = new Stack<ExecutionPair>();
 	private static Stack<ExecutionPair> _redoStack = new Stack<ExecutionPair>();
 	
@@ -25,6 +29,7 @@ public class History {
 			_undoStack.push(pair);
 			_redoStack.clear();
 		} catch (Exception e) {
+			logger.info("Unsuccessful pushing for command Add, Delete, Done and Undone.");
 			return false;
 		}
 		return true;
@@ -43,6 +48,7 @@ public class History {
 			_undoStack.push(pair);
 			_redoStack.clear();
 		} catch (Exception e) {
+			logger.info("Unsuccessful pushing for command Edit.");
 			return false;
 		}
 		return true;
@@ -60,6 +66,7 @@ public class History {
 			_undoStack.push(pair);
 			_redoStack.clear();
 		} catch (Exception e) {
+			logger.info("Unsucessful pushing for non-editable functions.");
 			return false;
 		}
 		return true;
@@ -85,6 +92,7 @@ public class History {
 			
 			return result;
 		} catch (EmptyStackException e) {
+			logger.info("Stack for undo operation is empty.");
 			return null;
 		}
 	}
@@ -100,6 +108,7 @@ public class History {
 			_undoStack.push(pair);
 			return pair.getRedo();
 		} catch (EmptyStackException e) {
+			logger.info("Stack for redo operation is empty.");
 			return null;
 		}
 	}
