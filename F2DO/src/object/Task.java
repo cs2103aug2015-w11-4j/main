@@ -4,7 +4,7 @@ import java.util.Date;
 
 import type.TaskType;
 
-//@@author A0111758
+//@@author A0111758E
 public class Task {
 	private int _taskID = -1;
 	private String _taskName = null;

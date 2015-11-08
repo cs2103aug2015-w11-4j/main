@@ -6,7 +6,7 @@ import object.Result;
 import object.Task;
 import type.CommandType;
 
-//@@author A0111758
+//@@author A0111758E
 public interface ICommand {
 	/**
 	 * Get respective class according to the command.

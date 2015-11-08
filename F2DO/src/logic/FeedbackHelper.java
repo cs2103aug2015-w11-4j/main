@@ -1,6 +1,6 @@
 package logic;
 
-//@@author A0111758
+//@@author A0111758E
 public class FeedbackHelper {
 	public static final String MSG_ADD = "Feedback: %1$s has been successfully added!";
 	public static final String MSG_CAT = "Feedback: Category %1$s has been successfully added!";

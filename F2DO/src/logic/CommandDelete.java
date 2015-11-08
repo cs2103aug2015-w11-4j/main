@@ -7,7 +7,7 @@ import object.Result;
 import object.Task;
 import storage.Storage;
 
-//@@author A0111758
+//@@author A0111758E
 public class CommandDelete implements ICommand {
 	private Result _result = null;
 	private ConcurrentSkipListMap<Integer, Task> _taskList =
