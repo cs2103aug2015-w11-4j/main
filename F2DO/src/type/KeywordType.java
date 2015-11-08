@@ -28,7 +28,6 @@ public enum KeywordType {
 			
 			return valueOf(word); 
 		} catch (Exception e) {
-			logger.info("An invalid keyword type was specified.");
 			return INVALID; 
 		}
 	}
