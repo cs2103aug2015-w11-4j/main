@@ -1,4 +1,4 @@
-package parser;
+package date;
 
 import java.util.Date;
 

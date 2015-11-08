@@ -1,4 +1,5 @@
-package parser;
+//@@ Yu Ting
+package date;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -85,6 +86,17 @@ public class DateTime {
 		}
 		return date;
 	}
+	
+	public static Date getToday() {
+		Calendar todayCalendar = Calendar.getInstance();
+		
+		// Initialize today
+		todayCalendar.set(Calendar.HOUR_OF_DAY, 23);
+		todayCalendar.set(Calendar.MINUTE, 59);
+		todayCalendar.set(Calendar.SECOND, 59);
+		
+		return todayCalendar.getTime();
+	}
 
 	public static Date parse(String input) {
 		Date date = null;
@@ -96,7 +108,7 @@ public class DateTime {
 				if (timeStr != null) {
 					dateStr += " " + timeStr;
 				}
-				
+				System.out.println("dateStr: " + dateStr);
 				date = dateParser.parse(dateStr).get(0).getDates().get(0);
 			} else {
 				date = dateParser.parse(input).get(0).getDates().get(0);
@@ -171,12 +183,13 @@ public class DateTime {
 	private static String getAmericanDate(String input) {
 		String shortMonth = "jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec";
 		String regexNumbericDM = ".*?([0-9]{1,2})[/-]([0-9]{1,2}).*";
-		String regexShortDM = ".*?([0-9]{1,2})[/-](" + shortMonth + ").*";
+		String regexShortDM = ".*?([0-9]{1,2})[ /-](" + shortMonth + ").*";
 		String regexNumericDMY = ".*?([0-9]{1,2})[/-]([0-9]{1,2})[/-]([0-9]{2,4}).*";
-		String regexShortDMY = ".*?([0-9]{1,2})[/-](" + shortMonth + ")[/-]([0-9]{2,4}).*";
+		String regexShortDMY1 = ".*?([0-9]{1,2})[ /-](" + shortMonth + ")[ /-]([0-9]{2,4})[^\\d?].*";
+		String regexShortDMY2 = ".*?([0-9]{1,2})[ /-](" + shortMonth + ")[ /-]([0-9]{2,4})[^\\d?]";
 		
 		String[] twoGroups = {regexNumbericDM, regexShortDM};
-		String[] threeGroups = {regexNumericDMY, regexShortDMY};
+		String[] threeGroups = {regexNumericDMY, regexShortDMY1, regexShortDMY2};
 		
 		for (int i = 0; i < threeGroups.length; i++) {
 			String result = getDateMatcher(input, threeGroups[i], DAY_MONTH_YEAR_SIZE);
@@ -248,7 +261,9 @@ public class DateTime {
 	
 	public static void main(String[] args) {
 		System.out.println(isValidTime("23", "59"));
-		System.out.println(parse("at 5 nov"));
+		System.out.println(parse("at 5 nov 12 12pm"));
+		System.out.println(parse("at 5 dec 15"));
+		System.out.println(parse("at 12 jan"));
 		System.out.println(getTime("4 pm"));
 	}
 }

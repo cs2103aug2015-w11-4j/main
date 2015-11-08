@@ -1,5 +1,6 @@
 package parser;
 
+import date.DatePair;
 import type.KeywordType;
 
 public interface IParseDateTime {

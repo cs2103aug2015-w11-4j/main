@@ -2,12 +2,12 @@
 package logic;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.concurrent.ConcurrentSkipListMap;
 
+import date.DateTime;
 import history.History;
 import object.Result;
 import object.Task;
@@ -220,13 +220,7 @@ public class LogicController {
 		// If today's tasks are fewer than 5, add up to 5 tasks.
 		if (_currentCmd != CommandType.SHOW) {
 			ArrayList<Task>	displayList = new ArrayList<Task>();
-			Calendar todayCalendar = Calendar.getInstance();
-			
-			// Initialize today
-			todayCalendar.set(Calendar.HOUR_OF_DAY, 23);
-			todayCalendar.set(Calendar.MINUTE, 59);
-			todayCalendar.set(Calendar.SECOND, 59);
-			Date today = todayCalendar.getTime();
+			Date today = DateTime.getToday();
 			
 			for (Task task: nonFloatingList) {
 				Date startDate = task.getStartDate();

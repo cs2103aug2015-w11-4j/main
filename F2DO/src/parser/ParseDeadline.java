@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
+import date.DatePair;
+import date.DateTime;
 import type.KeywordType;
 
 public class ParseDeadline implements IParseDateTime {

@@ -11,6 +11,8 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 
+import date.DateTime;
+
 public class DateTimeTest {
 	
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);

@@ -1,5 +1,7 @@
 package parser;
 
+import date.DatePair;
+
 public class ParseFloating implements IParseDateTime {
 	
 	public ParseFloating() {

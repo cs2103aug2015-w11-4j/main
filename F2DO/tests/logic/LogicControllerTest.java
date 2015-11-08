@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 
+import date.DateTime;
 import object.Task;
-import parser.DateTime;
 
 public class LogicControllerTest {
 	

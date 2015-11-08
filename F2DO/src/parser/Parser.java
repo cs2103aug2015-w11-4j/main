@@ -6,6 +6,7 @@ import java.util.Date;
 //import java.util.Scanner;
 import java.util.TreeMap;
 
+import date.DatePair;
 import object.Result;
 import object.Task;
 import type.CommandType;
@@ -115,7 +116,7 @@ public class Parser {
 	 * @return title, start date and end date
 	 */
 	private static ContentDate analyzeContentDate(ArrayList<String> words) {
-		TreeMap<Integer, KeywordType> keywordIndices = getKeywordIndex(words);
+		TreeMap<Integer, KeywordType> keywordIndices = ParserHelper.getKeywordIndex(words);
 		ArrayList<Integer> indexList = new ArrayList<Integer>(keywordIndices.keySet());
 		int listSize = indexList.size();
 		String content = String.join(" ", words);
@@ -229,24 +230,6 @@ public class Parser {
 		} else {
 			return TaskType.EVENT;
 		}
-	}
-	
-	private static TreeMap<Integer, KeywordType> getKeywordIndex(ArrayList<String> splitWords) {
-		TreeMap<Integer, KeywordType> keywordIndex = new TreeMap<Integer, KeywordType>();
-		boolean isConsecutive = false;
-		for (int i = 0; i < splitWords.size(); i++) {
-			String word = splitWords.get(i);
-			KeywordType toType = KeywordType.toType(word);
-			
-			if (toType != KeywordType.INVALID && !isConsecutive) {
-				keywordIndex.put(i, toType);
-				isConsecutive = true;
-			} else {
-				isConsecutive = false;
-			}
-		}
-		
-		return keywordIndex;
 	}
 	
 	/*public static void main(String[] args) {
