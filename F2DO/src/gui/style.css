@@ -1,11 +1,22 @@
 .root {
-	-fx-background-color:white;
+	-fx-background-color:whitesmoke;
 	-fx-focus-color:transparent;
-	-fx-font-size:13.5;
 }
 
 .button {
 	-fx-background-color:lavender;
+	-fx-font-size: 15px;
+	-fx-font-family: "Segoe UI Light";
+}
+
+.label {
+	-fx-text-fill:black;
+	-fx-font-size: 14px;
+	-fx-font-family: "Segoe UI Light";
+}
+
+.text-area .content{
+	-fx-text-fill:darkturquoise;
 }
 
 .table-view {
@@ -14,18 +25,21 @@
 
 /* keep horizontal line */
 .table-view .table-row-cell { 
-  -fx-border-width: 1;
+     -fx-border-width: 1;
+     -fx-cell-size: 30px;
 }
 
 .table-view .column-header{
-    -fx-font-size: 13.5;
+    -fx-font-size: 14px;
+    -fx-font-family: "Segoe UI Light";
     -fx-background-color:mistyrose;
+    -fx-font-weight:bold;
 }
 
 .table-cell {
-    -fx-font-size: 13.5;
     -fx-text-fill:black; 
-    -fx-font-family: semi_bold;
+    -fx-font-size: 14px;
+     -fx-font-family: "Segoe UI Light";
 }
 
 .table-row-cell:odd {
