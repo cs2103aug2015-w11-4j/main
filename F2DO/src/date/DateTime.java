@@ -266,7 +266,6 @@ public class DateTime {
 		//System.out.println(parse("at 12 jan"));
 		System.out.println(parse("17 Feb 22:10"));
 		System.out.println(parse("16 Dec 2015"));
-		//System.out.println(parse("18 Jan 10pm"));
 		System.out.println(getTime("4 pm"));
 	}
 }
