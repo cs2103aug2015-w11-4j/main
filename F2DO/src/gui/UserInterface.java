@@ -73,7 +73,7 @@ public class UserInterface extends Application {
 	}
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {	
+	public void start(Stage primaryStage) throws Exception {
 		
 		setUpCommandPrompt(); 
 		updateDisplayList();
@@ -88,7 +88,12 @@ public class UserInterface extends Application {
         _defaultScene.getStylesheets().add(css);
         
         primaryStage.setScene(_defaultScene);
+        primaryStage.setTitle("F2DO");
         primaryStage.show();
+	}
+
+	public BorderPane getRootNode() {
+		return _root;
 	}
 	
 	/** 
@@ -97,6 +102,9 @@ public class UserInterface extends Application {
 	private void setUpCommandPrompt() {
 		setTextArea();
 		setFeedback(_feedBack);
+		
+		_field.setId("textarea");
+		_feedBack.setId("feedback");
 		
 		_vbox.setAlignment(Pos.CENTER);
 		_vbox.setSpacing(5);
@@ -112,8 +120,11 @@ public class UserInterface extends Application {
 	private void setUpTables() {
 		updateDisplayList();
 		
-		BorderPane.setMargin(_tables, new Insets(8, 20, 25, 20));
+		BorderPane.setMargin(_tables, new Insets(8, 20, 30, 20));
         BorderPane.setAlignment(_tables, Pos.CENTER);
+        
+        _floatingTable.setId("floatingTable");
+        _taskTable.setId("taskTable");
         
         _taskButton.setMaxWidth(Double.MAX_VALUE);
         _floatingButton.setMaxWidth(Double.MAX_VALUE);
@@ -165,8 +176,8 @@ public class UserInterface extends Application {
 	 * @param feedback
 	 */
 	private void setFeedback(Label feedBack) {
-		feedBack.setStyle("-fx-text-fill: black");
-		feedBack.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 13));
+		//feedBack.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 13));
+		//feedBack.setStyle("-fx-text-fill: black");
 		feedBack.setText("Welcome to F2DO, your personalised task manager(:\n"
 				+ "Type " + "\"Help\"" + " for a list of commands to get started.");
 		feedBack.setMouseTransparent(true);
