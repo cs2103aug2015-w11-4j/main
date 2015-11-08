@@ -4,7 +4,6 @@ package date;
 import static org.junit.Assert.*;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,7 +18,7 @@ public class DateTimeTest {
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Test
-	public void testSlashNumericDMY() throws ParseException {
+	public void testSlashNumericDMY() {
 		
 		logger.info("Starting SlashNumericDMY test");
 
@@ -233,6 +232,34 @@ public class DateTimeTest {
 		assertEquals(testDate, simpleFormat(DateTime.parse("Feb 16")));
 
 		logger.info("Successful end of ShortMD test");
+	}
+	
+	@Test
+	public void testLongMD() {
+		
+		logger.info("Starting LongMD test");
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm");
+		Calendar cal = Calendar.getInstance();
+		
+		cal.set(2015, 11, 16);
+		String testDate = sdf.format(cal.getTime());
+		assertEquals(testDate, simpleFormat(DateTime.parse("December 16")));
+		
+		cal.set(2015, 11, 6);
+		testDate = sdf.format(cal.getTime());
+		assertEquals(testDate, simpleFormat(DateTime.parse("December 6")));		
+		
+		cal.set(2015, 11, 6);
+		testDate = sdf.format(cal.getTime());
+		assertEquals(testDate, simpleFormat(DateTime.parse("December 06")));
+		
+		cal.set(2015, 1, 16);
+		testDate = sdf.format(cal.getTime());
+		assertEquals(testDate, simpleFormat(DateTime.parse("February 16")));
+		
+		logger.info("Successful end of LongMD test");
+
 	}
 	
 	@Test 
