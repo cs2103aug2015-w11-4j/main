@@ -289,6 +289,12 @@ public class UserInterface extends Application {
 				String feedbackMsg = LogicController.process(showAll, _displayList);
 				_feedBack.setText(feedbackMsg);
 				 updateDisplayList();
+			} else if (event.getCode().equals(KeyCode.F1)) {
+				try {
+					initialiseScene();
+					setUpCommandPrompt();
+					setCheatSheetContent();
+				} catch (Exception e) {}
 			}
 			
 		});
