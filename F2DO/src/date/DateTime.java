@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +24,7 @@ public class DateTime {
 	private static final int DAY_MONTH_SIZE = 2;
 	private static final int DAY_MONTH_YEAR_SIZE = 3;
 	private static final HashMap<MonthType, Integer> months = new HashMap<MonthType, Integer>();
+	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	static {
 		months.clear();
@@ -139,6 +142,7 @@ public class DateTime {
 			}
 
 		} catch (Exception e) {
+			logger.log(Level.INFO, "Exception was thrown when parsing date from input.", e);
 			return null;
 		}
 		return date;
@@ -194,6 +198,7 @@ public class DateTime {
 			}
 			
 		} catch (Exception e) {
+			logger.log(Level.INFO, "Exception was thrown when determining validity of time.", e);
 			return false;
 		}
 		return true;
@@ -283,6 +288,7 @@ public class DateTime {
 		try {
 			Integer.parseInt(number);
 		} catch (NumberFormatException e) {
+			logger.info("Month format was MMM or month.");
 			return false;
 		}
 		return true;
