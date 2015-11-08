@@ -3,7 +3,7 @@ package parser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Scanner;
+//import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
@@ -262,7 +262,7 @@ public class Parser {
 		}
 	}
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		while (true) {
 			System.out.print("Input: ");
 			Scanner scanner = new Scanner(System.in);
@@ -287,5 +287,5 @@ public class Parser {
 			System.out.println("StartDate: " + result.getStartDate());
 			System.out.println("EndDate: " + result.getEndDate());
 		}
-	}
+	}*/
 }

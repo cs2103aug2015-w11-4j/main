@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -17,17 +16,23 @@ import com.joestelmach.natty.Parser;
 
 import type.MonthType;
 
-public class DateTime {
-	private static final Parser dateParser = new Parser();
-	private static final int _flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
+public class DateTime extends DateTimeHelper {
 	private static final int DAY = 0;
 	private static final int MONTH = 1;
 	private static final int YEAR = 2;
 	private static final int DATE_SIZE = 3;
 	private static final int DAY_MONTH_SIZE = 2;
 	private static final int DAY_MONTH_YEAR_SIZE = 3;
-	private static final HashMap<MonthType, Integer> months = new HashMap<MonthType, Integer>();
 	private static final String JOIN_DELIMITER = "-";
+	
+	private static final String SHORT_MONTH = "jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec";
+	private static final String LONG_MONTH = "january|february|march|april|may|june|"
+			+ "july|august|september|october|november|december";
+	private static final String MONTH_REGEX = SHORT_MONTH + "|" + LONG_MONTH;
+	
+	private static final Parser dateParser = new Parser();
+	private static final int _flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
+	private static final HashMap<MonthType, Integer> months = new HashMap<MonthType, Integer>();
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	static {
@@ -68,67 +73,6 @@ public class DateTime {
 		months.put(MonthType.DEC, 12);
 		months.put(MonthType.DECEMBER, 12);
 	}
-	
-	/**
-	 * Combine the date and time into a standard date format.
-	 * @param date 
-	 * @param time
-	 * @return standard date format
-	 */
-	public static Date combineDateTime(Date date, Date time) {
-		if (date != null && time != null) {
-			Calendar calendar = Calendar.getInstance();
-			Calendar dateCalendar = Calendar.getInstance();
-			Calendar timeCalendar = Calendar.getInstance();
-
-			calendar.clear();
-			dateCalendar.setTime(date);
-			timeCalendar.setTime(time);
-
-			calendar.set(Calendar.YEAR, dateCalendar.get(Calendar.YEAR));
-			calendar.set(Calendar.MONTH, dateCalendar.get(Calendar.MONTH));
-			calendar.set(Calendar.DATE, dateCalendar.get(Calendar.DATE));
-			calendar.set(Calendar.HOUR_OF_DAY, timeCalendar.get(Calendar.HOUR_OF_DAY));
-			calendar.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
-			calendar.set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
-
-			return calendar.getTime();
-		}
-		return null;
-	}
-	
-	public static Date getOneWeekLater(Date date) {
-		if (date != null) {
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(date);
-			
-			calendar.add(Calendar.DAY_OF_MONTH, 7);
-			date = calendar.getTime();
-		}
-		return date;
-	}
-	
-	public static Date getOneYearLater(Date date) {
-		if (date != null) {
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(date);
-			
-			calendar.add(Calendar.YEAR, 1);
-			date = calendar.getTime();
-		}
-		return date;
-	}
-	
-	public static Date getToday() {
-		Calendar todayCalendar = Calendar.getInstance();
-		
-		// Initialize today
-		todayCalendar.set(Calendar.HOUR_OF_DAY, 23);
-		todayCalendar.set(Calendar.MINUTE, 59);
-		todayCalendar.set(Calendar.SECOND, 59);
-		
-		return todayCalendar.getTime();
-	}
 
 	public static ParsedDate parse(String input) {
 		ParsedDate result = new ParsedDate();
@@ -157,6 +101,75 @@ public class DateTime {
 			return new ParsedDate();
 		}
 		return result;
+	}
+	
+	public static String getTime(String input) {
+		String regexAmPm = ".*?([0-9]{1,2})\\s?(am|pm).*";
+		String regexAmPm2 = ".*?([0-9]{1,2})[:.]([0-9]{1,2})\\s?(am|pm).*";
+		String regexColon = ".*?([0-9]{1,2})[:.]([0-9]{1,2}).*";
+		
+		Pattern pattern = Pattern.compile(regexAmPm, _flags);
+		Matcher matcher = pattern.matcher(input);
+		
+		if (matcher.matches()) {
+			if(isValidTime(matcher.group(1), null)) {
+				return matcher.group(1) + matcher.group(2);
+			}
+		}
+		
+		pattern = Pattern.compile(regexAmPm2);
+		matcher = pattern.matcher(input);
+		
+		if (matcher.matches()) {
+			if(isValidTime(matcher.group(1), matcher.group(2))) {
+				return matcher.group(1) + ":" + matcher.group(2) + matcher.group(3);
+			}
+		}
+		
+		pattern = Pattern.compile(regexColon);
+		matcher = pattern.matcher(input);
+		
+		if (matcher.matches()) {
+			if(isValidTime(matcher.group(1), matcher.group(2))) {
+				return matcher.group(1) + ":" + matcher.group(2);
+			}
+		}
+		return null;
+	}
+	
+	private static String getDate(String input) {
+		String regexTextMD1 = ".*?(" + MONTH_REGEX + ")[ /-]([0-9]{1,2})\\s.*";
+		String regexTextMD2 = ".*?(" + MONTH_REGEX + ")[ /-]([0-9]{1,2})";
+		String regexTextMDY1 = ".*?(" + MONTH_REGEX + ")[ /-]([0-9]{1,2})[ ,/-]\\s?([0-9]{2,4})\\s.*";
+		String regexTextMDY2 = ".*?(" + MONTH_REGEX + ")[ /-]([0-9]{1,2})[ ,/-]\\s?([0-9]{2,4})";
+		String[] allRegex = {regexTextMD1, regexTextMD2, regexTextMDY1, regexTextMDY2};
+		
+		String date = getAmericanDate(input);
+		
+		if (date == null) {
+			for (int i = 0; i < allRegex.length; i++) {
+				String regex = allRegex[i];
+				Pattern pattern = Pattern.compile(regex, _flags);
+				Matcher matcher = pattern.matcher(input);
+				
+				if (matcher.matches()) {
+					int groupNum = matcher.groupCount();
+					ArrayList<String> words = new ArrayList<String>();
+					
+					for (int j = 1; j <= groupNum; j++) {
+						String word = matcher.group(j);
+						
+						if (j == 1 && !isConvertable(word)) {
+							word = months.get(MonthType.toMonth(word)).toString();
+						}
+						words.add(word);
+					}
+					date = String.join(JOIN_DELIMITER, words);
+				}
+			}
+		}
+		
+		return date;
 	}
 	
 	private static boolean isAbsoluteDate(String input) {
@@ -201,79 +214,6 @@ public class DateTime {
 		}
 		return false;
 	}
-
-	public static String getTime(String input) {
-		String regexAmPm = ".*?([0-9]{1,2})\\s?(am|pm).*";
-		String regexAmPm2 = ".*?([0-9]{1,2})[:.]([0-9]{1,2})\\s?(am|pm).*";
-		String regexColon = ".*?([0-9]{1,2})[:.]([0-9]{1,2}).*";
-		
-		Pattern pattern = Pattern.compile(regexAmPm, _flags);
-		Matcher matcher = pattern.matcher(input);
-		
-		if (matcher.matches()) {
-			if(isValidTime(matcher.group(1), null)) {
-				return matcher.group(1) + matcher.group(2);
-			}
-		}
-		
-		pattern = Pattern.compile(regexAmPm2);
-		matcher = pattern.matcher(input);
-		
-		if (matcher.matches()) {
-			if(isValidTime(matcher.group(1), matcher.group(2))) {
-				return matcher.group(1) + ":" + matcher.group(2) + matcher.group(3);
-			}
-		}
-		
-		pattern = Pattern.compile(regexColon);
-		matcher = pattern.matcher(input);
-		
-		if (matcher.matches()) {
-			if(isValidTime(matcher.group(1), matcher.group(2))) {
-				return matcher.group(1) + ":" + matcher.group(2);
-			}
-		}
-		return null;
-	}
-	
-	public static String getDate(String input) {
-		String shortMonth = "jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec";
-		String longMonth = "january|february|march|april|may|june|"
-				+ "july|august|september|october|november|december";
-		String month = shortMonth + "|" + longMonth;
-		String regexTextMD1 = ".*?(" + month + ")[ /-]([0-9]{1,2})\\s.*";
-		String regexTextMD2 = ".*?(" + month + ")[ /-]([0-9]{1,2})";
-		String regexTextMDY1 = ".*?(" + month + ")[ /-]([0-9]{1,2})[ ,/-]\\s?([0-9]{2,4})\\s.*";
-		String regexTextMDY2 = ".*?(" + month + ")[ /-]([0-9]{1,2})[ ,/-]\\s?([0-9]{2,4})";
-		String[] allRegex = {regexTextMD1, regexTextMD2, regexTextMDY1, regexTextMDY2};
-		
-		String date = getAmericanDate(input);
-		
-		if (date == null) {
-			for (int i = 0; i < allRegex.length; i++) {
-				String regex = allRegex[i];
-				Pattern pattern = Pattern.compile(regex, _flags);
-				Matcher matcher = pattern.matcher(input);
-				
-				if (matcher.matches()) {
-					int groupNum = matcher.groupCount();
-					ArrayList<String> words = new ArrayList<String>();
-					
-					for (int j = 1; j <= groupNum; j++) {
-						String word = matcher.group(j);
-						
-						if (j == 1 && !isConvertable(word)) {
-							word = months.get(MonthType.toMonth(word)).toString();
-						}
-						words.add(word);
-					}
-					date = String.join(JOIN_DELIMITER, words);
-				}
-			}
-		}
-		
-		return date;
-	}
 	
 	private static boolean isValidTime(String hourStr, String minStr) {
 		try {
@@ -303,16 +243,12 @@ public class DateTime {
 	 * @return standard date format
 	 */
 	private static String getAmericanDate(String input) {
-		String shortMonth = "jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec";
-		String longMonth = "january|february|march|april|may|june|"
-				+ "july|august|september|october|november|december";
-		String month = shortMonth + "|" + longMonth;
 		String regexNumbericDM = ".*?([0-9]{1,2})[/-]([0-9]{1,2}).*";
-		String regexTextDM1 = ".*?([0-9]{1,2})[ /-](" + month + ")\\s.*";
-		String regexTextDM2 = ".*?([0-9]{1,2})[ /-](" + month + ")";
+		String regexTextDM1 = ".*?([0-9]{1,2})[ /-](" + MONTH_REGEX + ")\\s.*";
+		String regexTextDM2 = ".*?([0-9]{1,2})[ /-](" + MONTH_REGEX + ")";
 		String regexNumericDMY = ".*?([0-9]{1,2})[/-]([0-9]{1,2})[/-]([0-9]{2,4}).*";
-		String regexTextDMY1 = ".*?([0-9]{1,2})[ /-](" + month + ")[ ,/-]\\s?([0-9]{2,4})\\s.*";
-		String regexTextDMY2 = ".*?([0-9]{1,2})[ /-](" + month + ")[ ,/-]\\s?([0-9]{2,4})";
+		String regexTextDMY1 = ".*?([0-9]{1,2})[ /-](" + MONTH_REGEX + ")[ ,/-]\\s?([0-9]{2,4})\\s.*";
+		String regexTextDMY2 = ".*?([0-9]{1,2})[ /-](" + MONTH_REGEX + ")[ ,/-]\\s?([0-9]{2,4})";
 				
 		String[] twoGroups = {regexNumbericDM, regexTextDM1, regexTextDM2 };
 		String[] threeGroups = {regexNumericDMY, regexTextDMY1, regexTextDMY2};
@@ -385,16 +321,5 @@ public class DateTime {
 			return false;
 		}
 		return true;
-	}
-	
-	public static void main(String[] args) {
-		//System.out.println(isValidTime("23", "59"));
-		//System.out.println(parse("at 5 nov 12 12pm"));
-		//System.out.println(parse("at 5 dec 15"));
-		//System.out.println(parse("at 12 jan"));
-		//System.out.println(parse("17 March 2016 22:10"));
-		//System.out.println(parse("16 Dec 2015"));
-		System.out.println(isValidDate("wed"));
-		//System.out.println(isValidDate("30 Feb"));
 	}
 }
