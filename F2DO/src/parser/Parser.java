@@ -15,11 +15,14 @@ import type.KeywordType;
 import type.TaskType;
 
 public class Parser {
+	private static final String JOIN_DELIMITER = " ";
+	private static final String SPLIT_DELIMITER = "\\s+";
+	private static final String REPLACE_DELIMITER = "";
 	
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	public static Result parse(String input, ArrayList<Task> displayList) {
-		String[] splitWords = input.split(" ");
+		String[] splitWords = input.split(SPLIT_DELIMITER);
 		ArrayList<String> words = new ArrayList<>(Arrays.asList(splitWords));
 		
 		Result result = new Result();
@@ -144,37 +147,35 @@ public class Parser {
 				if (shouldInclude(nextKeyword)) {
 					if ((i+1) < (listSize - 1)) {
 						int nextNextIndex = indexList.get(i + 2);
-						parseInput = String.join(" ", words.subList(index, nextNextIndex));
+						parseInput = String.join(JOIN_DELIMITER, words.subList(index, nextNextIndex));
 					} else {
-						parseInput = String.join(" ", words.subList(index, words.size()));
+						parseInput = String.join(JOIN_DELIMITER, words.subList(index, words.size()));
 					}
 				} else {
-					parseInput = String.join(" ", words.subList(index, nextIndex));
+					parseInput = String.join(JOIN_DELIMITER, words.subList(index, nextIndex));
 				}
 			} else {
-				parseInput = String.join(" ", words.subList(index, words.size()));
+				parseInput = String.join(JOIN_DELIMITER, words.subList(index, words.size()));
 			}
 			
 			IParseDateTime function = IParseDateTime.getFunction(keyword, parseInput);
 			DatePair result = function.analyze();
 			
+			// If date is found, remove the date time string from the input string
 			if (isDateFound(result.getStartDate(), result.getEndDate())) {
 				String dateString = result.getDateString();
 				startDate = result.getStartDate();
 				endDate = result.getEndDate();
-				
 				content = String.join(" ", words);
 				
-				if (dateString != null) {
-					content = content.replace(dateString, "");
-				} else {
-					content = content.replace(parseInput, "");
-				}
+				assert (dateString != null);
+
+				content = content.replace(dateString, REPLACE_DELIMITER);
 				
-				String[] splitWords = content.split("\\s+");
+				String[] splitWords = content.split(SPLIT_DELIMITER);
 				ArrayList<String> contentList = new ArrayList<>(Arrays.asList(splitWords));
 				
-				content = String.join(" ", contentList);
+				content = String.join(JOIN_DELIMITER, contentList);
 				
 				if (startDate != null && endDate != null) {
 					if (startDate.compareTo(endDate) > 0) {
