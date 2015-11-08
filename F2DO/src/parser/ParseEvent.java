@@ -13,6 +13,10 @@ import type.DayType;
 import type.KeywordType;
 
 public class ParseEvent implements IParseDateTime {
+	private static final String JOIN_DELIMITER = " ";
+	private static final String SPLIT_DELIMITER = "\\s+";
+	private static final String REPLACE_DELIMITER = "";
+	
 	private String _input = null;
 	private final int _flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
 
@@ -64,7 +68,7 @@ public class ParseEvent implements IParseDateTime {
 	}
 	
 	private String getDateStr() {
-		ArrayList<String> words = new ArrayList<>(Arrays.asList(_input.split("\\s+")));
+		ArrayList<String> words = new ArrayList<>(Arrays.asList(_input.split(SPLIT_DELIMITER)));
 		TreeMap<Integer, KeywordType> keywordIndices = ParserHelper.getKeywordIndex(words);
 		ArrayList<Integer> indexList = new ArrayList<Integer>(keywordIndices.keySet());
 		int listSize = indexList.size();
@@ -76,19 +80,19 @@ public class ParseEvent implements IParseDateTime {
 			
 			if (i < (listSize - 1)) {
 				int nextIndex = indexList.get(i + 1);
-				impossibleStr = String.join(" ", words.subList(index, nextIndex));
+				impossibleStr = String.join(JOIN_DELIMITER, words.subList(index, nextIndex));
 			} else {
-				impossibleStr = String.join(" ", words.subList(index, words.size()));
+				impossibleStr = String.join(JOIN_DELIMITER, words.subList(index, words.size()));
 			}
 			
 			if (DateTime.parse(impossibleStr) == null) {
-				dateTimeStr = dateTimeStr.replace(impossibleStr, "");
+				dateTimeStr = dateTimeStr.replace(impossibleStr, REPLACE_DELIMITER);
 			}
 		}
 		
 		// Reformat the string
-		words = new ArrayList<>(Arrays.asList(dateTimeStr.split("\\s+")));
-		dateTimeStr = String.join("\\s", dateTimeStr);
+		words = new ArrayList<>(Arrays.asList(dateTimeStr.split(SPLIT_DELIMITER)));
+		dateTimeStr = String.join(JOIN_DELIMITER, dateTimeStr);
 		
 		return dateTimeStr;
 	}
@@ -207,7 +211,7 @@ public class ParseEvent implements IParseDateTime {
 	}
 	
 	private boolean isFrom() {
-		String[] tokens = _input.split("\\s");
+		String[] tokens = _input.split(SPLIT_DELIMITER);
 		
 		if (tokens.length > 0) {
 			KeywordType keyword = KeywordType.toType(tokens[0]);
