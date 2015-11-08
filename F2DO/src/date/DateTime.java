@@ -182,14 +182,17 @@ public class DateTime {
 	 */
 	private static String getAmericanDate(String input) {
 		String shortMonth = "jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec";
+		String longMonth = "january|february|march|april|may|june|"
+				+ "july|august|september|october|november|december";
+		String month = shortMonth + "|" + longMonth;
 		String regexNumbericDM = ".*?([0-9]{1,2})[/-]([0-9]{1,2}).*";
-		String regexShortDM = ".*?([0-9]{1,2})[ /-](" + shortMonth + ").*";
+		String regexTextDM = ".*?([0-9]{1,2})[ /-](" + month + ").*";
 		String regexNumericDMY = ".*?([0-9]{1,2})[/-]([0-9]{1,2})[/-]([0-9]{2,4}).*";
-		String regexShortDMY1 = ".*?([0-9]{1,2})[ /-](" + shortMonth + ")[ /-]([0-9]{2,4})\\s.*";
-		String regexShortDMY2 = ".*?([0-9]{1,2})[ /-](" + shortMonth + ")[ /-]([0-9]{2,4})";
+		String regexTextDMY1 = ".*?([0-9]{1,2})[ /-](" + month + ")[ /-]([0-9]{2,4})\\s.*";
+		String regexTextDMY2 = ".*?([0-9]{1,2})[ /-](" + month + ")[ /-]([0-9]{2,4})";
 		
-		String[] twoGroups = {regexNumbericDM, regexShortDM};
-		String[] threeGroups = {regexNumericDMY, regexShortDMY1, regexShortDMY2};
+		String[] twoGroups = {regexNumbericDM, regexTextDM};
+		String[] threeGroups = {regexNumericDMY, regexTextDMY1, regexTextDMY2};
 		
 		for (int i = 0; i < threeGroups.length; i++) {
 			String result = getDateMatcher(input, threeGroups[i], DAY_MONTH_YEAR_SIZE);
@@ -264,7 +267,7 @@ public class DateTime {
 		//System.out.println(parse("at 5 nov 12 12pm"));
 		//System.out.println(parse("at 5 dec 15"));
 		//System.out.println(parse("at 12 jan"));
-		System.out.println(parse("17 Feb 22:10"));
+		System.out.println(parse("17 February 22:10"));
 		System.out.println(parse("16 Dec 2015"));
 		System.out.println(getTime("4 pm"));
 	}
