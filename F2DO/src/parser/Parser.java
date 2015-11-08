@@ -18,6 +18,15 @@ public class Parser {
 	private static final String SPLIT_DELIMITER = "\\s+";
 	private static final String REPLACE_DELIMITER = "";
 	
+	/**
+	 * Parse the input string. 
+	 * The result includes command type, corresponding taskID,
+	 * content, task type, start date and end date. Any parsing
+	 * error is included as well.
+	 * @param input - input string
+	 * @param displayList - display list
+	 * @return the parsing result
+	 */
 	public static Result parse(String input, ArrayList<Task> displayList) {
 		String[] splitWords = input.split(SPLIT_DELIMITER);
 		ArrayList<String> words = new ArrayList<>(Arrays.asList(splitWords));
@@ -70,6 +79,11 @@ public class Parser {
 		return result;
 	}
 	
+	/**
+	 * Check if getting of ID is need according to the input command.
+	 * @param cmd - input command
+	 * @return true if getting ID is need; false otherwise
+	 */
 	private static boolean isIDNeeded(CommandType cmd) {
 		return cmd == CommandType.DELETE || 
 				cmd == CommandType.EDIT ||
@@ -193,6 +207,11 @@ public class Parser {
 		return contentDate;
 	}
 	
+	/**
+	 * Check if the keyword should be included in the next sentence.
+	 * @param keyword
+	 * @return true if the keyword should be include; false otherwise
+	 */
 	private static boolean shouldInclude(KeywordType keyword) {
 		return keyword == KeywordType.ON ||
 				keyword == KeywordType.TODAY ||

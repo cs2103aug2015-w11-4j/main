@@ -9,6 +9,8 @@ import date.DateTime;
 import type.KeywordType;
 
 public class ParseDeadline implements IParseDateTime {
+	private static final String SPLIT_DELIMITER = "\\s+";
+	
 	private String _input = null;
 
 	public ParseDeadline(String input) {
@@ -17,7 +19,7 @@ public class ParseDeadline implements IParseDateTime {
 
 	@Override
 	public DatePair analyze() {
-		ArrayList<String> words = new ArrayList<String>(Arrays.asList(_input.split("\\s")));
+		ArrayList<String> words = new ArrayList<String>(Arrays.asList(_input.split(SPLIT_DELIMITER)));
 		String input = _input;
 		
 		if (words.size() > 0) {

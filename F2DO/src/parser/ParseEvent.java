@@ -67,6 +67,10 @@ public class ParseEvent implements IParseDateTime {
 		return datePair;
 	}
 	
+	/**
+	 * Analyze the string that contains date or time format.
+	 * @return date or time string
+	 */
 	private String getDateStr() {
 		ArrayList<String> words = new ArrayList<>(Arrays.asList(_input.split(SPLIT_DELIMITER)));
 		TreeMap<Integer, KeywordType> keywordIndices = ParserHelper.getKeywordIndex(words);
@@ -97,6 +101,10 @@ public class ParseEvent implements IParseDateTime {
 		return dateTimeStr;
 	}
 	
+	/**
+	 * Analyze string that begins with 'from'.
+	 * @return start date and end date of parsing result
+	 */
 	private DatePair analyzeKeywordFrom() {
 		Date startDate = null;
 		Date endDate = null;
@@ -131,6 +139,10 @@ public class ParseEvent implements IParseDateTime {
 		return new DatePair(startDate, endDate);
 	}
 	
+	/**
+	 * Analyze the string that begins with 'from' and contains 'to' and 'on'.
+	 * @return start date and end date of parsing result
+	 */
 	private DatePair analyzeFromToOn() {
 		String regexFromToOn = "from (.*?) to (.*) on (.*?)";
 		Pattern pattern = Pattern.compile(regexFromToOn, _flags);
@@ -159,6 +171,10 @@ public class ParseEvent implements IParseDateTime {
 		return new DatePair(startDate, endDate);
 	}
 	
+	/**
+	 * Analyze the string that begins with 'from' and contains 'on'.
+	 * @return start date and end date of parsing result
+	 */
 	private DatePair analyzeFromOn() {
 		String regexFromTo = "from (.*?) to (.*)";
 		Pattern pattern = Pattern.compile(regexFromTo, _flags);
@@ -197,6 +213,10 @@ public class ParseEvent implements IParseDateTime {
 		return new DatePair(startDate, endDate);
 	}
 	
+	/**
+	 * Analyze the string that begins with 'from' only.
+	 * @return start date and end date of parsing result
+	 */
 	private DatePair analyzeFrom() {
 		String regexFrom = "from (.*?)";
 		Pattern pattern = Pattern.compile(regexFrom, _flags);
@@ -210,6 +230,10 @@ public class ParseEvent implements IParseDateTime {
 		return new DatePair(startDate, null);
 	}
 	
+	/**
+	 * Check if the first word is the keyword, 'from'.
+	 * @return true if first word is 'from'; false otherwise
+	 */
 	private boolean isFrom() {
 		String[] tokens = _input.split(SPLIT_DELIMITER);
 		
