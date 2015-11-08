@@ -2,6 +2,8 @@ package gui;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -14,7 +16,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.event.EventHandler;
 import object.Task;
 import type.CommandType;
 import type.KeywordType;
@@ -26,10 +27,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 //@@author A0112882H
 public class UserInterface extends Application {
+	private static final int ROW_HEIGHT = 30;
 	
 	private static BorderPane _root = new BorderPane();
 	private static Scene _defaultScene = new Scene(_root, 750, 580);
@@ -63,7 +64,7 @@ public class UserInterface extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
+		setScene();
 		setUpCommandPrompt(); 
         setUpTables();
         
@@ -72,9 +73,6 @@ public class UserInterface extends Application {
         setHotKey();
         setCommandKeyPressed();
         
-        String css = UserInterface.class.getResource("style.css").toExternalForm();
-        _defaultScene.getStylesheets().add(css);
-        
         primaryStage.setScene(_defaultScene);
         primaryStage.setTitle("F2DO");
         primaryStage.show();
@@ -82,6 +80,22 @@ public class UserInterface extends Application {
 
 	public BorderPane getRootNode() {
 		return _root;
+	}
+	
+	private void setScene() {
+		String css = UserInterface.class.getResource("style.css").toExternalForm();
+        _defaultScene.getStylesheets().add(css);
+        
+        _defaultScene.heightProperty().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				int displaySize = (int) Math.floor(_taskTable.getHeight()/ROW_HEIGHT) - 1 ;
+				LogicController.setNonFloatingDisplaySize(displaySize);
+				updateDisplayList();
+			}
+        	
+        });
 	}
 	
 	/** 

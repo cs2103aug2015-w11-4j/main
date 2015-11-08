@@ -20,8 +20,9 @@ public class LogicController {
 	private static final String ERROR_NO_UNDO = "Feedback: No undo operation!";
 	private static final String ERROR_NO_REDO = "Feedback: No redo operation!";
 	
-	private static final int NON_FLOATING_DISPLAY_SIZE = 5;
+	//private static final int NON_FLOATING_DISPLAY_SIZE = 5;
 	private static CommandType _currentCmd = CommandType.INVALID;
+	private static int _nonFloatingDisplaySize = 5;
 	
 	private static ArrayList<Task> _displayList = 
 			new ArrayList<Task>();
@@ -241,7 +242,7 @@ public class LogicController {
 				} 
 				
 				if (!isAdded) {
-					if (displaySize < NON_FLOATING_DISPLAY_SIZE) {
+					if (displaySize < _nonFloatingDisplaySize) {
 						displayList.add(task);
 					} else {
 						break;
@@ -253,6 +254,10 @@ public class LogicController {
 		} 
 		
 		return nonFloatingList;
+	}
+	
+	public static void setNonFloatingDisplaySize(int size) {
+		_nonFloatingDisplaySize = size;
 	}
 	
 	private static Comparator<Task> taskComparator = new Comparator<Task>() {
