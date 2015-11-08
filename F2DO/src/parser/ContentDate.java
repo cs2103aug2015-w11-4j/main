@@ -2,6 +2,7 @@ package parser;
 
 import java.util.Date;
 
+//author A0118005W
 public class ContentDate {
 	private String _content = null;
 	private Date _startDate = null;

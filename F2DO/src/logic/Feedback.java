@@ -1,4 +1,3 @@
-//@@author Sufyan
 package logic;
 
 import java.util.ArrayList;
@@ -6,12 +5,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 import object.Task;
 
-/**
- * Feedback class stores the feedback details after the execution of 
- * the command.
- * @author 
- *
- */
+//@@author A0111758
 public class Feedback {
 	private String _message = null;
 	private boolean _isSuccessful = false;

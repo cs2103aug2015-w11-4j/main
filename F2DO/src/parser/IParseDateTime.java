@@ -3,6 +3,7 @@ package parser;
 import date.DatePair;
 import type.KeywordType;
 
+//@@author A0118005W
 public interface IParseDateTime {
 	public static IParseDateTime getFunction(KeywordType keywordType, String input) {
 		IParseDateTime function = null;

@@ -2,6 +2,7 @@ package date;
 
 import java.util.Date;
 
+//@@author A0118005W
 public class DatePair {
 	private Date _startDate = null;
 	private Date _endDate = null;

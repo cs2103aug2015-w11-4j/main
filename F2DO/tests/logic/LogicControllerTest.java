@@ -1,4 +1,3 @@
-//@@author Ming Yang
 package logic;
 
 import static org.junit.Assert.assertEquals;
@@ -12,6 +11,7 @@ import org.junit.Test;
 import date.DateTime;
 import object.Task;
 
+//@@author A0108511
 public class LogicControllerTest {
 	
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);

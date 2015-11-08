@@ -1,4 +1,3 @@
-//@@author Yu Ting
 package date;
 
 import static org.junit.Assert.*;
@@ -13,6 +12,7 @@ import org.junit.Test;
 
 import date.DateTime;
 
+//@@author A0118005W
 public class DateTimeTest {
 	
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);

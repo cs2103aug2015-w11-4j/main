@@ -1,7 +1,6 @@
 package type;
 
-import java.util.logging.Logger;
-
+//@@author A0118005W
 public enum KeywordType {
 	AT,
 	ON,
@@ -15,8 +14,6 @@ public enum KeywordType {
 	THIS,
 	NEXT,
 	INVALID;
-
-	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	public static KeywordType toType(String word) {
 		try {

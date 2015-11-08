@@ -1,4 +1,3 @@
-//@@author Ming Yang
 package storage;
 
 import static org.junit.Assert.assertFalse;
@@ -14,6 +13,7 @@ import org.junit.Test;
 
 import logic.LogicController;
 
+//@@author A0108511
 public class StorageTest {
 
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);

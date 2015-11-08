@@ -1,4 +1,3 @@
-//@@author Sufyan
 package logic;
 
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -7,6 +6,7 @@ import object.Result;
 import object.Task;
 import type.CommandType;
 
+//@@author A0111758
 public interface ICommand {
 	/**
 	 * Get respective class according to the command.

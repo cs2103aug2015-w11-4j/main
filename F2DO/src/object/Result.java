@@ -5,6 +5,7 @@ import java.util.Date;
 import type.CommandType;
 import type.TaskType;
 
+//@@author A0118005W
 public class Result {
 	private int _storageID = -1;
 	private CommandType _cmd = null;

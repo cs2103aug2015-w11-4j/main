@@ -1,4 +1,3 @@
-//@@author Yu Ting
 package gui;
 
 import org.fxmisc.richtext.InlineCssTextArea;
@@ -20,6 +19,7 @@ import object.Task;
 import type.CommandType;
 import type.TaskType;
 
+//@@author A0118005W
 public class UITextField extends InlineCssTextArea {
 	private static ArrayList<Task> _displayList = new ArrayList<Task>();
 	private ContextMenu popupMenu = new ContextMenu();

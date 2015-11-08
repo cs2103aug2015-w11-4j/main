@@ -13,6 +13,7 @@ import date.ParsedDate;
 import type.DayType;
 import type.KeywordType;
 
+//@@author A0118005W
 public class ParseEvent implements IParseDateTime {
 	private static final String JOIN_DELIMITER = " ";
 	private static final String SPLIT_DELIMITER = "\\s+";

@@ -1,4 +1,3 @@
-//@@author Yu Ting
 package gui;
 
 import javafx.beans.property.DoubleProperty;
@@ -8,6 +7,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
+//@@author A0118005W-reused
 public class UITableColumn<S, T> extends TableColumn<S, T> {
 	private final DoubleProperty _percentageWidth = new SimpleDoubleProperty(1);
 	

@@ -1,4 +1,3 @@
-//@@author Yu Ting
 package history;
 
 import java.util.EmptyStackException;
@@ -10,6 +9,7 @@ import object.Task;
 import object.ExecutionPair;
 import type.CommandType;
 
+//@@author A0118005W
 public class History {
 	
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);

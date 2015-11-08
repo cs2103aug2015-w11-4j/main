@@ -1,7 +1,3 @@
-//@@author Yu Ting
-/**
- * 
- */
 package parser;
 
 import static org.junit.Assert.*;
@@ -18,10 +14,7 @@ import object.Task;
 import type.CommandType;
 import type.TaskType;
 
-/**
- * 
- *
- */
+//@@author A0108511
 public class ParserTest extends LogicControllerTest{
 
 	Result result;

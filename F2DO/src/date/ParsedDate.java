@@ -2,6 +2,7 @@ package date;
 
 import java.util.Date;
 
+//@@author A0118005W
 public class ParsedDate {
 	private Date _date;
 	private boolean _isValid;

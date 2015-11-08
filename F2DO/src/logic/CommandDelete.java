@@ -1,4 +1,3 @@
-//@@author Sufyan
 package logic;
 
 import java.util.ArrayList;
@@ -8,11 +7,7 @@ import object.Result;
 import object.Task;
 import storage.Storage;
 
-/**
- * CommandDelete executes delete function.
- * @author 
- *
- */
+//@@author A0111758
 public class CommandDelete implements ICommand {
 	private Result _result = null;
 	private ConcurrentSkipListMap<Integer, Task> _taskList =

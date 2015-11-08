@@ -1,4 +1,3 @@
-//@@author Cher Lin
 package gui;
 
 import org.fxmisc.richtext.InlineCssTextArea;
@@ -37,6 +36,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+//@@author Cher Lin
 public class UserInterface extends Application {
 	
 	private static BorderPane _root = new BorderPane();

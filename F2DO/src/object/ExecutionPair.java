@@ -1,8 +1,8 @@
-//@@author Yu Ting
 package object;
 
 import type.CommandType;
 
+//@@author A0118005W
 public class ExecutionPair {
 	private CommandType _cmd = CommandType.INVALID;
 	private String _content = null;

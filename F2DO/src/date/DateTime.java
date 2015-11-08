@@ -1,4 +1,3 @@
-//@@ Yu Ting
 package date;
 
 import java.text.ParseException;
@@ -16,6 +15,7 @@ import com.joestelmach.natty.Parser;
 
 import type.MonthType;
 
+//@@author A0118005W
 public class DateTime extends DateTimeHelper {
 	private static final int DAY = 0;
 	private static final int MONTH = 1;

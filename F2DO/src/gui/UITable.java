@@ -1,4 +1,3 @@
-//@@author Cher Lin
 package gui;
 
 import java.text.DateFormat;
@@ -12,6 +11,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TableView;
 import object.Task;
 
+//@@author Cher Lin
 public class UITable extends TableView<Integer> {
 	private ArrayList<Task> _displayList = new ArrayList<Task>();
 	private int _rowIndex = 0;

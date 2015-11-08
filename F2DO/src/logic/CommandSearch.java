@@ -1,4 +1,3 @@
-//@@author Sufyan
 package logic;
 
 import java.util.ArrayList;
@@ -7,11 +6,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import object.Result;
 import object.Task;
 
-/**
- * CommandSearch class executes search function.
- * @author 
- *
- */
+//@@author A0111758
 public class CommandSearch implements ICommand {
 	private Result _result = null;
 	private ConcurrentSkipListMap<Integer, Task> _taskList =

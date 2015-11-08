@@ -1,4 +1,3 @@
-//@@author Sufyan
 package logic;
 
 import java.util.ArrayList;
@@ -16,6 +15,7 @@ import storage.Storage;
 import type.CommandType;
 import type.TaskType;
 
+//@@author A0118005W
 public class LogicController {
 	private static final String ERROR_NO_UNDO = "Feedback: No undo operation!";
 	private static final String ERROR_NO_REDO = "Feedback: No redo operation!";
@@ -291,20 +291,4 @@ public class LogicController {
 			return 0;
 		}
 	};
-	
-	// For testing purpose
-/*	public static void main(String[] args) {
-		System.out.print("Command: ");
-		Scanner scanner = new Scanner(System.in);
-		String input = scanner.nextLine();
-		scanner.close();
-		
-		String feedback = LogicController.process(input, _displayList);
-		System.out.println(feedback);
-		ArrayList<Task> displayList = LogicController.getDisplayList();
-		
-		for (int i = 0; i < displayList.size(); i++) {
-			System.out.println((i+1) + ". " + displayList.get(i).getTaskName());
-		}
-	}*/
 }

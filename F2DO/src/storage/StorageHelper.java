@@ -1,4 +1,3 @@
-//@@author Ming Yang
 package storage;
 
 import java.io.File;
@@ -11,9 +10,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import object.Task;
 
-/**
- * StorageHelper class maintains reading and writing of JSON file.
- */
+//@@author A0108511
 public class StorageHelper {
 	private static SimpleDateFormat _dateFormat = 
 			new SimpleDateFormat("EEE dd MMM HH:mm:ss zzz yyyy");

@@ -1,4 +1,3 @@
-//@@author Ming Yang
 package history;
 
 import static org.junit.Assert.*;
@@ -10,6 +9,7 @@ import org.junit.Test;
 import object.Task;
 import type.CommandType;
 
+//@@author A0108511
 public class HistoryTest {
 	
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);

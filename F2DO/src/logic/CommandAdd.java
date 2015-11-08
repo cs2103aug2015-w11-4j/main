@@ -1,4 +1,3 @@
-//@@author Sufyan
 package logic;
 
 import java.util.ArrayList;
@@ -9,11 +8,7 @@ import object.Task;
 import storage.Storage;
 import type.TaskType;
 
-/**
- * CommandAdd class executes add function.
- * @author 
- *
- */
+//@@author A0111758
 public class CommandAdd implements ICommand {
 	private Result _result = null;
 	private ConcurrentSkipListMap<Integer, Task> _taskList =
