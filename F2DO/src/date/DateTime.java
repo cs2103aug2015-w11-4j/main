@@ -21,23 +21,10 @@ public class DateTime {
 	private static final int DATE_SIZE = 3;
 	private static final int DAY_MONTH_SIZE = 2;
 	private static final int DAY_MONTH_YEAR_SIZE = 3;
-	//private static final HashMap<String, Integer> months = new HashMap<String, Integer>();
 	private static final HashMap<MonthType, Integer> months = new HashMap<MonthType, Integer>();
 	
 	static {
 		months.clear();
-		/*months.put("jan", 1);
-		months.put("feb", 2);
-		months.put("mar", 3);
-		months.put("apr", 4);
-		months.put("may", 5);
-		months.put("jun", 6);
-		months.put("jul", 7);
-		months.put("aug", 8);
-		months.put("sep", 9);
-		months.put("oct", 10);
-		months.put("nov", 11);
-		months.put("dec", 12);*/
 		
 		months.put(MonthType.JAN, 1);
 		months.put(MonthType.JANUARY, 1);
@@ -226,9 +213,9 @@ public class DateTime {
 		String regexTextDM1 = ".*?([0-9]{1,2})[ /-](" + month + ")\\s.*";
 		String regexTextDM2 = ".*?([0-9]{1,2})[ /-](" + month + ")";
 		String regexNumericDMY = ".*?([0-9]{1,2})[/-]([0-9]{1,2})[/-]([0-9]{2,4}).*";
-		String regexTextDMY1 = ".*?([0-9]{1,2})[ /-](" + month + ")[ /-]([0-9]{2,4})\\s.*";
-		String regexTextDMY2 = ".*?([0-9]{1,2})[ /-](" + month + ")[ /-]([0-9]{2,4})";
-		
+		String regexTextDMY1 = ".*?([0-9]{1,2})[ /-](" + month + ")[ ,/-]\\s?([0-9]{2,4})\\s.*";
+		String regexTextDMY2 = ".*?([0-9]{1,2})[ /-](" + month + ")[ ,/-]\\s?([0-9]{2,4})";
+				
 		String[] twoGroups = {regexNumbericDM, regexTextDM1, regexTextDM2 };
 		String[] threeGroups = {regexNumericDMY, regexTextDMY1, regexTextDMY2};
 		
@@ -306,7 +293,7 @@ public class DateTime {
 		//System.out.println(parse("at 5 nov 12 12pm"));
 		//System.out.println(parse("at 5 dec 15"));
 		//System.out.println(parse("at 12 jan"));
-		System.out.println(parse("17 March 22:10"));
+		System.out.println(parse("17 March 2016 22:10"));
 		//System.out.println(parse("16 Dec 2015"));
 		//System.out.println(getTime("4 pm"));
 	}

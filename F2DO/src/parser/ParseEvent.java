@@ -55,92 +55,42 @@ public class ParseEvent implements IParseDateTime {
 	}
 	
 	private DatePair analyzeKeywordFrom() {
-		String regexFromToOn = "from (.*?) to (.*) on (.*?)";
-		String regexFromTo = "from (.*?) to (.*)";
-		String regexFrom = "from (.*?)";
 		Date startDate = null;
 		Date endDate = null;
-		boolean isFound = false;
+		int functionNo = 0;
 		
-		Pattern pattern = Pattern.compile(regexFromToOn, _flags);
-		Matcher matcher = pattern.matcher(_input);
-		
-		if (matcher.matches()) {
-			Date startTime = DateTime.parse(matcher.group(1));
-			Date endTime = DateTime.parse(matcher.group(2));
-			Date date = DateTime.parse(matcher.group(3));
+		loop: while(true) {
+			DatePair pair = new DatePair(null, null);
 			
-			isFound = true;
-			
-			if (startTime != null && date != null) {
-				startDate = DateTime.combineDateTime(date, startTime);
+			switch(functionNo) {
+				case 0:
+					pair = analyzeFromToOn();
+					break;
+				case 1:
+					pair = analyzeFromOn();
+					break;
+				case 2:
+					pair = analyzeFrom();
+					break;
+				default:
+					break loop;
 			}
 			
-			if (endTime != null && date != null) {
-				endDate = DateTime.combineDateTime(date, endTime);
+			if (pair.getStartDate() != null || pair.getEndDate() != null) {
+				startDate = pair.getStartDate();
+				endDate = pair.getEndDate();
+				break loop;
 			}
 			
-			if (startTime == null && endTime == null && date != null) {
-				startDate = date;
-			}
-			
-			if (startTime == null && endTime == null && startDate == null && endTime == null) {
-				isFound = false;
-			}
-		}
-		
-		pattern = Pattern.compile(regexFromTo, _flags);
-		matcher = pattern.matcher(_input);
-		
-		if (matcher.matches() && !isFound) {
-			startDate = DateTime.parse(matcher.group(1));
-			endDate = DateTime.parse(matcher.group(2));
-			
-			if (endDate != null && startDate != null && 
-					endDate.compareTo(startDate) < 0) {
-				String[] startWords = matcher.group(1).split("\\s");
-				String[] endWords = matcher.group(2).split("\\s");
-				boolean isDayForStart = false;
-				boolean isDayForEnd = false;
-				
-				for (int i = 0; i < startWords.length && !isDayForStart; i++) {
-					if (DayType.toDay(startWords[i]) != DayType.INVALID) {
-						isDayForStart = true;
-					}
-				}
-				
-				for (int i = 0; i < endWords.length && !isDayForEnd; i++) {
-					if (DayType.toDay(endWords[i]) != DayType.INVALID) {
-						isDayForEnd = true;
-					}
-				}
-				
-				if (isDayForStart && isDayForEnd) {
-					endDate = DateTime.getOneWeekLater(endDate);
-				}
-			}
-			
-			if (startDate != null || endDate != null) {
-				isFound = true;
-			}
-		}
-		
-		pattern = Pattern.compile(regexFrom, _flags);
-		matcher = pattern.matcher(_input);
-		
-		if (matcher.matches() && !isFound) {
-			startDate = DateTime.parse(_input);
+			functionNo += 1;
 		}
 		
 		Date now = new Date();
-		
-		if (startDate != null) {
-			if (startDate.compareTo(now) < 0) {
-				startDate = DateTime.getOneYearLater(startDate);
-				
-				if (endDate != null) {
-					endDate = DateTime.getOneYearLater(endDate);
-				}
+		if (startDate != null && startDate.compareTo(now) < 0) {
+			startDate = DateTime.getOneYearLater(startDate);
+
+			if (endDate != null) {
+				endDate = DateTime.getOneYearLater(endDate);
 			}
 		}
 		
@@ -227,7 +177,7 @@ public class ParseEvent implements IParseDateTime {
 	}
 	
 	private boolean isFrom() {
-		String[] tokens = _input.split(" ");
+		String[] tokens = _input.split("\\s");
 		
 		if (tokens.length > 0) {
 			KeywordType keyword = KeywordType.toType(tokens[0]);
