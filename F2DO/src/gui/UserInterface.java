@@ -1,13 +1,10 @@
 package gui;
 
-import org.fxmisc.richtext.InlineCssTextArea;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -17,11 +14,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.beans.binding.BooleanBinding;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import object.Task;
 import type.CommandType;
@@ -36,7 +28,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-//@@author Cher Lin
+//@@author A0112882H
 public class UserInterface extends Application {
 	
 	private static BorderPane _root = new BorderPane();
@@ -75,7 +67,6 @@ public class UserInterface extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		
 		setUpCommandPrompt(); 
-		updateDisplayList();
         setUpTables();
         
         setKeywordsHighlighting();
@@ -100,7 +91,7 @@ public class UserInterface extends Application {
 	 */
 	private void setUpCommandPrompt() {
 		setTextArea();
-		setFeedback(_feedBack);
+		setFeedback();
 		
 		_field.setId("textarea");
 		_feedBack.setId("feedback");
@@ -174,12 +165,12 @@ public class UserInterface extends Application {
 	 * Set the design of feedback.
 	 * @param feedback
 	 */
-	private void setFeedback(Label feedBack) {
+	private void setFeedback() {
 		//feedBack.setFont(Font.font ("Verdana", FontWeight.SEMI_BOLD, 13));
 		//feedBack.setStyle("-fx-text-fill: black");
-		feedBack.setText("Welcome to F2DO, your personalised task manager(:\n"
+		_feedBack.setText("Welcome to F2DO, your personalised task manager(:\n"
 				+ "Type " + "\"Help\"" + " for a list of commands to get started.");
-		feedBack.setMouseTransparent(true);
+		_feedBack.setMouseTransparent(true);
 	}
 	
 	/**
