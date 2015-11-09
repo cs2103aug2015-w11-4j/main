@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -74,6 +73,11 @@ public class DateTime extends DateTimeHelper {
 		months.put(MonthType.DECEMBER, 12);
 	}
 
+	/**
+	 * Parse the date with the given input.
+	 * @param input - text
+	 * @return date, exact date string and error message
+	 */
 	public static ParsedDate parse(String input) {
 		ParsedDate result = new ParsedDate();
 		try {
@@ -104,6 +108,11 @@ public class DateTime extends DateTimeHelper {
 		return result;
 	}
 	
+	/**
+	 * Get the time from the input string.
+	 * @param input - possible time string
+	 * @return time string if the pattern is matched
+	 */
 	public static String getTime(String input) {
 		String regexAmPm = ".*?([0-9]{1,2})\\s?(am|pm).*";
 		String regexAmPm2 = ".*?([0-9]{1,2})[:.]([0-9]{1,2})\\s?(am|pm).*";
@@ -138,6 +147,11 @@ public class DateTime extends DateTimeHelper {
 		return null;
 	}
 	
+	/**
+	 * Get the date from the input string.
+	 * @param input - possible date string
+	 * @return date string if the pattern is matched
+	 */
 	private static String getDate(String input) {
 		String regexTextMD1 = ".*?(" + MONTH_REGEX + ")[ /-]([0-9]{1,2})\\s.*";
 		String regexTextMD2 = ".*?(" + MONTH_REGEX + ")[ /-]([0-9]{1,2})";
@@ -173,6 +187,12 @@ public class DateTime extends DateTimeHelper {
 		return date;
 	}
 	
+	/**
+	 * Check if the given string contains absolute date 
+	 * (which includes year).
+	 * @param input - date string
+	 * @return true if it contains year; false otherwise
+	 */
 	private static boolean isAbsoluteDate(String input) {
 		if (input == null) {
 			return false;
@@ -184,6 +204,11 @@ public class DateTime extends DateTimeHelper {
 		return matcher.matches();
 	}
 	
+	/**
+	 * Check if the date is valid.
+	 * @param input - date string
+	 * @return true if the date is valid; false otherwise
+	 */
 	private static boolean isValidDate(String input) {
 		if (input == null) {
 			return false;
@@ -216,6 +241,12 @@ public class DateTime extends DateTimeHelper {
 		return false;
 	}
 	
+	/**
+	 * Check if the time is valid.
+	 * @param hourStr - hour string
+	 * @param minStr - minute string
+	 * @return true if the time is valid
+	 */
 	private static boolean isValidTime(String hourStr, String minStr) {
 		try {
 			int hour = Integer.parseInt(hourStr);
@@ -272,11 +303,11 @@ public class DateTime extends DateTimeHelper {
 	}
 
 	/**
-	 * 
-	 * @param input
-	 * @param regex
-	 * @param groupNumber
-	 * @return
+	 * Get the string that contains the date format.
+	 * @param input - possible date string
+	 * @param regex - regular expression to determine the date
+	 * @param groupNumber - number of groups in the regular expression
+	 * @return string contains date
 	 */
 	private static String getDateMatcher(String input, String regex, int groupNumber) {
 		String dateTime = null;
@@ -313,6 +344,11 @@ public class DateTime extends DateTimeHelper {
 		return dateTime;
 	}
 	
+	/**
+	 * Check if the input is able to convert to integer.
+	 * @param number - number string
+	 * @return true if it is convertible; false otherwise
+	 */
 	private static boolean isConvertable(String number) {
 		try {
 			Integer.parseInt(number);

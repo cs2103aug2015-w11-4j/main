@@ -50,6 +50,11 @@ public class ParseDefault implements IParseDateTime {
 		return datePair;
 	}
 	
+	/**
+	 * Check if the input string is integer.
+	 * @param input - possible integer string
+	 * @return true if input is an integer; false otherwise
+	 */
 	private boolean isInteger(String input) {
 		try {
 			Integer.parseInt(input);

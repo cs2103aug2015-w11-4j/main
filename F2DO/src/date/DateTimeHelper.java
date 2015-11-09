@@ -5,6 +5,12 @@ import java.util.Date;
 
 //@@author A0118005W
 public class DateTimeHelper {
+	
+	/**
+	 * Get one year later from the given date.
+	 * @param date
+	 * @return date that is one year later
+	 */
 	public static Date getOneWeekLater(Date date) {
 		if (date != null) {
 			Calendar calendar = Calendar.getInstance();
@@ -16,6 +22,11 @@ public class DateTimeHelper {
 		return date;
 	}
 	
+	/**
+	 * Get one week later from the given date.
+	 * @param date
+	 * @return date that is one week later
+	 */
 	public static Date getOneYearLater(Date date) {
 		if (date != null) {
 			Calendar calendar = Calendar.getInstance();
@@ -27,6 +38,10 @@ public class DateTimeHelper {
 		return date;
 	}
 	
+	/**
+	 * Get today's date with the time of 23:59.
+	 * @return today's date
+	 */
 	public static Date getToday() {
 		Calendar todayCalendar = Calendar.getInstance();
 		

@@ -51,9 +51,7 @@ public class Parser {
 				
 				if (taskID == -1) {
 					result.setErrorMsg(ParserHelper.ERROR_TASK_ID);
-				} /*else {
-					words.remove(0);	// remove display from input string
-				}*/
+				}
 				
 				if (words.size() > 0 && isInteger(words.get(0))) {
 					words.remove(0);
@@ -73,7 +71,6 @@ public class Parser {
 			taskType = analyzeTask(content, startDate, endDate);
 			
 		} else {
-			//result.setErrorMsg(ParserHelper.ERROR_INVALID_COMMAND);
 			content = input;
 		}
 		
@@ -160,10 +157,6 @@ public class Parser {
 			isError = false;
 			errorMsg = null;
 			
-			/*if (keyword == KeywordType.TODAY || keyword == KeywordType.TOMORROW) {
-				continue;
-			}*/
-			
 			if (i < (listSize - 1)) {
 				int nextIndex = indexList.get(i + 1);
 				KeywordType nextKeyword = keywordIndices.get(nextIndex);
@@ -193,6 +186,7 @@ public class Parser {
 			}
 		}
 		
+		// If no keyword or date is not found, execute default parser type 
 		if (indexList.isEmpty() || !isFound) {
 			IParseDateTime function = IParseDateTime.getFunction(KeywordType.INVALID, content);
 			result = function.analyze();
@@ -203,6 +197,7 @@ public class Parser {
 			
 		}
 		
+		// Delete the date string from the given string
 		if (isFound) {
 			if (result.isError()) {
 				isError = true;
@@ -284,6 +279,11 @@ public class Parser {
 		}
 	}
 	
+	/**
+	 * Check if the input string is integer.
+	 * @param input - possible integer string
+	 * @return true if input is an integer; false otherwise
+	 */
 	private static boolean isInteger(String input) {
 		try {
 			Integer.parseInt(input);
@@ -292,31 +292,4 @@ public class Parser {
 		}
 		return true;
 	}
-	
-	/*public static void main(String[] args) {
-		while (true) {
-			System.out.print("Input: ");
-			Scanner scanner = new Scanner(System.in);
-			String input = scanner.nextLine();
-			ArrayList<Task> displayList = new ArrayList<Task>();
-			Task task1 = new Task(1, "lala", TaskType.FLOATING);
-			Task task2 = new Task(3, "haha", TaskType.EVENT);
-
-			displayList.add(task1);
-			displayList.add(task2);
-
-			Result result = Parser.parse(input, displayList);
-
-			if (result.isError()) {
-				System.out.println("Error: " + result.getErrorMsg());
-			}
-
-			System.out.println("Command: " + result.getCommand());
-			System.out.println("Task ID: " + result.getStorageID());
-			System.out.println("Content: " + result.getContent());
-			System.out.println("TaskType: " + result.getType());
-			System.out.println("StartDate: " + result.getStartDate());
-			System.out.println("EndDate: " + result.getEndDate());
-		}
-	}*/
 }
