@@ -26,6 +26,8 @@ import logic.LogicController;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -367,13 +369,10 @@ public class UserInterface extends Application {
 		_cheatSheet.setEditable(false);
 		
 		BorderPane.setMargin(_cheatSheet, new Insets(8, 20, 25, 20));
+	
+		InputStream is = getClass().getResourceAsStream("cheatsheet.txt");
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		
-		URL url = UserInterface.class.getClassLoader().getResource("./gui/cheatsheet.txt");
-		System.out.println(url.getPath());
-		
-		FileReader in = new FileReader(url.getPath());
-	    BufferedReader br = new BufferedReader(in);
-
 	    while ((text = br.readLine()) != null) {
 	    	content.append(text).append("\n");
 	    }
