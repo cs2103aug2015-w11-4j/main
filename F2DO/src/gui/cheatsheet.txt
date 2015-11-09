@@ -22,8 +22,6 @@ Cheat Sheet :D
 	To edit event task:
 	>edit <task no.> <task name> <any date format>
 
-# type edit <task no>, and F2DO will display a list of suggested commands for you to choose from #
-
 3. Delete 
 
 	To delete any task:
