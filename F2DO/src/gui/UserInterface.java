@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -64,14 +65,14 @@ public class UserInterface extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		_root.setOnKeyPressed(hotKeyEvents);
+		_field.setOnKeyPressed(hotKeyEvents);
+		
 		setScene();
 		setUpCommandPrompt(); 
         setUpTables();
         
         setKeywordsHighlighting();
-        
-        setHotKey();
-        setCommandKeyPressed();
         
         primaryStage.setScene(_defaultScene);
         primaryStage.setTitle("F2DO");
@@ -97,6 +98,110 @@ public class UserInterface extends Application {
         	
         });
 	}
+	
+	/**
+	 * Set the hot keys.
+	 * Ctrl + Z: undo operation.
+	 * Ctrl + Y: redo operation.
+	 * Ctrl + H: home page.
+	 * Ctrl + U: show undone tasks.
+	 * Ctrl + D: show done tasks.
+	 * Ctrl + S: show all.
+	 * F1: help page.
+	 * ESC: exit application.
+	 */
+	private EventHandler<KeyEvent> hotKeyEvents = new EventHandler<KeyEvent>() {
+
+		@Override
+		public void handle(KeyEvent event) {
+			
+			String showUndone = "show undone";
+			String showDone = "show done";
+			String showAll = "show all";
+			
+			if (_undoKey.match(event)) {
+				String feedbackMsg = LogicController.undo();
+				 _feedBack.setText(feedbackMsg);
+				 updateDisplayList();
+			} else if (_redoKey.match(event)) {
+				String feedbackMsg = LogicController.redo();
+				 _feedBack.setText(feedbackMsg);
+				 updateDisplayList();
+			} else if (_homeKey.match(event)) {
+				initialiseScene();
+				setUpCommandPrompt();
+				setUpTables();
+			} else if (_showUndoneKey.match(event)) {
+				String feedbackMsg = LogicController.process(showUndone, _displayList);
+				_feedBack.setText(feedbackMsg);
+				 updateDisplayList();
+			} else if (_showDoneKey.match(event)) {
+				String feedbackMsg = LogicController.process(showDone, _displayList);
+				_feedBack.setText(feedbackMsg);
+				 updateDisplayList();
+			} else if (_showAllKey.match(event)) {
+				String feedbackMsg = LogicController.process(showAll, _displayList);
+				_feedBack.setText(feedbackMsg);
+				 updateDisplayList();
+			} else if (event.getCode().equals(KeyCode.F1)) {
+				try {
+					initialiseScene();
+					setUpCommandPrompt();
+					setCheatSheetContent();
+				} catch (Exception e) {}
+			} else if (event.getCode().equals(KeyCode.ESCAPE)) {
+				exit();
+			} else if (event.getCode().equals(KeyCode.ENTER)) {
+				String userInput = _field.getText();
+				commandHistory.add(userInput);
+				commandIndex = commandHistory.size() - 1;
+					
+				_field.clear();
+				event.consume();
+	
+				String feedbackMsg = LogicController.process(userInput, _displayList);
+
+				if (feedbackMsg == 	FeedbackHelper.MSG_HELP) {
+					try {
+						initialiseScene();
+						setUpCommandPrompt();
+						setCheatSheetContent();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} else if (feedbackMsg == FeedbackHelper.MSG_HOME) {
+					initialiseScene();
+					setUpCommandPrompt();
+					setUpTables();
+				} else {
+					_feedBack.setText(feedbackMsg);
+					updateDisplayList();
+				}
+			} else if (event.getCode().equals(KeyCode.UP)) {
+			
+				if (!commandHistory.isEmpty()) {
+					_field.replaceText(commandHistory.get(commandIndex));
+					int length = commandHistory.get(commandIndex).length();
+					commandIndex--;
+				
+					Platform.runLater( new Runnable() {
+						@Override
+						public void run() {
+							_field.positionCaret(length);
+						}
+					});
+				
+					if (commandIndex < 0) {
+						commandIndex = 0;
+					}
+				}
+			} else if (event.getCode().equals(KeyCode.DOWN)) {
+				_field.showPopup();
+			}
+			
+		}
+		
+	};
 	
 	/** 
 	 * Set up command prompt and feedback
@@ -250,118 +355,6 @@ public class UserInterface extends Application {
 			return true;
 		}
 		return false;	
-	}
-	
-	/**
-	 * Set the hot keys.
-	 * Ctrl + Z: undo operation.
-	 * Ctrl + Y: redo operation.
-	 * Ctrl + H: home page.
-	 * Ctrl + U: show undone tasks.
-	 * Ctrl + D: show done tasks.
-	 * Ctrl + S: show all.
-	 * F1: help page.
-	 * ESC: exit application.
-	 */
-	private void setHotKey() {
-		String showUndone = "show undone";
-		String showDone = "show done";
-		String showAll = "show all";
-
-		_root.setOnKeyPressed((KeyEvent event) -> {
-			
-			if (_undoKey.match(event)) {
-				String feedbackMsg = LogicController.undo();
-				 _feedBack.setText(feedbackMsg);
-				 updateDisplayList();
-			} else if (_redoKey.match(event)) {
-				String feedbackMsg = LogicController.redo();
-				 _feedBack.setText(feedbackMsg);
-				 updateDisplayList();
-			} else if (_homeKey.match(event)) {
-				initialiseScene();
-				setUpCommandPrompt();
-				setUpTables();
-			} else if (_showUndoneKey.match(event)) {
-				String feedbackMsg = LogicController.process(showUndone, _displayList);
-				_feedBack.setText(feedbackMsg);
-				 updateDisplayList();
-			} else if (_showDoneKey.match(event)) {
-				String feedbackMsg = LogicController.process(showDone, _displayList);
-				_feedBack.setText(feedbackMsg);
-				 updateDisplayList();
-			} else if (_showAllKey.match(event)) {
-				String feedbackMsg = LogicController.process(showAll, _displayList);
-				_feedBack.setText(feedbackMsg);
-				 updateDisplayList();
-			} else if (event.getCode().equals(KeyCode.F1)) {
-				try {
-					initialiseScene();
-					setUpCommandPrompt();
-					setCheatSheetContent();
-				} catch (Exception e) {}
-			} else if (event.getCode().equals(KeyCode.ESCAPE)) {
-				exit();
-			}
-			
-		});
-	}
-	
-	/**
-	 * Set the event handler when the key is pressed.
-	 */
-	private void setCommandKeyPressed() {
-		
-		_field.setOnKeyPressed((KeyEvent event) -> {
-			if (event.getCode().equals(KeyCode.ENTER)) {
-				String userInput = _field.getText();
-				commandHistory.add(userInput);
-				commandIndex = commandHistory.size() - 1;
-					
-				_field.clear();
-				event.consume();
-	
-				String feedbackMsg = LogicController.process(userInput, _displayList);
-
-				if (feedbackMsg == 	FeedbackHelper.MSG_HELP) {
-					try {
-						initialiseScene();
-						setUpCommandPrompt();
-						setCheatSheetContent();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				} else if (feedbackMsg == FeedbackHelper.MSG_HOME) {
-					initialiseScene();
-					setUpCommandPrompt();
-					setUpTables();
-				} else {
-					_feedBack.setText(feedbackMsg);
-					updateDisplayList();
-				}
-			} else if (event.getCode().equals(KeyCode.UP)) {
-			
-				if (!commandHistory.isEmpty()) {
-					_field.replaceText(commandHistory.get(commandIndex));
-					int length = commandHistory.get(commandIndex).length();
-					commandIndex--;
-				
-					Platform.runLater( new Runnable() {
-						@Override
-						public void run() {
-							_field.positionCaret(length);
-						}
-					});
-				
-					if (commandIndex < 0) {
-						commandIndex = 0;
-					}
-				}
-			} else if (event.getCode().equals(KeyCode.DOWN)) {
-				_field.showPopup();
-			}
-		});
-		
 	}
 	
 	private void initialiseScene() {

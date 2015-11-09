@@ -9,7 +9,6 @@ import org.loadui.testfx.utils.FXTestUtils;
 import com.google.common.util.concurrent.SettableFuture;
 
 import javafx.scene.Parent;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
