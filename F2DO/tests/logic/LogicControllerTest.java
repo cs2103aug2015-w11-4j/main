@@ -149,18 +149,12 @@ public class LogicControllerTest {
 	    assertEquals("Feedback: Nothing to be modified!",
 					(LogicController.process("edit 1", LogicController.getDisplayList())));
 	    logger.info("Editing task with no modification works.");
-		
-	    //Testing edit task with no modifications
-		LogicController.process("show done", LogicController.getDisplayList());
-	    assertEquals("Feedback: Nothing to be modified!",
-					(LogicController.process("edit 1", LogicController.getDisplayList())));
-	    logger.info("Editing task with no modification works.");
 	    
-	    //Clearing list for next test
+	    //Test deleting done task
 		LogicController.process("show done", LogicController.getDisplayList());
 		assertEquals("Feedback: Homework has been deleted!",
 					(LogicController.process("delete 1", LogicController.getDisplayList())));
-	    logger.info("Deleting task works.");
+	    logger.info("Deleting done task works.");
 	    
 	    //Testing incomplete/complete/all task listing for blank tasklist
 		assertEquals("Feedback: No incomplete task!",
@@ -214,7 +208,7 @@ public class LogicControllerTest {
 
 	}
 
-	//@@author Sufyan
+	//@@author A0111758E
 	@Test
 	public void testComparator() {
 		
