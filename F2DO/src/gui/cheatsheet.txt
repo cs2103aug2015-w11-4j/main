@@ -1,55 +1,74 @@
 Cheat Sheet :D 
 
 1. Add
-
-add <task>                                      
-add <task> by <end date>                        
-add <task> from <start date> to <end date>      
-
-To include the time for deadline tasks or events, append it after the date
-
-add <task> by <end date> <end time> 
-add <task> from <start date> <start time> to <end date> <end time>
+	
+	To add floating task:
+	$add <task name>
+	
+	To add deadline task:
+	$add <task name> by/due <any date format>
+	
+	To add event task:
+	$add <task name> <any date format>
 
 2. Edit
 
-edit <task no> <task name> 	 
-edit <task no> <task to be modified> <end date> 
-edit <task no> <task to be modified> <start date> <end date>
-edit <task no> <task to be modified> <start date> <start time> <end date> <end time>  
+	To edit floating task:
+	$edit <task no.> <task name>
+	
+	To edit deadline task:
+	$edit <task no.> <task name> by/due <any date format>
+	
+	To edit event task:
+	$edit <task no.> <task name> <any date format>
 
 3. Delete 
 
-del <task no>
-delete <task no>
+	$del <task no.>
+	$delete <task no.>
 
-4. Undo 
+4. Mark a task as done or undone
 
-<Ctr + U>
+	To mark a task done:
+	$done <task no.>
+	
+	To mark a task undone:
+	$undone <task no.>
 
-5. Redo 
+5. Display
+	
+	To show all tasks:
+	$show all
+	
+	To show complete tasks:
+	$show done
+	
+	To show incomplete tasks:
+	$show undone
+	
+6. Change Path
 
-<Ctr + R>
+	$move <absolute path>
+	
+7. Search
 
-6. Mark a task as done or undone
+	$search <any thing>
+	
+8. Home Page
 
-done <task no>
-undone <task no>
+	$home
+	
+9. Help Page
 
-7. Display
+	$help			
 
-show all 			
-show done 		
+7. Hot Keys		
 
-8. Revert from Cheat Sheet Page to default UI view
-
-<TAB>				
-
-9. Exit 
-
-<Ctr + E> or <Escape key>		
-
-
-
-
-
+	<CTRL + U>	: Undo operation
+	<CTRL + R>	: Redo operation
+	<CTRL + H>	: Home page
+	<F1>		: Help page
+	<F2>		: Show all tasks
+	<F3>		: Show incomplete tasks
+	<F4>		: Show complete tasks
+	
