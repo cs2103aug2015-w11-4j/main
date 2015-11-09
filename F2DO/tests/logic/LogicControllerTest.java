@@ -198,10 +198,6 @@ public class LogicControllerTest {
 					LogicController.process("add Project at 30/02", LogicController.getDisplayList()));
 	    assertEquals("Feedback: The date entered is invalid!", 
 					LogicController.process("add Project by 31/11", LogicController.getDisplayList()));
-//	    assertEquals("Feedback: The date entered is invalid!", 
-//					LogicController.process("add Project due -1/07", LogicController.getDisplayList()));
-//	    assertEquals("Feedback: The date entered is invalid!", 
-//					LogicController.process("add Project due 13/-01", LogicController.getDisplayList()));
 	    assertEquals("Feedback: The date entered is invalid!", 
 					LogicController.process("add Project due 13/13", LogicController.getDisplayList()));
 	    assertEquals("Feedback: The date entered is invalid!", 
