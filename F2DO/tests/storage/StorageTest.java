@@ -7,24 +7,39 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.logging.Logger;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import logic.LogicController;
+import object.Task;
 
-//@@author A0108511
+//@@author A0108511U
 public class StorageTest {
 
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
-/*	@Test
-	public void testSetFolder() {
-		logger.info("Starting set folder test");
-		assertFalse(Storage.setFolder("randomfile"));
-		assertFalse(Storage.setFolder("*"));
-	    logger.info("End of set folder test successfully");
-	}*/
+	private static ConcurrentSkipListMap<Integer, Task> _taskList =
+			new ConcurrentSkipListMap<Integer, Task>();
+	private static String _testFileName = "wat.txt";
+	private static File _testFailFile = new File(_testFileName);
+	
+	@BeforeClass
+	public static void setUp() {
+		_taskList = LogicController.getTaskList().clone();
+		Storage.writeTasks(new ConcurrentSkipListMap<Integer, Task>());
+	}
+	
+	@AfterClass
+	public static void tearDown() {
+		Storage.writeTasks(_taskList);
+		
+		if (_testFailFile.exists()) {
+			_testFailFile.delete();
+		}
+	}
 	
 	@Test
 	public void testWriteToFile() {
@@ -39,61 +54,16 @@ public class StorageTest {
 	public void testReadFromFile() throws IOException {
 		logger.info("Starting read from file test");
 		Storage.readTasks();
-		File testFailFile = new File("wat");
-		BufferedWriter output = new BufferedWriter(new FileWriter(testFailFile));
+		BufferedWriter output = new BufferedWriter(new FileWriter(_testFailFile));
         output.write("null");
-		StorageHelper.readJsonFile(testFailFile);
+		StorageHelper.readJsonFile(_testFailFile);
 		logger.info("Ending read from file test successfully");
 	}
 
 	@Test
 	public void testCreateJsonFile() {
-		File testFailFile = new File("wat");
-		assertTrue(StorageHelper.createJsonFile(testFailFile));
+		assertTrue(StorageHelper.createJsonFile(_testFailFile));
 		assertFalse(StorageHelper.createJsonFile(null));
 	}
-
-	/*@SuppressWarnings("resource")
-	@Test
-	public void testReadCatFile() throws IOException {
-		File abc = new File("abc");
-		FileWriter fileWriter = new FileWriter(abc);
-		BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-		bufferedWriter.write("test");
-		StorageHelper.readCatFile(abc);
-		
-		File abc2 = new File("abc2.txt");
-		ArrayList<Category> failList = new ArrayList<Category>();
-		Category testCat = new Category("test");
-		failList.add(testCat);
-		StorageHelper.writeCatFile(abc2, failList);
-		StorageHelper.readCatFile(abc2);
-		
-		abc2.delete();
-		StorageHelper.readCatFile(abc2);
-		
-		File testFailFile = new File("wat.txt");
-		RandomAccessFile raFile = new RandomAccessFile(testFailFile, "rw");
-		raFile.getChannel().lock();
-		StorageHelper.readCatFile(testFailFile);
-	}*/
-	
-	/*@SuppressWarnings("resource")
-	@Test
-	public void testWriteCatFile() throws IOException {
-		File abc = new File("abc.txt");
-		ArrayList<Category> failList = new ArrayList<Category>();
-		Category testCat = new Category("test");
-		failList.add(testCat);
-		assertTrue(StorageHelper.writeCatFile(abc, failList));
-
-		RandomAccessFile raFile = new RandomAccessFile(abc, "rw");
-		raFile.getChannel().lock();
-		assertFalse(StorageHelper.writeCatFile(abc, failList));
-		
-		File abc2 = new File("");
-		assertFalse(StorageHelper.writeCatFile(abc2, failList));
-		
-	}*/
 }
 

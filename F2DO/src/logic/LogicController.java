@@ -260,6 +260,7 @@ public class LogicController {
 		_nonFloatingDisplaySize = size;
 	}
 	
+	//@@author A0108511U
 	private static Comparator<Task> taskComparator = new Comparator<Task>() {
 		@Override
 		/**

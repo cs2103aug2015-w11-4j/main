@@ -1,20 +1,40 @@
 package logic;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.logging.Logger;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import date.DateTime;
 import object.Task;
+import storage.Storage;
 
-//@@author A0108511
+//@@author A0108511U
 public class LogicControllerTest {
 	
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static ConcurrentSkipListMap<Integer, Task> _taskList =
+			new ConcurrentSkipListMap<Integer, Task>();
+	
+	@BeforeClass
+	public static void initialise() {
+		_taskList = LogicController.getTaskList().clone();
+		int length = LogicController.getDisplayList().size();
+		for (int i = 0; i < length; i++) {
+			LogicController.process("delete 1", LogicController.getDisplayList());
+		}
+	}
+	
+	@AfterClass
+	public static void finalise() {
+		Storage.writeTasks(_taskList);
+	}
+	
 	
 	@Test
 	public final void testProcess() {
@@ -181,17 +201,15 @@ public class LogicControllerTest {
 		sampleTaskTwo.setStartDate(DateTime.parse("01/12/2015").getDate());
 		sampleTaskTwo.setEndDate(DateTime.parse("31/12/2015").getDate());
 		testDisplayList.add(sampleTaskOne);
-		LogicController.process("add Project from 00/12 to 32/12", LogicController.getDisplayList());
-		assertNotEquals(testDisplayList.get(0).getStartDate(), LogicController.getDisplayList().get(0).getStartDate());
-		assertNotEquals(testDisplayList.get(0).getEndDate(), LogicController.getDisplayList().get(0).getEndDate());
-			    
+		assertEquals("Feedback: The date entered is invalid!", 
+				LogicController.process("add Project from 00/12 to 32/12", LogicController.getDisplayList()));
+		
 	    //Finishing tests. Clears the test list.
 		int length = LogicController.getDisplayList().size();
-		if (length >= 0) {
-			for (int i = 0; i < length; i++) {
-				LogicController.process("delete 1", LogicController.getDisplayList());
-			}
+		for (int i = 0; i < length; i++) {
+			LogicController.process("delete 1", LogicController.getDisplayList());
 		}
+
 		logger.info("End of general logic tests");
 
 	}

@@ -8,14 +8,14 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.*;
-import logic.LogicControllerTest;
+
 import object.Result;
 import object.Task;
 import type.CommandType;
 import type.TaskType;
 
-//@@author A0108511
-public class ParserTest extends LogicControllerTest{
+//@@author A0108511U
+public class ParserTest {
 
 	Result result;
 	
