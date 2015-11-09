@@ -27,12 +27,12 @@ Cheat Sheet :D
 	$del <task no.>
 	$delete <task no.>
 
-4. Mark a task as done or undone
+4. Mark a task as complete or incomplete
 
-	To mark a task done:
+	To mark a task complete:
 	$done <task no.>
 	
-	To mark a task undone:
+	To mark a task incomplete:
 	$undone <task no.>
 
 5. Display
