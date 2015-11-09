@@ -65,5 +65,11 @@ public class StorageTest {
 		assertTrue(StorageHelper.createJsonFile(_testFailFile));
 		assertFalse(StorageHelper.createJsonFile(null));
 	}
+	
+	@Test
+	public void testSetFolder() {
+		assertTrue(Storage.setFolder("c:/"));
+		assertTrue(Storage.setFolder("z:/"));
+	}
 }
 
