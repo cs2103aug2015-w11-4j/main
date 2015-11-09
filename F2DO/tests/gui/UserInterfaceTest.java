@@ -2,11 +2,11 @@ package gui;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.loadui.testfx.Assertions;
 import org.loadui.testfx.GuiTest;
 import org.loadui.testfx.utils.FXTestUtils;
 
 import javafx.scene.Parent;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 
 //@@author A0112882H-reused
@@ -29,31 +29,11 @@ public class UserInterfaceTest {
 	}
 
 	@Test
-	public void test() throws Exception {
+	public void testAddFloatingTask() throws Exception {
 		UITextField textField = (UITextField)GuiTest.find("#textarea");
 		System.out.println("TESTING GUI");
-		controller.click(textField).type("add task").push(KeyCode.ENTER);
-	}
-
-	@Test
-	public void test2() throws Exception {
-		UITextField textField = (UITextField)GuiTest.find("#textarea");
-		System.out.println("TESTING GUI");
-		controller.click(textField).type("add task2").push(KeyCode.ENTER);
-	}
-
-	@Test
-	public void test3() throws Exception {
-		UITextField textField = (UITextField)GuiTest.find("#textarea");
-		System.out.println("TESTING GUI");
-		controller.click(textField).type("add task3").push(KeyCode.ENTER);
-	}
-
-	@Test
-	public void test4() throws Exception {
-		UITextField textField = (UITextField)GuiTest.find("#textarea");
-		System.out.println("TESTING GUI");
-		controller.click(textField).type("add task4").push(KeyCode.ENTER);
+		controller.click(textField).type("add Meeting with boss").push(KeyCode.ENTER);
+		Assertions.assertNodeExists("Meeting with boss");
 	}
 
 	/*	
