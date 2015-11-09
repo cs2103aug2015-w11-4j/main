@@ -239,8 +239,7 @@ public class ParserTest {
 	@Test
 	public void testParserDelInput1() {
 		result = Parser.parse("del 1", new ArrayList<Task>());
-		assertEquals("1", result.getContent());
-		assertEquals(TaskType.FLOATING, result.getType());
+		assertEquals(TaskType.INVALID, result.getType());
 		assertEquals(CommandType.DELETE, result.getCommand());
 		assertEquals(null, result.getEndDate());
 		assertEquals(null, result.getStartDate());

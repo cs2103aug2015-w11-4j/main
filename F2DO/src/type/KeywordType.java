@@ -8,21 +8,11 @@ public enum KeywordType {
 	IN,
 	BY,
 	DUE,
-	TODAY,
-	TOMORROW,
-	TONIGHT,
-	THIS,
-	NEXT,
 	INVALID;
 	
 	public static KeywordType toType(String word) {
 		try {
-			word = word.toUpperCase();
-			
-			if (word.equals("TMR")) {
-				return TOMORROW;
-			}
-			
+			word = word.toUpperCase();	
 			return valueOf(word); 
 		} catch (Exception e) {
 			return INVALID; 

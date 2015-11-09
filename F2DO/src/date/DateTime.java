@@ -89,11 +89,13 @@ public class DateTime extends DateTimeHelper {
 				parsedStr = dateStr;
 			}
 			date = dateParser.parse(parsedStr).get(0).getDates().get(0);
+			dateStr = dateParser.parse(input).get(0).getText();
 			
 			if (date != null) {
 				boolean isAbsolute = isAbsoluteDate(parsedStr);
 				boolean isValid = isValidDate(parsedStr);
 				result = new ParsedDate(date, isValid, isAbsolute);
+				result.setDateString(dateStr);
 			}
 
 		} catch (Exception e) {

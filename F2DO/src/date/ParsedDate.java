@@ -7,6 +7,7 @@ public class ParsedDate {
 	private Date _date;
 	private boolean _isValid;
 	private boolean _isAbsolute;
+	private String _dateString = null;
 	
 	public ParsedDate() {
 		_date = null;
@@ -33,6 +34,14 @@ public class ParsedDate {
 	
 	public boolean isAbsolute() {
 		return _isAbsolute;
+	}
+	
+	public void setDateString(String dateString) {
+		_dateString = dateString;
+	}
+	
+	public String getDateString() {
+		return _dateString;
 	}
 	
 }

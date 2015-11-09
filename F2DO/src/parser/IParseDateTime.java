@@ -9,15 +9,14 @@ public interface IParseDateTime {
 		IParseDateTime function = null;
 		
 		switch (keywordType) {
-			case AT: case IN: case ON: case FROM: case THIS: case NEXT:
-				case TODAY: case TOMORROW: case TONIGHT:
+			case AT: case IN: case ON: case FROM:
 				function = new ParseEvent(input);
 				break;
 			case BY: case DUE:
 				function = new ParseDeadline(input);
 				break;
 			default:
-				function = new ParseFloating();
+				function = new ParseDefault(input);
 				break;
 		}
 		

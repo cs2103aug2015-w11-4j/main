@@ -51,8 +51,12 @@ public class Parser {
 				
 				if (taskID == -1) {
 					result.setErrorMsg(ParserHelper.ERROR_TASK_ID);
-				} else {
+				} /*else {
 					words.remove(0);	// remove display from input string
+				}*/
+				
+				if (words.size() > 0 && isInteger(words.get(0))) {
+					words.remove(0);
 				}
 			}
 			
@@ -145,7 +149,9 @@ public class Parser {
 		Date startDate = null;
 		Date endDate = null;
 		boolean isError = false;
+		boolean isFound = false;
 		String errorMsg = null;
+		DatePair result = null;
 		
 		for (int i = 0; i < listSize; i++) {
 			int index = indexList.get(i);
@@ -174,37 +180,50 @@ public class Parser {
 			}
 			
 			IParseDateTime function = IParseDateTime.getFunction(keyword, parseInput);
-			DatePair result = function.analyze();
+			result = function.analyze();
 			
 			// If date is found, remove the date time string from the input string
 			if (isDateFound(result.getStartDate(), result.getEndDate())) {
-				if (result.isError()) {
-					isError = true;
-					errorMsg = result.getErrorMsg();
-				} else {
-					String dateString = result.getDateString();
-					startDate = result.getStartDate();
-					endDate = result.getEndDate();
-					content = String.join(" ", words);
+				isFound = true;
+				break;
+			}
+		}
+		
+		if (indexList.isEmpty()) {
+			IParseDateTime function = IParseDateTime.getFunction(KeywordType.INVALID, content);
+			result = function.analyze();
+			
+			if (isDateFound(result.getStartDate(), result.getEndDate())) {
+				isFound = true;
+			}
+			
+		}
+		
+		if (isFound) {
+			if (result.isError()) {
+				isError = true;
+				errorMsg = result.getErrorMsg();
+			} else {
+				String dateString = result.getDateString();
+				startDate = result.getStartDate();
+				endDate = result.getEndDate();
+				content = String.join(" ", words);
 
-					assert (dateString != null);
+				assert (dateString != null);
 
-					content = content.replace(dateString, REPLACE_DELIMITER);
+				content = content.replace(dateString, REPLACE_DELIMITER);
 
-					String[] splitWords = content.split(SPLIT_DELIMITER);
-					ArrayList<String> contentList = new ArrayList<>(Arrays.asList(splitWords));
+				String[] splitWords = content.split(SPLIT_DELIMITER);
+				ArrayList<String> contentList = new ArrayList<>(Arrays.asList(splitWords));
 
-					content = String.join(JOIN_DELIMITER, contentList);
+				content = String.join(JOIN_DELIMITER, contentList);
 
-					if (startDate != null && endDate != null) {
-						if (startDate.compareTo(endDate) > 0) {
-							isError = true;
-							errorMsg = ParserHelper.ERROR_END_DATE_EARLIER;
-						}
+				if (startDate != null && endDate != null) {
+					if (startDate.compareTo(endDate) > 0) {
+						isError = true;
+						errorMsg = ParserHelper.ERROR_END_DATE_EARLIER;
 					}
 				}
-				
-				break;
 			}
 		}
 		
@@ -223,9 +242,7 @@ public class Parser {
 	 * @return true if the keyword should be include; false otherwise
 	 */
 	private static boolean shouldInclude(KeywordType keyword) {
-		return keyword == KeywordType.ON ||
-				keyword == KeywordType.TODAY ||
-				keyword == KeywordType.TOMORROW;
+		return keyword == KeywordType.ON;
 	}
 	
 	/**
@@ -261,6 +278,15 @@ public class Parser {
 		} else {
 			return TaskType.EVENT;
 		}
+	}
+	
+	private static boolean isInteger(String input) {
+		try {
+			Integer.parseInt(input);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		return true;
 	}
 	
 	/*public static void main(String[] args) {

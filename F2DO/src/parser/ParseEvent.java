@@ -102,7 +102,7 @@ public class ParseEvent implements IParseDateTime {
 				impossibleStr = String.join(JOIN_DELIMITER, words.subList(index, words.size()));
 			}
 			
-			if (DateTime.parse(impossibleStr) == null) {
+			if (DateTime.parse(impossibleStr).getDate() == null) {
 				dateTimeStr = dateTimeStr.replace(impossibleStr, REPLACE_DELIMITER);
 			}
 		}
