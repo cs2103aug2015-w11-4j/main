@@ -100,13 +100,13 @@ public class UserInterface extends Application {
 	
 	/**
 	 * Set the hot keys.
-	 * Ctrl + Z: undo operation.
-	 * Ctrl + Y: redo operation.
+	 * Ctrl + U: undo operation.
+	 * Ctrl + R: redo operation.
 	 * Ctrl + H: home page.
-	 * Ctrl + U: show undone tasks.
-	 * Ctrl + D: show done tasks.
-	 * Ctrl + S: show all.
 	 * F1: help page.
+	 * F2: show all.
+	 * F3: show undone tasks.
+	 * F4: show done tasks.
 	 * ESC: exit application.
 	 */
 	private EventHandler<KeyEvent> hotKeyEvents = new EventHandler<KeyEvent>() {
