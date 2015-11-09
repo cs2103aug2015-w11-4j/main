@@ -179,25 +179,36 @@ public class LogicControllerTest {
 					(LogicController.process("done 0", LogicController.getDisplayList())));
 	    assertEquals("Feedback: The entered number does not exist!",
 					(LogicController.process("undone 0", LogicController.getDisplayList())));
+	    logger.info("Out of bound usage for done/undone commands work as expected");
 	    
 	    //Testing out of bound for edit
 	    assertEquals("Feedback: The entered number does not exist!",
 					(LogicController.process("edit 0", LogicController.getDisplayList())));
-	    	    
+	    logger.info("Editing out of bounds does nothing as expected.");	    
+	    
 	    //Testing invalid adds
 		assertEquals("Feedback:  cannot be added!",
 					(LogicController.process("add        ", LogicController.getDisplayList())));
-	    logger.info("Adding blank task not acceptable throws the correct error feedback");
+	    logger.info("Adding blank task not acceptable, throws the correct error feedback");
 	    
-	    Task sampleTaskTwo = new Task();
-		sampleTaskTwo.setTaskID(1);
-		sampleTaskTwo.setTaskName("Meeting with Boss");
-		sampleTaskTwo.setStartDate(DateTime.parse("01/12/2015").getDate());
-		sampleTaskTwo.setEndDate(DateTime.parse("31/12/2015").getDate());
-		testDisplayList.add(sampleTaskOne);
-		assertEquals("Feedback: The date entered is invalid!", 
-				LogicController.process("add Project from 00/12 to 32/12", LogicController.getDisplayList()));
-		
+	    assertEquals("Feedback: The date entered is invalid!", 
+					LogicController.process("add Project from 00/12 to 32/12", LogicController.getDisplayList()));
+	    assertEquals("Feedback: The date entered is invalid!", 
+					LogicController.process("add Project on 00/11", LogicController.getDisplayList()));
+	    assertEquals("Feedback: The date entered is invalid!", 
+					LogicController.process("add Project at 30/02", LogicController.getDisplayList()));
+	    assertEquals("Feedback: The date entered is invalid!", 
+					LogicController.process("add Project by 31/11", LogicController.getDisplayList()));
+//	    assertEquals("Feedback: The date entered is invalid!", 
+//					LogicController.process("add Project due -1/07", LogicController.getDisplayList()));
+//	    assertEquals("Feedback: The date entered is invalid!", 
+//					LogicController.process("add Project due 13/-01", LogicController.getDisplayList()));
+	    assertEquals("Feedback: The date entered is invalid!", 
+					LogicController.process("add Project due 13/13", LogicController.getDisplayList()));
+	    assertEquals("Feedback: The date entered is invalid!", 
+					LogicController.process("add Project due 13/00", LogicController.getDisplayList()));
+	    logger.info("Date validation works properly.");
+	    
 	    //Finishing tests. Clears the test list.
 		int length = LogicController.getDisplayList().size();
 		for (int i = 0; i < length; i++) {
