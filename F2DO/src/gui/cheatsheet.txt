@@ -3,66 +3,71 @@ Cheat Sheet :D
 1. Add
 	
 	To add floating task:
-	$add <task name>
+	>add <task name>
 	
 	To add deadline task:
-	$add <task name> by/due <any date format>
+	>add <task name> by/due <any date format>
 	
 	To add event task:
-	$add <task name> <any date format>
+	>add <task name> <any date format>
 
 2. Edit
 
 	To edit floating task:
-	$edit <task no.> <task name>
+	>edit <task no.> <task name>
 	
 	To edit deadline task:
-	$edit <task no.> <task name> by/due <any date format>
+	>edit <task no.> <task name> by/due <any date format>
 	
 	To edit event task:
-	$edit <task no.> <task name> <any date format>
+	>edit <task no.> <task name> <any date format>
 
 3. Delete 
 
-	$del <task no.>
-	$delete <task no.>
+	To delete any task:
+	>del <task no.>
+	>delete <task no.>
 
 4. Mark a task as complete or incomplete
 
 	To mark a task complete:
-	$done <task no.>
+	>done <task no.>
 	
 	To mark a task incomplete:
-	$undone <task no.>
+	>undone <task no.>
 
 5. Display
 	
 	To show all tasks:
-	$show all
+	>show all
 	
 	To show complete tasks:
-	$show done
+	>show done
 	
 	To show incomplete tasks:
-	$show undone
+	>show undone
 	
 6. Change Path
 
-	$move <absolute path>
+	To change the path of the saved file:
+	>move <absolute path>
 	
 7. Search
 
-	$search <any thing>
+	To search for any task (this is also the default command):
+	>search <any thing>
 	
 8. Home Page
 
-	$home
+	To get to the home page:
+	>home
 	
 9. Help Page
 
-	$help			
+	To get to the help page (this page):
+	>help			
 
-7. Hot Keys		
+10. Hot Keys		
 
 	<CTRL + U>	: Undo operation
 	<CTRL + R>	: Redo operation
@@ -71,4 +76,3 @@ Cheat Sheet :D
 	<F2>		: Show all tasks
 	<F3>		: Show incomplete tasks
 	<F4>		: Show complete tasks
-	
