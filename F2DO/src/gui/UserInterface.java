@@ -49,12 +49,9 @@ public class UserInterface extends Application {
 	private static UITable _taskTable = new UITable(false);
 	private static UITable _floatingTable = new UITable(true);
 	
-	private final KeyCombination _undoKey = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
-	private final KeyCombination _redoKey = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
+	private final KeyCombination _undoKey = new KeyCodeCombination(KeyCode.U, KeyCombination.CONTROL_DOWN);
+	private final KeyCombination _redoKey = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
 	private final KeyCombination _homeKey = new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_DOWN);
-	private final KeyCombination _showUndoneKey = new KeyCodeCombination(KeyCode.U, KeyCombination.CONTROL_DOWN);
-	private final KeyCombination _showDoneKey = new KeyCodeCombination(KeyCode.D, KeyCombination.CONTROL_DOWN);
-	private final KeyCombination _showAllKey = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
 
 	private static ArrayList<String> commandHistory = new ArrayList<String>();
 	private static ArrayList<Task> _displayList = new ArrayList<Task>();
@@ -131,15 +128,15 @@ public class UserInterface extends Application {
 				initialiseScene();
 				setUpCommandPrompt();
 				setUpTables();
-			} else if (_showUndoneKey.match(event)) {
+			} else if (event.getCode().equals(KeyCode.F3)) {
 				String feedbackMsg = LogicController.process(showUndone, _displayList);
 				_feedBack.setText(feedbackMsg);
 				 updateDisplayList();
-			} else if (_showDoneKey.match(event)) {
+			} else if (event.getCode().equals(KeyCode.F4)) {
 				String feedbackMsg = LogicController.process(showDone, _displayList);
 				_feedBack.setText(feedbackMsg);
 				 updateDisplayList();
-			} else if (_showAllKey.match(event)) {
+			} else if (event.getCode().equals(KeyCode.F2)) {
 				String feedbackMsg = LogicController.process(showAll, _displayList);
 				_feedBack.setText(feedbackMsg);
 				 updateDisplayList();
