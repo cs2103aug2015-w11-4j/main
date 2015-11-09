@@ -61,7 +61,7 @@ public class Storage {
 				}
 			} 
 		} catch (Exception e) {
-			logger.log(Level.WARNING, "An exception was thrown when setting folder path.", e);
+			logger.log(Level.WARNING, "An exception was thrown when setting folder path.");
 		} finally {
 			if (!isSuccessful) {
 				_saveFolder = prevFolder;
@@ -92,7 +92,7 @@ public class Storage {
 				fos.close();
 			}
 		} catch (Exception e) {
-			logger.log(Level.WARNING, "An exception was thrown when creating properties file.", e);
+			logger.log(Level.WARNING, "An exception was thrown when creating properties file.");
 			return false;
 		}
 		return true;
@@ -116,7 +116,7 @@ public class Storage {
 				createPropertiesFile();
 			}
 		} catch (Exception e) {
-			logger.log(Level.WARNING, "An exception was thrown when reading properties file.", e);
+			logger.log(Level.WARNING, "An exception was thrown when reading properties file.");
 			return false;
 		}
 		return true;
@@ -135,7 +135,7 @@ public class Storage {
 			properties.store(fos, "Properties file of F2DO");
 			fos.close();
 		} catch (Exception e) {
-			logger.log(Level.WARNING, "An exception was thrown when writing properties file.", e);
+			logger.log(Level.WARNING, "An exception was thrown when writing properties file.");
 			return false;
 		}
 		return true;
@@ -152,7 +152,7 @@ public class Storage {
 			}
 			System.setProperty(CHANGE_DIRECTORY, _saveFolder.getPath());
 		} catch (Exception e) {
-			logger.log(Level.WARNING, "An exception was thrown when creating the folder.", e);
+			logger.log(Level.WARNING, "An exception was thrown when creating the folder.");
 			return false;
 		}
 		return true;
@@ -168,7 +168,7 @@ public class Storage {
 				StorageHelper.createJsonFile(_saveFile);
 			}
 		} catch (Exception e) {
-			logger.log(Level.WARNING, "An exception was thrown when creating the file.", e);
+			logger.log(Level.WARNING, "An exception was thrown when creating the file.");
 			return false;
 		}
 		return true;

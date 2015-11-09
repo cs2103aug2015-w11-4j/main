@@ -99,7 +99,6 @@ public class DateTime extends DateTimeHelper {
 			}
 
 		} catch (Exception e) {
-			logger.log(Level.INFO, "Exception was thrown when parsing date from input.", e);
 			return new ParsedDate();
 		}
 		return result;
@@ -233,7 +232,6 @@ public class DateTime extends DateTimeHelper {
 			}
 			
 		} catch (Exception e) {
-			logger.log(Level.INFO, "Exception was thrown when determining validity of time.", e);
 			return false;
 		}
 		return true;

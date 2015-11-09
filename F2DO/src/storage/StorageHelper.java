@@ -33,7 +33,7 @@ public class StorageHelper {
 			objMapper.writerWithDefaultPrettyPrinter().writeValue(file, taskList);
 
 		} catch (Exception e) {
-			logger.log(Level.WARNING, "An exception was thrown when writing to JSON file.", e);
+			logger.log(Level.WARNING, "An exception was thrown when writing to JSON file.");
 			return false;
 		} 
 		return true;
@@ -57,7 +57,7 @@ public class StorageHelper {
 					taskList = objMapper.readValue(file, typeRef);
 
 		} catch (Exception e) {
-			logger.log(Level.WARNING, "An exception was thrown when reading from JSON file.", e);
+			logger.log(Level.WARNING, "An exception was thrown when reading from JSON file.");
 			return taskList;
 		}
 		return taskList;
@@ -77,7 +77,7 @@ public class StorageHelper {
 			objMapper.writeValue(file, taskList);
 
 		} catch (Exception e) {
-			logger.log(Level.WARNING, "An exception was thrown when creating the JSON file.", e);
+			logger.log(Level.WARNING, "An exception was thrown when creating the JSON file.");
 			return false;
 		} 
 		return true;
