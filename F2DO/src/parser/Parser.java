@@ -160,6 +160,10 @@ public class Parser {
 			isError = false;
 			errorMsg = null;
 			
+			if (keyword == KeywordType.TODAY || keyword == KeywordType.TOMORROW) {
+				continue;
+			}
+			
 			if (i < (listSize - 1)) {
 				int nextIndex = indexList.get(i + 1);
 				KeywordType nextKeyword = keywordIndices.get(nextIndex);
@@ -189,7 +193,7 @@ public class Parser {
 			}
 		}
 		
-		if (indexList.isEmpty()) {
+		if (indexList.isEmpty() || !isFound) {
 			IParseDateTime function = IParseDateTime.getFunction(KeywordType.INVALID, content);
 			result = function.analyze();
 			
@@ -242,7 +246,9 @@ public class Parser {
 	 * @return true if the keyword should be include; false otherwise
 	 */
 	private static boolean shouldInclude(KeywordType keyword) {
-		return keyword == KeywordType.ON;
+		return keyword == KeywordType.ON ||
+				keyword == KeywordType.TODAY ||
+				keyword == KeywordType.TOMORROW;
 	}
 	
 	/**

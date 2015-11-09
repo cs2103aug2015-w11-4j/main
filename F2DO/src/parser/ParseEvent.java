@@ -232,6 +232,9 @@ public class ParseEvent implements IParseDateTime {
 				if (isDayForStart && isDayForEnd) {
 					endDate = DateTime.getOneWeekLater(endDate);
 				}
+			} else if (startDate == null && endDate != null) {
+				startDate = endDate;
+				endDate = null;
 			}
 		}
 		return new DatePair(startDate, endDate);
