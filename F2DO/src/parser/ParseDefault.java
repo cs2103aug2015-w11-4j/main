@@ -32,7 +32,11 @@ public class ParseDefault implements IParseDateTime {
 			endDate = DateTime.combineDateTime(startDate, endTime);
 		}
 		
-		
+		if (isInteger(dateStr)) {
+			startDate = null;
+			endDate = null;
+		}
+	
 		DatePair datePair = new DatePair(startDate, endDate);
 		
 		if (startDate != null) {
@@ -44,6 +48,15 @@ public class ParseDefault implements IParseDateTime {
 		}
 		
 		return datePair;
+	}
+	
+	private boolean isInteger(String input) {
+		try {
+			Integer.parseInt(input);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		return true;
 	}
 
 }

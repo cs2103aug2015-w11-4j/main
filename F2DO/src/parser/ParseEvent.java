@@ -93,6 +93,8 @@ public class ParseEvent implements IParseDateTime {
 		
 		for (int i = 0; i < listSize; i++) {
 			int index = indexList.get(i);
+			KeywordType type = keywordIndices.get(index);
+			String keyword = type.toString();
 			String impossibleStr = "";
 			
 			if (i < (listSize - 1)) {
@@ -102,8 +104,15 @@ public class ParseEvent implements IParseDateTime {
 				impossibleStr = String.join(JOIN_DELIMITER, words.subList(index, words.size()));
 			}
 			
-			if (DateTime.parse(impossibleStr).getDate() == null) {
+			ParsedDate result = DateTime.parse(impossibleStr);
+			if (result.getDate() == null) {
 				dateTimeStr = dateTimeStr.replace(impossibleStr, REPLACE_DELIMITER);
+			} else {
+				String joinStr = keyword + JOIN_DELIMITER + result.getDateString();
+
+				if (!joinStr.equalsIgnoreCase(impossibleStr)) {
+					dateTimeStr = result.getDateString();
+				}
 			}
 		}
 		

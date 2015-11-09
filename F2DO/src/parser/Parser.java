@@ -160,9 +160,9 @@ public class Parser {
 			isError = false;
 			errorMsg = null;
 			
-			if (keyword == KeywordType.TODAY || keyword == KeywordType.TOMORROW) {
+			/*if (keyword == KeywordType.TODAY || keyword == KeywordType.TOMORROW) {
 				continue;
-			}
+			}*/
 			
 			if (i < (listSize - 1)) {
 				int nextIndex = indexList.get(i + 1);
@@ -246,9 +246,9 @@ public class Parser {
 	 * @return true if the keyword should be include; false otherwise
 	 */
 	private static boolean shouldInclude(KeywordType keyword) {
-		return keyword == KeywordType.ON ||
-				keyword == KeywordType.TODAY ||
-				keyword == KeywordType.TOMORROW;
+		return keyword == KeywordType.ON;
+				//keyword == KeywordType.TODAY ||
+				//keyword == KeywordType.TOMORROW;
 	}
 	
 	/**
