@@ -8,8 +8,6 @@ public enum KeywordType {
 	IN,
 	BY,
 	DUE,
-	//TODAY,
-	//TOMORROW,
 	INVALID;
 	
 	public static KeywordType toType(String word) {

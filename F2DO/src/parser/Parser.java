@@ -247,8 +247,6 @@ public class Parser {
 	 */
 	private static boolean shouldInclude(KeywordType keyword) {
 		return keyword == KeywordType.ON;
-				//keyword == KeywordType.TODAY ||
-				//keyword == KeywordType.TOMORROW;
 	}
 	
 	/**
